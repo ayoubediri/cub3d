@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:48:27 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/20 10:52:38 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/20 18:37:45 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,18 @@ typedef enum e_parse_state
 	PARSE_ELEMENTS,
 	PARSE_MAP_LINES
 }	t_parse_state;
+
+typedef enum e_key
+{
+	KEY_W,
+	KEY_A,
+	KEY_S,
+	KEY_D,
+	KEY_UP,
+	KEY_DOWN,
+	KEY_LEFT,
+	KEY_RIGHT,
+	KEY_TOTAL
+}	t_key;
 
 #endif

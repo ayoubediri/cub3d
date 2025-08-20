@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:37:44 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/20 13:01:27 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/20 15:52:16 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ static void	determine_section(void)
 void	parse(char *path)
 {
 	t_parse	*parse;
-	int		i;
 
 	parse = get_parse();
 	parse->fd = extract_fd(path);
@@ -102,4 +101,5 @@ void	parse(char *path)
 			determine_section();
 	}
 	validate_map();
+	build_map();
 }

@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:55:41 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/20 13:01:52 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/20 18:34:27 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,7 @@ int	main(int ac, char **av)
 		clean_exit(1);
 	}
 	parse(av[1]);
+	setup_config();
+	start_game();
 	return (0);
 }
