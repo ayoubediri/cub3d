@@ -1,0 +1,51 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cleanup_bonus.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/20 10:34:24 by yjazouli          #+#    #+#             */
+/*   Updated: 2025/08/20 10:35:51 by yjazouli         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d_bonus.h"
+
+int	report_error(char *msg1, char *msg2)
+{
+	fprintf(stderr, "cub3d: %s", msg1);
+	if (msg2)
+		fprintf(stderr, ": %s", msg2);
+	fprintf(stderr, "\n");
+	return (1);
+}
+
+void	parse_error(char *msg1)
+{
+	fprintf(stderr, "Error: %s\n", msg1);
+	clean_exit(1);
+}
+
+void	cleanup(void)
+{
+	t_game		*game;
+	t_malloc	*curr;
+	t_malloc	*next;
+
+	game = get_game();
+	curr = game->tracker;
+	while (curr)
+	{
+		next = curr->next;
+		free(curr->ptr);
+		free(curr);
+		curr = next;
+	}
+}
+
+void	clean_exit(int status)
+{
+	cleanup();
+	exit(status);
+}
