@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:51:59 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/20 18:36:10 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/20 20:08:21 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 // * =========== Typedefs =========== *
 
+typedef struct s_engine	t_engine;
 typedef struct s_malloc	t_malloc;
 typedef struct s_parse	t_parse;
 typedef struct s_door	t_door;
@@ -36,6 +37,18 @@ struct					s_mlx
 	int					width;
 	int					endian;
 	int					height;
+};
+
+struct					s_engine
+{
+	double				dt;
+	double				acc;
+	double				last;
+
+	int					target_fps;
+
+	void				(*update)(double);
+	void				(*render)(double);
 };
 
 // * Parsing *
@@ -98,6 +111,7 @@ struct					s_game
 {
 	bool				keys[KEY_TOTAL];
 	t_malloc			*tracker;
+	t_engine			engine;
 	t_parse				parse;
 	t_malloc			*tail;
 	t_map				map;

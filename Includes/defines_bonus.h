@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:48:27 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/20 18:37:45 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/20 19:37:42 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ typedef enum e_key
 	KEY_A,
 	KEY_S,
 	KEY_D,
-	KEY_UP,
-	KEY_DOWN,
 	KEY_LEFT,
 	KEY_RIGHT,
 	KEY_TOTAL

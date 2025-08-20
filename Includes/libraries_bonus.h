@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:51:12 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/20 18:36:49 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/20 20:21:44 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "mlx.h"
 
+# include <time.h>
+# include <math.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <ctype.h>
@@ -24,5 +26,6 @@
 # include <string.h>
 # include <unistd.h>
 # include <stdbool.h>
+# include <X11/keysym.h>
 
 #endif
