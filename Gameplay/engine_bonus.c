@@ -6,12 +6,11 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 20:08:37 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/20 20:26:28 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/20 20:43:47 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
-
 
 double	now_seconds(void)
 {

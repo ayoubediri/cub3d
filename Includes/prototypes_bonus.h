@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:57:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/20 20:21:14 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/21 10:31:43 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ t_mlx		*get_mlx(void);
 t_game		*get_game(void);
 t_parse		*get_parse(void);
 t_engine	*get_engine(void);
+t_gameplay	*get_gameplay(void);
 
 // =========== Config =========== //
 void		setup_config(void);

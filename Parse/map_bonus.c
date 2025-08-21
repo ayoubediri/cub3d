@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:21:14 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/20 11:28:04 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/21 09:54:56 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	valid_char(char c)
 {
 	return (c == '0' || c == '1' || c == '.' || c == 'D' || c == ' ' || c == 'N'
-		|| c == 'S' || c == 'E' || c == 'W');
+		|| c == 'S' || c == 'E' || c == 'W' || c == 'X');
 }
 
 static void	check_player(char c, int y, int x)
