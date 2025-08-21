@@ -17,8 +17,8 @@ static void	config_mlx(void)
 	t_mlx	*mlx;
 
 	mlx = get_mlx();
-	mlx->width = 1920;
-	mlx->height = 1080;
+	mlx->width = WIDTH;
+	mlx->height = HEIGHT;
 }
 
 static void	config_engine(void)
@@ -26,7 +26,7 @@ static void	config_engine(void)
 	t_engine	*engine;
 
 	engine = get_engine();
-	engine->target_fps = 60;
+	engine->target_fps = FPS;
 	engine->dt = 1.0 / (double)engine->target_fps;
 	engine->last = now_seconds();
 	engine->acc = 0.0;
