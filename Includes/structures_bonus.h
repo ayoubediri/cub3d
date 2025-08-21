@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:51:59 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/21 10:39:37 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/21 11:19:19 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 // * =========== Typedefs =========== *
 
 typedef struct s_gameplay	t_gameplay;
+typedef struct s_camera		t_camera;
 typedef struct s_entity		t_entity;
 typedef struct s_player		t_player;
 typedef struct s_engine		t_engine;
@@ -28,41 +29,23 @@ typedef struct s_map		t_map;
 typedef struct s_mlx		t_mlx;
 
 // * =========== Structures =========== *
-// * Gameplay *
 
-struct						s_entity
+struct						s_vec2
 {
-	t_vec2					pos;
-	t_vec2					vel;
-	t_vec2					dir;
-	t_vec2					prev;
-
-	double					radius;
-};
-
-struct						s_player
-{
-	t_entity				*ent;
-};
-
-struct						s_gameplay
-{
-	t_player				player;
-	
-	t_entity				*entities;
-	int						entity_count;
-	int						entity_capacity;
+	double					x;
+	double					y;
 };
 
 // * Rendering *
 
-struct s_camera
+struct						s_camera
 {
 	t_vec2					pos;
 	t_vec2					dir;
 	t_vec2					plane;
 
 	double					fov;
+	double					plane_scale;
 };
 
 struct						s_mlx
@@ -88,6 +71,33 @@ struct						s_engine
 
 	void					(*update)(double);
 	void					(*render)(double);
+};
+
+// * Gameplay *
+
+struct						s_entity
+{
+	t_vec2					pos;
+	t_vec2					vel;
+	t_vec2					dir;
+	t_vec2					prev;
+
+	double					radius;
+};
+
+struct						s_player
+{
+	t_entity				*ent;
+};
+
+struct						s_gameplay
+{
+	t_camera				camera;
+	t_player				player;
+
+	t_entity				*entities;
+	int						entity_count;
+	int						entity_capacity;
 };
 
 // * Parsing *
@@ -138,12 +148,6 @@ struct						s_map
 };
 
 // * General *
-
-struct						s_vec2
-{
-	double					x;
-	double					y;
-};
 
 struct						s_malloc
 {

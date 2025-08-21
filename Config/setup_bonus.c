@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 18:32:58 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/20 20:13:58 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/21 11:19:36 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,18 @@ static void	config_engine(void)
 	engine->render = game_render;
 }
 
+static void config_camera(void)
+{
+	t_gameplay	*gameplay;
+	
+	gameplay = get_gameplay();
+	gameplay->camera.fov = (FOV * M_PI) / 180.0;
+	gameplay->camera.plane_scale = tan(gameplay->camera.fov * 0.5);
+}
+
 void	setup_config(void)
 {
 	config_mlx();
 	config_engine();
+	config_camera();
 }

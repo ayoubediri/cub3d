@@ -6,11 +6,60 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 13:00:56 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/21 09:54:32 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/21 11:14:58 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
+
+static void	print_entities(void)
+{
+    t_gameplay	*game;
+    int		i;
+
+    game = get_gameplay();
+    if (!game)
+    {
+        printf("print_entities: no game\n");
+        return ;
+    }
+    if (!game->entities || game->entity_count <= 0)
+    {
+        printf("no entities\n");
+        return ;
+    }
+    printf("entities (%d):\n", game->entity_count);
+    i = 0;
+    while (i < game->entity_count)
+    {
+        t_entity *e = &game->entities[i];
+        printf("  [%2d] pos=(%.2f,%.2f) prev=(%.2f,%.2f) vel=(%.2f,%.2f) radius=%.2f\n",
+            i,
+            e->pos.x, e->pos.y,
+            e->prev.x, e->prev.y,
+            e->vel.x, e->vel.y,
+            e->radius);
+        i++;
+    }
+}
+
+static void	print_camera(void)
+{
+    t_gameplay *gp = get_gameplay();
+
+    if (!gp)
+    {
+        printf("print_camera: no gameplay\n");
+        return ;
+    }
+    printf("camera:\n");
+    printf("  pos   = (%.4f, %.4f)\n", gp->camera.pos.x, gp->camera.pos.y);
+    printf("  dir   = (%.4f, %.4f)\n", gp->camera.dir.x, gp->camera.dir.y);
+    printf("  plane = (%.4f, %.4f)\n", gp->camera.plane.x, gp->camera.plane.y);
+    printf("  fov   = %.6f rad (%.2f deg)\n",
+        gp->camera.fov,
+        (gp->camera.fov * 180.0 / M_PI));
+}
 
 static int	tile_converter(char c)
 {
@@ -52,6 +101,7 @@ static void	create_map(void)
 		map->doors[i].linked_index = -1;
 		i++;
 	}
+	start_entities();
 }
 
 static void	fill_line(int y, int width, int len, int *door_idx)
@@ -66,7 +116,6 @@ static void	fill_line(int y, int width, int len, int *door_idx)
 
 	x = 0;
 	cell = 0;
-	x = 0;
 	map = get_map();
 	parse = get_parse();
 	while (x < width)
@@ -76,12 +125,8 @@ static void	fill_line(int y, int width, int len, int *door_idx)
 		if (x < len && parse->map[y])
 			key = parse->map[y][x];
 		tile = tile_converter(key);
-		if (key == 'N' || key == 'S' || key == 'E' || key == 'W')
-		{
-			map->player_dir = key;
-			map->player_x = x;
-			map->player_y = y;
-		}
+		if (mark_entities(key, x, y) >= 0)
+			tile = 0;
 		if (tile == 3 && map->doors && *door_idx < map->door_count)
 		{
 			idx = (*door_idx)++;
@@ -113,4 +158,6 @@ void	build_map(void)
 		fill_line(y, game->map.width, len, &door_idx);
 		y++;
 	}
+	print_entities();
+	print_camera();
 }

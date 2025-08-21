@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:57:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/21 10:31:43 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/21 10:51:53 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,17 @@ void		pixel_put(int x, int y, int color);
 // * =========== Parsing =========== *
 // * Build *
 void		build_map(void);
+// * Doors *
+int			count_doors(void);
 // * Parse *
 void		parse(char *path);
 // * Validate *
 void		validate_map(void);
 // * Map *
 void		parse_map_line(char *line);
-// * Doors *
-int			count_doors(void);
+// * Entities *
+void		start_entities(void);
+int			mark_entities(char key, int x, int y);
 // * Elements *
 void		check_elements(void);
 void		parse_elements(char *line);

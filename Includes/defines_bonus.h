@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:48:27 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/20 19:37:42 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/21 11:09:45 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define WIDTH 1920
 # define HEIGHT 1080
 # define FPS 60
+# define FOV 60.0
 
 // * ======== Enums ========== *
 

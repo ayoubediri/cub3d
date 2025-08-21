@@ -6,13 +6,13 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 09:55:36 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/21 10:38:31 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/21 11:20:34 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-int	count_entities(void)
+static int	count_entities(void)
 {
 	int		x;
 	int		y;
@@ -40,6 +40,44 @@ int	count_entities(void)
 	return (count);
 }
 
+static int	add_entity(int x, int y)
+{
+	int			idx;
+	t_gameplay	*gameplay;
+
+	gameplay = get_gameplay();
+	idx = gameplay->entity_count++;
+	gameplay->entities[idx].pos.x = x + 0.5;
+	gameplay->entities[idx].pos.y = y + 0.5;
+	gameplay->entities[idx].prev = gameplay->entities[idx].pos;
+	gameplay->entities[idx].radius = 0.2;
+	return (idx);
+}
+
+static int	create_player_entity(int x, int y, char dir)
+{
+	int			idx;
+	t_gameplay	*gameplay;
+
+	gameplay = get_gameplay();
+	idx = add_entity(x, y);
+	if (dir == 'N')
+		gameplay->entities[idx].dir = (t_vec2){0, -1};
+	else if (dir == 'S')
+		gameplay->entities[idx].dir = (t_vec2){0, 1};
+	else if (dir == 'E')
+		gameplay->entities[idx].dir = (t_vec2){1, 0};
+	else if (dir == 'W')
+		gameplay->entities[idx].dir = (t_vec2){-1, 0};
+	gameplay->player.ent = &gameplay->entities[idx];
+    
+	gameplay->camera.pos = gameplay->entities[idx].pos;
+	gameplay->camera.dir = gameplay->entities[idx].dir;
+	gameplay->camera.plane.x = -gameplay->camera.dir.y * gameplay->camera.plane_scale;
+	gameplay->camera.plane.y = gameplay->camera.dir.x * gameplay->camera.plane_scale;
+	return (idx);
+}
+
 void	start_entities(void)
 {
 	int			total;
@@ -47,16 +85,30 @@ void	start_entities(void)
 
 	total = count_entities();
 	gameplay = get_gameplay();
-	gameplay->entity_count = total;
+	gameplay->entity_capacity = total;
 	gameplay->entities = ft_calloc(total, sizeof(t_entity));
 }
 
-int	add_entity(int x, int y)
+int	mark_entities(char key, int x, int y)
 {
-	int			idx;
-	t_gameplay	*gameplay;
+	t_map	*map;
+	int		idx;
 
-	gameplay = get_gameplay();
-    idx = gameplay->entity_count++;
-    gamepl
+	if (key == '\0')
+		return (-1);
+	map = get_map();
+	if (key == 'N' || key == 'S' || key == 'E' || key == 'W')
+	{
+		map->player_dir = key;
+		map->player_x = x;
+		map->player_y = y;
+		idx = create_player_entity(x, y, key);
+		return (idx);
+	}
+	if (key == 'X')
+	{
+		idx = add_entity(x, y);
+		return (idx);
+	}
+	return (-1);
 }
