@@ -20,6 +20,8 @@
 # define HEIGHT 1080
 # define FPS 60
 # define FOV 60.0
+# define ROT_SPEED 0.05
+# define MOVE_SPEED 0.1
 
 // * ======== Enums ========== *
 

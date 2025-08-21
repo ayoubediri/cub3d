@@ -15,7 +15,6 @@
 
 // * =========== Typedefs =========== *
 
-typedef struct s_ray		t_ray;
 typedef struct s_gameplay	t_gameplay;
 typedef struct s_camera		t_camera;
 typedef struct s_entity		t_entity;
@@ -28,6 +27,7 @@ typedef struct s_game		t_game;
 typedef struct s_vec2		t_vec2;
 typedef struct s_map		t_map;
 typedef struct s_mlx		t_mlx;
+typedef struct s_ray		t_ray;
 
 // * =========== Structures =========== *
 
