@@ -15,6 +15,7 @@
 
 // * =========== Typedefs =========== *
 
+typedef struct s_ray		t_ray;
 typedef struct s_gameplay	t_gameplay;
 typedef struct s_camera		t_camera;
 typedef struct s_entity		t_entity;
@@ -36,6 +37,26 @@ struct						s_vec2
 	double					y;
 };
 
+// * Raycasting *
+struct						s_ray
+{
+	double					camera_x;
+	t_vec2					dir;
+	t_vec2					side_dist;
+	t_vec2					delta_dist;
+	t_vec2					step;
+	double					height;
+	int						start;
+	int						end;
+	int						hit;
+	int						side;
+	int						map_x;
+	int						map_y;
+	int						hit_side;
+	double					perp_wall_dist;
+	double					wall_x;
+};
+
 // * Rendering *
 
 struct						s_camera
@@ -43,7 +64,7 @@ struct						s_camera
 	t_vec2					pos;
 	t_vec2					dir;
 	t_vec2					plane;
-
+	t_ray					ray;
 	double					fov;
 	double					plane_scale;
 };
@@ -72,6 +93,8 @@ struct						s_engine
 	void					(*update)(double);
 	void					(*render)(double);
 };
+
+
 
 // * Gameplay *
 

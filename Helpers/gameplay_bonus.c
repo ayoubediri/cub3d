@@ -35,3 +35,11 @@ t_gameplay	*get_gameplay(void)
 	game = get_game();
 	return (&game->gameplay);
 }
+
+t_camera	*get_camera(void)
+{
+	t_gameplay	*gameplay;
+
+	gameplay = get_gameplay();
+	return (&gameplay->camera);
+}
