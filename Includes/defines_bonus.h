@@ -22,6 +22,18 @@
 # define FOV 60.0
 # define ROT_SPEED 0.05
 # define MOVE_SPEED 0.05
+# define HALF_WIDTH 960
+# define HALF_HEIGHT 540
+
+# ifndef M_PI
+#  define M_PI		3.14159265358979323846
+# endif
+
+// * ======== Textures ========== *
+
+# define FLOOR_TEXTURE_PATH "textures/wall_1.xpm"
+# define CEILING_TEXTURE_PATH "textures/wall_1.xpm"
+# define SKY_TEXTURE_PATH "textures/sky1.xpm"
 
 // * ======== Enums ========== *
 
@@ -50,5 +62,14 @@ typedef enum e_key
 	KEY_RIGHT,
 	KEY_TOTAL
 }	t_key;
+
+typedef enum e_wall
+{
+	WALL_NORTH,
+	WALL_SOUTH,
+	WALL_EAST,
+	WALL_WEST,
+	WALL_TOTAL
+}	t_wall;
 
 #endif

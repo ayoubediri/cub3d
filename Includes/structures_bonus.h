@@ -31,7 +31,9 @@ typedef struct s_map		t_map;
 typedef struct s_mlx		t_mlx;
 typedef struct s_ray		t_ray;
 typedef struct s_bfs		t_bfs;
-
+typedef struct s_texture	t_texture;
+typedef struct s_floor		t_floor;
+typedef struct s_sky		t_sky;
 // * =========== Structures =========== *
 
 struct						s_vec2
@@ -48,6 +50,7 @@ struct						s_ray
 	t_vec2					side_dist;
 	t_vec2					delta_dist;
 	t_vec2					step;
+	t_texture				*texture;
 	double					height;
 	int						start;
 	int						end;
@@ -58,6 +61,7 @@ struct						s_ray
 	int						hit_side;
 	double					perp_wall_dist;
 	double					wall_x;
+	int						tex_x;
 };
 
 // * Rendering *
@@ -84,6 +88,35 @@ struct						s_bfs
 	int						path_capacity;
 
 	int						visit_stamp;
+};
+
+struct						s_floor
+{
+	double 					player_z;
+	double					row_distance;
+	double					floor_step_x;
+	double					floor_step_y;
+	double					floor_x;
+	double					floor_y;
+	double					dir_x0;
+	double					dir_y0;
+	double					dir_x1;
+	double					dir_y1;
+	int						tex_x;
+	int						tex_y;
+	unsigned int			color;
+};
+
+struct						s_sky
+{
+	t_texture				*texture;
+	double					camera_x;
+	double					dir_x;
+	double					dir_y;
+	double					angle;
+	int						tex_x;
+	int						tex_y;
+	unsigned int			color;
 };
 
 struct						s_pacman
@@ -252,10 +285,27 @@ struct						s_malloc
 	t_malloc				*next;
 };
 
+struct s_texture
+{
+	int						width;
+	int						height;
+	int						bpp;
+	int						line_length;
+	int						endian;
+	void					*img_ptr;
+	char					*addr;
+	char 					*path;
+};
+
+
 struct						s_game
 {
 	bool					keys[KEY_TOTAL];
 	t_gameplay				gameplay;
+	t_texture				wall_textures[WALL_TOTAL];
+	t_texture				floor_texture;
+	t_texture				ceiling_texture;
+	t_texture				sky_texture;
 	t_malloc				*tracker;
 	t_engine				engine;
 	t_malloc				*tail;

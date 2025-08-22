@@ -27,24 +27,6 @@ static int	leave_game(void)
 	return (1);
 }
 
-
-// void	rotate_player(t_player *p, double dir)
-// {
-// 	double	dir_x;
-// 	double	dir_y;
-// 	double	angle;
-
-// 	if (!p)
-// 		return ;
-// 	angle = dir * ROT_SPEED;
-// 	dir_x = p->ent->dir.x * ;
-// 	// p->dir_x = p->dir_x * cos(angle) - p->dir_y * sin(angle);
-// 	// p->dir_y = p->dir_x * sin(angle) + p->dir_y * cos(angle);
-// 	// old_planex = p->plane_x;
-// 	// p->plane_x = old_planex * cos(angle) - p->plane_y * sin(angle);
-// 	// p->plane_y = old_planex * sin(angle) + p->plane_y * cos(angle);
-// }
-
 void update_camera(void)
 {
 	t_gameplay	*gameplay;
@@ -80,6 +62,7 @@ void	game_update(double dt)
 
 }
 
+
 void	game_render(double alpha)
 {
 	(void)alpha;
@@ -87,6 +70,46 @@ void	game_render(double alpha)
 	raycasting();
 	minimap_render();
 	put_image();
+}
+
+t_texture load_texture(char *path)
+{
+	t_mlx		*mlx;
+	t_texture	texture;
+
+	mlx = get_mlx();
+	texture.img_ptr = mlx_xpm_file_to_image(mlx->mlx, path, &texture.width, &texture.height);
+	if (!texture.img_ptr)
+	{
+		report_error("mlx", "failed to load texture from path");
+		printf("Texture path: %s\n", path);
+		clean_exit(1);
+	}
+	texture.addr = mlx_get_data_addr(
+		texture.img_ptr, &texture.bpp, &texture.line_length, &texture.endian);
+	if (!texture.addr)
+	{
+		report_error("mlx", "failed to get texture data address");
+		clean_exit(1);
+	}
+	texture.path = path;
+	return (texture);
+}
+
+void config_textures(void)
+{
+	t_parse		*parse;
+	t_game		*game;
+
+	parse = get_parse();
+	game = get_game();
+	game->wall_textures[WALL_NORTH] = load_texture(parse->no_texture);
+	game->wall_textures[WALL_SOUTH] = load_texture(parse->so_texture);
+	game->wall_textures[WALL_EAST] = load_texture(parse->ea_texture);
+	game->wall_textures[WALL_WEST] = load_texture(parse->we_texture);
+	game->floor_texture = load_texture(FLOOR_TEXTURE_PATH);
+	game->ceiling_texture = load_texture(CEILING_TEXTURE_PATH);
+	game->sky_texture = load_texture(SKY_TEXTURE_PATH);
 }
 
 void	start_game(void)
@@ -109,6 +132,7 @@ void	start_game(void)
 	mlx->img = mlx_new_image(mlx->mlx, mlx->width, mlx->height);
 	mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bpp, &mlx->line,
 			&mlx->endian);
+	config_textures();
 	mlx_hook(mlx->win, 17, 1L << 17, leave_game, NULL);
 	mlx_hook(mlx->win, 2, 1L << 0, on_keypress, NULL);
 	mlx_hook(mlx->win, 3, 1L << 1, on_keyrelease, NULL);
