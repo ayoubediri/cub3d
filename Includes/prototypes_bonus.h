@@ -82,6 +82,7 @@ t_game		*get_game(void);
 t_parse		*get_parse(void);
 t_engine	*get_engine(void);
 t_gameplay	*get_gameplay(void);
+t_camera	*get_camera(void);
 
 // =========== Config =========== //
 void		setup_config(void);
