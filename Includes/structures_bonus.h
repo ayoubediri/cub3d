@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:51:59 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/21 11:19:19 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/21 13:52:53 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 // * =========== Typedefs =========== *
 
 typedef struct s_gameplay	t_gameplay;
+typedef struct s_minimap	t_minimap;
+typedef struct s_pacman		t_pacman;
 typedef struct s_camera		t_camera;
 typedef struct s_entity		t_entity;
 typedef struct s_player		t_player;
@@ -37,6 +39,45 @@ struct						s_vec2
 };
 
 // * Rendering *
+
+struct s_pacman
+{
+	t_entity				*ent;	
+
+	double					anim_time;
+	double					mouth_open;
+	double					mouth_speed;
+
+	double					scale;
+};
+
+struct						s_minimap
+{
+	double					padding;
+
+	int						ox;
+	int						oy;
+	int						size_px;
+
+	int						cell_px;
+	int						content_w; /* content pixel width = cell_px * map_w */
+	int						content_h;
+	int						content_x; /* top-left content inside minimap box */
+	int						content_y;
+
+	double					world_to_px;
+	double					world_offset_x;
+	double					world_offset_y;
+
+	unsigned int			col_bg;
+	unsigned int			col_wall;
+	unsigned int			col_door;
+	unsigned int			col_pacman;
+	unsigned int			col_pellet;
+	unsigned int			col_border;
+
+	t_pacman				pacman;
+};
 
 struct						s_camera
 {
@@ -94,6 +135,7 @@ struct						s_gameplay
 {
 	t_camera				camera;
 	t_player				player;
+	t_minimap				minimap;
 
 	t_entity				*entities;
 	int						entity_count;

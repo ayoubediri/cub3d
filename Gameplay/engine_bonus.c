@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 20:08:37 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/20 20:43:47 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/21 11:30:59 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ static void	framecap(double start, double dt)
 
 void game_tick(t_engine *engine)
 {
-    static int frames = 0;
-    static double acc_print = 0.0;
     double now;
     double alpha;
     double start;
@@ -61,16 +59,6 @@ void game_tick(t_engine *engine)
     }
     alpha = engine->acc / engine->dt;
     engine->render(alpha);
-
-    frames++;
-    acc_print += elapsed;
-    if (acc_print >= 1.0)
-    {
-        printf("[engine] fps=%d frame_time_avg=%.3f ms\n",
-            frames, (acc_print / (double)frames) * 1000.0);
-        frames = 0;
-        acc_print = 0.0;
-    }
 
     framecap(start, engine->dt);
 }
