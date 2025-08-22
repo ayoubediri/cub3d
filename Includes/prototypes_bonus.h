@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:57:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/21 15:17:18 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/22 09:42:29 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define PROTOTYPES_BONUS_H
 
 // * =========== Gameplay =========== *
+// * Minimap *
+void		minimap_update(double dt);
 // * Input *
 int			on_keypress(int key);
 int			on_keyrelease(int key);
@@ -25,11 +27,14 @@ void		start_game(void);
 void		game_update(double dt);
 void		game_render(double alpha);
 
+
 // * =========== Graphics =========== *
 // * Pixel Manipulation *
 void		put_image(void);
 void		clear_image(void);
 void		pixel_put(int x, int y, int color);
+// * Minimap *
+void		minimap_render(void);
 
 // * =========== Parsing =========== *
 // * Build *
@@ -59,8 +64,8 @@ char		*ft_strjoin2(char *s1, char *s2);
 char		*ft_strjoin3(char *s1, char *s2, char *s3);
 // * Numbers *
 char		*ft_itoa(int n);
-inline int	imin(int a, int b);
-inline int	imax(int a, int b);
+int	imin(int a, int b);
+int	imax(int a, int b);
 // * Strdup *
 char		*ft_strdup(char *str);
 char		*ft_strsdup(char *str);
@@ -81,8 +86,8 @@ t_mlx		*get_mlx(void);
 t_game		*get_game(void);
 t_parse		*get_parse(void);
 t_engine	*get_engine(void);
-t_gameplay	*get_gameplay(void);
 t_camera	*get_camera(void);
+t_gameplay	*get_gameplay(void);
 
 // =========== Config =========== //
 void		setup_config(void);

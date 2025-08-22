@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 13:51:24 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/21 14:52:55 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/22 13:19:45 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ void	setup_cell_size(t_minimap *minimap, t_map *map)
 
 void	setup_defaults(t_minimap *minimap, t_mlx *mlx, t_map *map)
 {
-	minimap->col_bg = 0xFF001033;     /* dark navy background */
-	minimap->col_wall = 0xFF0000FF;   /* bright blue walls */
-	minimap->col_pacman = 0xFFFFFF00; /* Pac‑Man yellow */
-	minimap->col_pellet = 0xFFFFFFFF; /* white pellets */
-	minimap->col_border = 0xFFB0B0B0; /* light grey border */
+	minimap->col_bg = 0x000000;     
+	minimap->col_wall = 0xFF0000FF; 
+	minimap->col_pacman = 0xFFFFFF00;
+	minimap->col_pellet = 0xFFFFFF00;
+	minimap->col_border = 0xFFB0B0B0;
 	minimap->padding = 4.0;
 	minimap->size_px = (int)floor(mlx->height * 0.2);
 	minimap->ox = mlx->width - minimap->size_px - 8;
@@ -58,6 +58,16 @@ void	setup_defaults(t_minimap *minimap, t_mlx *mlx, t_map *map)
 	setup_cell_size(minimap, map);
 	minimap->content_w = minimap->cell_px * map->width;
 	minimap->content_h = minimap->cell_px * map->height;
+	minimap->content_x = minimap->ox + (minimap->size_px - minimap->content_w)
+		/ 2;
+	minimap->content_y = minimap->oy + (minimap->size_px - minimap->content_h)
+		/ 2;
+	if (minimap->content_x < minimap->ox)
+		minimap->content_x = minimap->ox;
+	if (minimap->content_y < minimap->oy)
+	{
+		minimap->content_y = minimap->oy;
+	}
 	minimap->world_to_px = (double)minimap->cell_px;
 	minimap->world_offset_x = 0.0;
 	minimap->world_offset_y = 0.0;
@@ -65,14 +75,11 @@ void	setup_defaults(t_minimap *minimap, t_mlx *mlx, t_map *map)
 
 void	setup_minimap(void)
 {
-	t_mlx		*mlx;
-	t_map		*map;
 	t_minimap	*minimap;
 	t_gameplay	*gameplay;
 
-	mlx = get_mlx();
-	map = &get_parse()->map;
 	gameplay = get_gameplay();
 	minimap = &gameplay->minimap;
 	setup_pacman(minimap, gameplay);
+	setup_defaults(minimap, get_mlx(), get_map());
 }

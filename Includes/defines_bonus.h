@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:48:27 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/21 11:09:45 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/22 11:38:50 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,15 @@ typedef enum e_parse_state
 	PARSE_ELEMENTS,
 	PARSE_MAP_LINES
 }	t_parse_state;
+
+typedef enum e_segtype
+{
+	SEG_HLINE,
+	SEG_VLINE,
+	SEG_OUTER_ARC,
+	SEG_INNER_ARC,
+	SEG_TOTAL
+}	t_segtype;
 
 typedef enum e_key
 {

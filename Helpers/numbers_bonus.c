@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:43:00 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/21 14:45:30 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/22 09:42:11 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ char	*ft_itoa(int n)
 	return (str);
 }
 
-inline int	imin(int a, int b)
+int	imin(int a, int b)
 {
 	if (a < b)
 		return (a);
 	return (b);
 }
 
-inline int	imax(int a, int b)
+int	imax(int a, int b)
 {
 	if (a > b)
 		return (a);

@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:51:59 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/21 13:52:53 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/22 13:17:25 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ struct						s_ray
 
 // * Rendering *
 
-struct s_pacman
+struct						s_pacman
 {
-	t_entity				*ent;	
+	t_entity				*ent;
 
 	double					anim_time;
 	double					mouth_open;
@@ -81,9 +81,9 @@ struct						s_minimap
 	int						size_px;
 
 	int						cell_px;
-	int						content_w; /* content pixel width = cell_px * map_w */
+	int						content_w;
 	int						content_h;
-	int						content_x; /* top-left content inside minimap box */
+	int						content_x;
 	int						content_y;
 
 	double					world_to_px;
@@ -134,8 +134,6 @@ struct						s_engine
 	void					(*update)(double);
 	void					(*render)(double);
 };
-
-
 
 // * Gameplay *
 

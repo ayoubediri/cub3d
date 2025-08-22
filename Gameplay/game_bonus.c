@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 18:23:31 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/20 20:21:29 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/22 09:41:16 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,7 @@ void	game_update(double dt)
 
 	update_movement();
 	update_camera();
+	minimap_update(dt);
 }
 
 void init_raycasting(int x)
@@ -350,7 +351,7 @@ void	game_render(double alpha)
 	(void)alpha;
 	// clear_image();
 	raycasting();
-	// minimap
+	minimap_render();
 	put_image();
 }
 
