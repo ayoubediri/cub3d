@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 14:15:18 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/22 15:39:10 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/22 16:15:38 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	check_corners(double corners[4][2])
 		if (map_x < 0 || map_x >= map->width
 			|| map_y < 0 || map_y >= map->height)
 			return (1);
-		if (map->grid[map_y * map->width + map_x] > 0)
+		if (map->grid[map_y * map->width + map_x] == 1)
 			return (1);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:48:27 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/22 11:38:50 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/22 16:20:42 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define FPS 60
 # define FOV 60.0
 # define ROT_SPEED 0.05
-# define MOVE_SPEED 0.1
+# define MOVE_SPEED 0.05
 
 // * ======== Enums ========== *
 

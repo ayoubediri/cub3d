@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 09:55:36 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/21 11:20:34 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/22 21:16:20 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ static int	add_entity(int x, int y)
 	gameplay->entities[idx].pos.y = y + 0.5;
 	gameplay->entities[idx].prev = gameplay->entities[idx].pos;
 	gameplay->entities[idx].radius = 0.2;
+	bfs_init(&gameplay->entities[idx].pathfinder, get_map()->width,
+		get_map()->height);
+	gameplay->entities[idx].path_idx = 0;
+	gameplay->entities[idx].path_timer = 0.0;
+	entity_set_hp(&gameplay->entities[idx], 10);
 	return (idx);
 }
 
@@ -70,11 +75,13 @@ static int	create_player_entity(int x, int y, char dir)
 	else if (dir == 'W')
 		gameplay->entities[idx].dir = (t_vec2){-1, 0};
 	gameplay->player.ent = &gameplay->entities[idx];
-    
 	gameplay->camera.pos = gameplay->entities[idx].pos;
 	gameplay->camera.dir = gameplay->entities[idx].dir;
-	gameplay->camera.plane.x = -gameplay->camera.dir.y * gameplay->camera.plane_scale;
-	gameplay->camera.plane.y = gameplay->camera.dir.x * gameplay->camera.plane_scale;
+	gameplay->camera.plane.x = -gameplay->camera.dir.y
+		* gameplay->camera.plane_scale;
+	gameplay->camera.plane.y = gameplay->camera.dir.x
+		* gameplay->camera.plane_scale;
+	entity_set_hp(gameplay->player.ent, 100);
 	return (idx);
 }
 

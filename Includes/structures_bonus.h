@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:51:59 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/22 13:17:25 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/22 21:05:16 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_vec2		t_vec2;
 typedef struct s_map		t_map;
 typedef struct s_mlx		t_mlx;
 typedef struct s_ray		t_ray;
+typedef struct s_bfs		t_bfs;
 
 // * =========== Structures =========== *
 
@@ -60,6 +61,30 @@ struct						s_ray
 };
 
 // * Rendering *
+
+struct						s_bfs
+{
+	int						n;
+	int						width;
+	int						height;
+
+	int						*came;
+	int						*queue;
+	int						*visited;
+
+	int						queue_end;
+	int						queue_start;
+	int						queue_capacity;
+
+	int						start;
+	int						goal;
+
+	int						*path;
+	int						path_length;
+	int						path_capacity;
+
+	int						visit_stamp;
+};
 
 struct						s_pacman
 {
@@ -145,6 +170,14 @@ struct						s_entity
 	t_vec2					prev;
 
 	double					radius;
+	int						path_idx;
+	t_bfs					pathfinder;
+	double					path_timer;
+
+	int						hp;
+	int						max_hp;
+	double					invuln_time;
+	double					invuln_duration;
 };
 
 struct						s_player

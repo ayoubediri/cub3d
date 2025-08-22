@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 11:31:18 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/22 13:18:35 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/22 16:12:43 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,6 +326,18 @@ void	minimap_render(void)
             i++;
         }
         j++;
+    }
+
+    for (i = 0; i < gameplay->entity_count; ++i)
+    {
+        t_entity *e = &gameplay->entities[i];
+        if (!e || e == mm->pacman.ent)
+            continue;
+        world_to_minimap(mm, e->pos.x, e->pos.y, &px, &py);
+        /* compute pixel radius from entity radius (fallback to small dot) */
+        int er = (int)((e->radius > 0.0) ? (e->radius * mm->world_to_px) : (mm->cell_px / 4));
+        if (er < 1) er = 1;
+        draw_circle_clipped(px, py, er, mm->col_pellet ^ 0x00FF8080, ix, iy, iw, ih);
     }
     
     if (mm->pacman.ent)

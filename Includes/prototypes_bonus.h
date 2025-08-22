@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:57:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/22 15:39:43 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/22 21:06:32 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,45 @@
 # define PROTOTYPES_BONUS_H
 
 // * =========== Gameplay =========== *
+// * Entities *
+void		entities_update(double dt);
 // * Minimap *
 void		minimap_update(double dt);
+// * Movement *
+void		update_movement(void);
+int			check_collision(double new_x, double new_y);
+// * Pathfinding *
+int			bfs_init(t_bfs *bfs, int width, int height);
+void		bfs_idx_to_xy(int idx, int w, int *x, int *y);
+int			bfs_find_path(t_bfs *bfs, t_map *map, int sx, int sy, int tx,
+				int ty);
 // * Input *
 int			on_keypress(int key);
 int			on_keyrelease(int key);
 // * Engine *
 double		now_seconds(void);
 void		game_tick(t_engine *engine);
-// * Movement *
-void		update_movement(void);
 // * game *
 void		start_game(void);
 void		game_update(double dt);
 void		game_render(double alpha);
+// * Hp *
+void		entity_kill(t_entity *ent);
+int			entity_get_hp(t_entity *ent);
+int			entity_heal(t_entity *ent, int amount);
+void		entity_set_hp(t_entity *ent, int max_hp);
+int			entity_apply_damage(t_entity *ent, int dmg);
+void		entity_update_timers(t_entity *ent, double dt);
 
 // * =========== Graphics =========== *
+// * Raycasting *
+void		raycasting(void);
+// * Minimap *
+void		minimap_render(void);
 // * Pixel Manipulation *
 void		put_image(void);
 void		clear_image(void);
 void		pixel_put(int x, int y, int color);
-// * Minimap *
-void		minimap_render(void);
 
 // * =========== Parsing =========== *
 // * Build *
@@ -73,6 +90,7 @@ char		*ft_strsdup(char *str);
 char		*ft_strndup(char *str, size_t n);
 // * Error Handling *
 void		cleanup(void);
+void		ft_free(void *ptr);
 void		clean_exit(int status);
 void		parse_error(char *msg1);
 int			report_error(char *msg1, char *msg2);
