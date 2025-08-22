@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 15:07:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/22 10:35:45 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/22 14:12:54 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,7 @@ void	minimap_update(double dt)
     double		screen_cy;
 
     gameplay = get_gameplay();
-    if (!gameplay)
-        return ;
     minimap = &gameplay->minimap;
-    if (!minimap)
-        return ;
 
     minimap->pacman.anim_time += dt;
     if (minimap->pacman.mouth_speed > 0.0)

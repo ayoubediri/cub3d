@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:57:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/22 09:42:29 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/22 15:39:43 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@ int			on_keyrelease(int key);
 // * Engine *
 double		now_seconds(void);
 void		game_tick(t_engine *engine);
+// * Movement *
+void		update_movement(void);
 // * game *
 void		start_game(void);
 void		game_update(double dt);
 void		game_render(double alpha);
-
 
 // * =========== Graphics =========== *
 // * Pixel Manipulation *
@@ -64,8 +65,8 @@ char		*ft_strjoin2(char *s1, char *s2);
 char		*ft_strjoin3(char *s1, char *s2, char *s3);
 // * Numbers *
 char		*ft_itoa(int n);
-int	imin(int a, int b);
-int	imax(int a, int b);
+int			imin(int a, int b);
+int			imax(int a, int b);
 // * Strdup *
 char		*ft_strdup(char *str);
 char		*ft_strsdup(char *str);
