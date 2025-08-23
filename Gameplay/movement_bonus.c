@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 14:15:18 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/22 16:15:38 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/23 18:18:12 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,48 +60,42 @@ int	check_collision(double new_x, double new_y)
 
 void move_player(int direction)
 {
-	t_entity	*ent;
-	double		new_x;
-	double		new_y;
+    t_entity *ent;
+    double	 dx;
+    double	 dy;
 
-	ent = get_game()->gameplay.player.ent;
-	new_x = ent->pos.x + ent->dir.x * ent->vel.x * direction;
-	new_y = ent->pos.y + ent->dir.y * ent->vel.x * direction;
-	if (check_collision(new_x, new_y))
-		return ;
-	ent->prev.x = ent->pos.x;
-	ent->prev.y = ent->pos.y;
-	ent->pos.x = new_x;
-	ent->pos.y = new_y;
+    if (direction == 0)
+        return ;
+    ent = get_game()->gameplay.player.ent;
+    if (!ent)
+        return ;
+    dx = ent->dir.x * ent->vel.x * (double)direction;
+    dy = ent->dir.y * ent->vel.x * (double)direction;
+    entity_try_move_by(ent, dx, dy);
 }
 
 void move_sideways(t_entity *ent, int direction)
 {
-	double	sx;
-	double	sy;
-	double	new_x;
-	double	new_y;
+    double sx;
+    double sy;
+    double dx;
+    double dy;
 
-	if (!ent)
-		return ;
-	if (direction < 0)
-	{
-		sx = -ent->dir.y;
-		sy = ent->dir.x;
-	}
-	else
-	{
-		sx = ent->dir.y;
-		sy = -ent->dir.x;
-	}
-	new_x = ent->pos.x + sx * ent->vel.x;
-	new_y = ent->pos.y + sy * ent->vel.x;
-	if (check_collision(new_x, new_y))
-		return ;
-	ent->prev.x = ent->pos.x;
-	ent->prev.y = ent->pos.y;
-	ent->pos.x = new_x;
-	ent->pos.y = new_y;
+    if (!ent)
+        return ;
+    if (direction < 0)
+    {
+        sx = -ent->dir.y;
+        sy = ent->dir.x;
+    }
+    else
+    {
+        sx = ent->dir.y;
+        sy = -ent->dir.x;
+    }
+    dx = sx * ent->vel.x;
+    dy = sy * ent->vel.x;
+    entity_try_move_by(ent, dx, dy);
 }
 
 void	rotate_player(t_entity *ent, double angle)

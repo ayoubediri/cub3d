@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:57:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/23 16:20:00 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/23 18:17:38 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 // * =========== Gameplay =========== *
 // * Entities *
 void		entities_update(double dt);
+int			entity_try_move_by(t_entity *ent, double dx, double dy);
 // * Minimap *
 void		minimap_update(double dt);
 // * Movement *

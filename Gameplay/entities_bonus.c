@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:03:53 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/23 14:43:00 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/23 18:29:36 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ void	entities_update(double dt)
     t_entity	*ents;
     t_entity	*player;
 
+    const double DETECT_RANGE = 6.0; /* tiles, tweak as needed */
+
     gp = get_gameplay();
     if (!gp || !gp->entities || gp->entity_count <= 0)
         return ;
@@ -130,20 +132,43 @@ void	entities_update(double dt)
     for (i = 0; i < gp->entity_count; ++i)
     {
         t_entity *e = &ents[i];
-        
+
         entity_update_timers(e, dt);
-        
+
         if (!e || e->type == ENTITY_PELLET || e->type == ENTITY_PLAYER)
             continue ;
         e->path_timer += dt;
 
-        
-        if (e->path_timer > 0.5 || e->path_idx >= e->pathfinder.path_length)
         {
-            entity_request_path(e, player, map);
-            e->path_timer = 0.0;
+            double dxp = player->pos.x - e->pos.x;
+            double dyp = player->pos.y - e->pos.y;
+            double dist = sqrt(dxp * dxp + dyp * dyp);
+
+            if (dist <= DETECT_RANGE)
+            {
+                if (e->path_timer > 0.5 || e->path_idx >= e->pathfinder.path_length)
+                {
+                    entity_request_path(e, player, map);
+                    e->path_timer = 0.0;
+                }
+            }
+            else
+            {
+            }
+
+            entity_follow_path(e, dt);
+
+            if (dist <= DETECT_RANGE && (e->path_idx >= e->pathfinder.path_length))
+            {
+                if (dist > 1e-6)
+                {
+                    double speed = (e->vel.x > 0.0) ? e->vel.x : 2.0;
+                    double move_x = (dxp / dist) * speed * dt;
+                    double move_y = (dyp / dist) * speed * dt;
+                    (void)entity_try_move_by(e, move_x, move_y);
+                }
+            }
         }
-        entity_follow_path(e, dt);
 
         if (e->hp > 0)
             enemy_try_damage_player(e, player);
