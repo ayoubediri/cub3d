@@ -126,4 +126,9 @@ void		minimap_ensure_built(t_minimap *minimap);
 void		vert_seg(t_mash *mash, t_map *map, uint32_t color);
 void		horirz_seg(t_mash *mash, t_map *map, uint32_t color);
 
+// =========== movement =========== //
+void		move_player(int direction);
+void		move_sideways(t_entity *ent, int direction);
+void		rotate_player(t_entity *ent, double angle);
+
 #endif

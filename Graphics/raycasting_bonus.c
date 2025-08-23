@@ -268,11 +268,42 @@ void draw_wall(int x)
 	}
 }
 
+
+// void render_sprites(double *z_buffer)
+// {
+// 	t_gameplay	*gameplay;
+// 	t_player	*player;
+
+// 	gameplay = get_gameplay();
+// 	sort_sprites(player);
+// 	for (int i = 0; i < gameplay->sprite_count; i++)
+// 	{
+// 		init_sprite(i);
+// 		calc_sprite_transform();
+// 		calc_sprite_screen_pos();
+// 		calc_sprite_height();
+// 		calc_sprite_width();
+// 		draw_sprite(z_buffer);
+// 	}
+// }
+
+// void draw_sprites(double *z_buffer)
+// {
+// 	t_gameplay	*gameplay;
+
+// 	gameplay = get_gameplay();
+// 	if (gameplay->sprite_count > 0)
+// 		render_sprites(z_buffer);
+// }
+
 void raycasting(void)
 {
 	int	x;
+	double z_buffer[WIDTH];
+	t_camera	*camera;
 
 	x = 0;
+	camera = get_camera();
 	while (x < WIDTH)
 	{
 		init_raycasting(x);
@@ -281,6 +312,8 @@ void raycasting(void)
 		calc_texture();
 		draw_ceiling_and_floor(x);
 		draw_wall(x);
+		z_buffer[x] = camera->ray.perp_wall_dist;
 		x++;
 	}
+	// draw_sprites(z_buffer);
 }

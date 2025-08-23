@@ -112,6 +112,23 @@ void config_textures(void)
 	game->sky_texture = load_texture(SKY_TEXTURE_PATH);
 }
 
+int mouse_handler(int x, int y, t_mlx *mlx)
+{
+	double		dx;
+	double		angle;
+	t_entity	*player;
+
+	(void)mlx;
+	dx = x - HALF_WIDTH;
+	if (fabs(dx) < 2)
+        return (0);
+	angle = dx * MOUSE_SENSITIVITY;
+	player = get_gameplay()->player.ent;
+	rotate_player(player, angle);
+	mlx_mouse_move(get_mlx()->mlx, get_mlx()->win, HALF_WIDTH, HALF_HEIGHT);
+	return (0);
+}
+
 void	start_game(void)
 {
 	t_mlx	*mlx;
@@ -133,6 +150,8 @@ void	start_game(void)
 	mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bpp, &mlx->line,
 			&mlx->endian);
 	config_textures();
+	mlx_mouse_hide(mlx->mlx, mlx->win);
+	mlx_hook(mlx->win, 6, 1L << 6, mouse_handler, NULL);
 	mlx_hook(mlx->win, 17, 1L << 17, leave_game, NULL);
 	mlx_hook(mlx->win, 2, 1L << 0, on_keypress, NULL);
 	mlx_hook(mlx->win, 3, 1L << 1, on_keyrelease, NULL);

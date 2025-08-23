@@ -24,6 +24,7 @@
 # define MOVE_SPEED 0.05
 # define HALF_WIDTH 960
 # define HALF_HEIGHT 540
+# define MOUSE_SENSITIVITY 0.002
 
 # ifndef M_PI
 #  define M_PI		3.14159265358979323846
