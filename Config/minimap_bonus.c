@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yjazouli@student.1337.ma <yjazouli>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 13:51:24 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/22 13:19:45 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/23 12:14:17 by yjazouli@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,9 @@ void	setup_minimap(void)
 
 	gameplay = get_gameplay();
 	minimap = &gameplay->minimap;
+	minimap->src_map = get_map();
 	setup_pacman(minimap, gameplay);
-	setup_defaults(minimap, get_mlx(), get_map());
+	setup_defaults(minimap, get_mlx(), minimap->src_map);
+	minimap->mash.dirty = 1;
+	minimap_ensure_built(minimap);
 }
