@@ -6,82 +6,11 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 13:00:56 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/23 14:34:55 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/23 14:49:17 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
-
-void	print_ghosts(void)
-{
-    t_gameplay	*gameplay;
-    int			i;
-
-    gameplay = get_gameplay();
-    if (!gameplay)
-    {
-        printf("print_ghosts: no gameplay\n");
-        return;
-    }
-    printf("ghost_capacity=%d ghost_count=%d\n",
-        gameplay->ghost_capacity, gameplay->ghost_count);
-    if (!gameplay->ghosts)
-    {
-        printf("print_ghosts: ghosts array is NULL\n");
-        return;
-    }
-    for (i = 0; i < gameplay->ghost_count; ++i)
-    {
-        t_ghost *g = &gameplay->ghosts[i];
-        int ent_idx = -1;
-        if (g->ent && gameplay->entities)
-            ent_idx = (int)(g->ent - gameplay->entities);
-        printf("ghost[%d]: ent=%p idx=%d pos=(%.2f,%.2f) spawn=(%.2f,%.2f) color=0x%08X hp=%d\n",
-            i,
-            (void*)g->ent,
-            ent_idx,
-            g->ent ? g->ent->pos.x : 0.0,
-            g->ent ? g->ent->pos.y : 0.0,
-            g->spawn_point.x,
-            g->spawn_point.y,
-            g->color,
-            g->ent ? g->ent->hp : -1);
-    }
-}
-
-void	print_pellets(void)
-{
-    t_gameplay	*gameplay;
-    int			i;
-
-    gameplay = get_gameplay();
-    if (!gameplay)
-    {
-        printf("print_pellets: no gameplay\n");
-        return;
-    }
-    printf("pellet_capacity=%d pellet_count=%d\n",
-        gameplay->pellet_capacity, gameplay->pellet_count);
-    if (!gameplay->pellets)
-    {
-        printf("print_pellets: pellets array is NULL\n");
-        return;
-    }
-    for (i = 0; i < gameplay->pellet_count; ++i)
-    {
-        t_pellet *p = &gameplay->pellets[i];
-        int ent_idx = -1;
-        if (p->ent && gameplay->entities)
-            ent_idx = (int)(p->ent - gameplay->entities);
-        printf("pellet[%d]: ent=%p idx=%d pos=(%.2f,%.2f) hp=%d\n",
-            i,
-            (void*)p->ent,
-            ent_idx,
-            p->ent ? p->ent->pos.x : 0.0,
-            p->ent ? p->ent->pos.y : 0.0,
-            p->ent ? p->ent->hp : -1);
-    }
-}
 
 static int	tile_converter(char c)
 {
@@ -180,6 +109,4 @@ void	build_map(void)
 		fill_line(y, game->map.width, len, &door_idx);
 		y++;
 	}
-	print_ghosts();
-	print_pellets();
 }

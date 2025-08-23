@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:57:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/23 14:33:20 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/23 16:20:00 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void		entity_update_timers(t_entity *ent, double dt);
 void		raycasting(void);
 // * Minimap *
 void		minimap_render(void);
+void		draw_pacman(t_minimap *minimap, t_map *map);
 // * Pixel Manipulation *
 void		put_image(void);
 void		clear_image(void);
@@ -124,7 +125,8 @@ void		setup_minimap(void);
 void		init_mash(t_mash *mash, t_map *map);
 void		minimap_ensure_built(t_minimap *minimap);
 void		vert_seg(t_mash *mash, t_map *map, uint32_t color);
-void		horirz_seg(t_mash *mash, t_map *map, uint32_t color);
+void		horiz_seg(t_mash *mash, t_map *map, uint32_t color);
+void		build_border_segs(t_mash *mash, t_map *map, uint32_t color);
 
 // =========== movement =========== //
 void		move_player(int direction);

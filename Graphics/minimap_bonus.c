@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 11:31:18 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/23 14:29:02 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/23 17:56:48 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,66 @@ static void draw_pacman_clipped(t_minimap *mm,
     }
 }
 
+static void draw_line_clipped(int x0, int y0, int x1, int y1,
+                              unsigned int color, int ix, int iy, int iw, int ih)
+{
+    int dx = abs(x1 - x0);
+    int sx = x0 < x1 ? 1 : -1;
+    int dy = -abs(y1 - y0);
+    int sy = y0 < y1 ? 1 : -1;
+    int err = dx + dy;
+    int e2;
+    int x_min = ix;
+    int y_min = iy;
+    int x_max = ix + iw - 1;
+    int y_max = iy + ih - 1;
+
+    while (1)
+    {
+        if (x0 >= x_min && x0 <= x_max && y0 >= y_min && y0 <= y_max)
+            pixel_put(x0, y0, color);
+        if (x0 == x1 && y0 == y1)
+            break;
+        e2 = 2 * err;
+        if (e2 >= dy)
+        {
+            err += dy;
+            x0 += sx;
+        }
+        if (e2 <= dx)
+        {
+            err += dx;
+            y0 += sy;
+        }
+    }
+}
+
+static void draw_segs_clipped(t_minimap *mm, int ix, int iy, int iw, int ih)
+{
+    if (!mm || !mm->mash.segs || mm->mash.seg_count <= 0)
+        return ;
+
+    for (int si = 0; si < mm->mash.seg_count; ++si)
+    {
+        t_seg *s = &mm->mash.segs[si];
+        if (!s)
+            continue ;
+
+        int px0, py0, px1, py1;
+        unsigned int col = s->color ? s->color : mm->col_wall;
+
+        world_to_minimap(mm, (double)s->x, (double)s->y, &px0, &py0);
+        if (s->dir == 0)
+            world_to_minimap(mm, (double)(s->x + s->len), (double)s->y, &px1, &py1);
+        else
+            world_to_minimap(mm, (double)s->x, (double)(s->y + s->len), &px1, &py1);
+
+        if (px1 < ix || px0 > ix + iw - 1 || py1 < iy || py0 > iy + ih - 1)
+            continue ;
+
+        draw_line_clipped(px0, py0, px1, py1, col, ix, iy, iw, ih);
+    }
+}
 
 void minimap_render(void)
 {
@@ -191,6 +251,8 @@ void minimap_render(void)
     int iy = mm->oy + 2;
     int iw = mm->size_px - 4;
     int ih = mm->size_px - 4;
+
+    draw_segs_clipped(mm, ix, iy, iw, ih);
 
     j = 0;
     while (j < map->height)

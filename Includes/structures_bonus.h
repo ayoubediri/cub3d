@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:51:59 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/23 14:28:29 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/23 17:23:53 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define STRUCTURES_BONUS_H
 
 // * =========== Typedefs =========== *
+// * Rendering *
+typedef struct s_shape		t_shape;
+typedef struct s_mlx		t_mlx;
 
 // * Minimap *
 typedef struct s_minimap	t_minimap;
@@ -36,14 +39,11 @@ typedef struct s_door		t_door;
 typedef struct s_game		t_game;
 typedef struct s_vec2		t_vec2;
 typedef struct s_map		t_map;
-typedef struct s_mlx		t_mlx;
 typedef struct s_ray		t_ray;
 typedef struct s_bfs		t_bfs;
 typedef struct s_texture	t_texture;
 typedef struct s_floor		t_floor;
 typedef struct s_sky		t_sky;
-
-
 
 // * =========== Structures =========== *
 
@@ -77,6 +77,29 @@ struct						s_bfs
 	int						visit_stamp;
 };
 
+// * Raycasting *
+
+struct						s_ray
+{
+	double					camera_x;
+	t_vec2					dir;
+	t_vec2					side_dist;
+	t_vec2					delta_dist;
+	t_vec2					step;
+	t_texture				*texture;
+	double					height;
+	int						start;
+	int						end;
+	int						hit;
+	int						side;
+	int						map_x;
+	int						map_y;
+	int						hit_side;
+	double					perp_wall_dist;
+	double					wall_x;
+	int						tex_x;
+};
+
 // * Minimap *
 
 struct						s_seg
@@ -98,7 +121,6 @@ struct						s_mash
 	t_seg					*segs;
 	int						seg_count;
 	int						seg_capacity;
-	uint8_t					*nbr_mask;
 };
 
 struct						s_pacman
@@ -110,6 +132,20 @@ struct						s_pacman
 	double					mouth_speed;
 
 	double					scale;
+
+	uint32_t				color;
+	int						radius;
+	int						min_radius;
+	int						max_radius;
+
+	double					world_to_px;
+	double					world_offset_x;
+	double					world_offset_y;
+
+	int						clip_x;
+	int						clip_y;
+	int						clip_w;
+	int						clip_h;
 };
 
 struct						s_minimap
@@ -183,31 +219,7 @@ struct						s_player
 	t_entity				*ent;
 };
 
-// * Raycasting *
-struct						s_ray
-{
-	double					camera_x;
-	t_vec2					dir;
-	t_vec2					side_dist;
-	t_vec2					delta_dist;
-	t_vec2					step;
-	t_texture				*texture;
-	double					height;
-	int						start;
-	int						end;
-	int						hit;
-	int						side;
-	int						map_x;
-	int						map_y;
-	int						hit_side;
-	double					perp_wall_dist;
-	double					wall_x;
-	int						tex_x;
-};
-
 // * Rendering *
-
-
 
 struct						s_floor
 {
@@ -271,6 +283,30 @@ struct						s_engine
 
 	void					(*update)(double);
 	void					(*render)(double);
+};
+
+struct						s_shape
+{
+	t_shape_type			type;
+
+	t_vec2					p1;
+	t_vec2					p2;
+
+	int						dir;
+	int						len;
+	int						width;
+	int						radius;
+	int						height;
+
+	uint32_t				color;
+	int						clip_x;
+	int						clip_y;
+	int						clip_w;
+	int						clip_h;
+
+	int						tmp_x;
+	int						tmp_y;
+	int						tmp_err;
 };
 
 // * Gameplay *

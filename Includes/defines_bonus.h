@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:48:27 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/23 14:20:28 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/23 17:23:17 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,15 @@ typedef enum e_entity_type
 	ENTITY_GHOST,
 	ENTITY_TOTAL
 }	t_entity_type;
+
+typedef enum e_shape_type
+{
+	SHAPE_SEG,
+	SHAPE_LINE,
+	SHAPE_CIRCLE,
+	SHAPE_RECTANGLE,
+	SHAPE_TOTAL
+}	t_shape_type;
 
 typedef enum e_key
 {
