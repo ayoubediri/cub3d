@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:03:53 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/22 21:25:42 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/23 14:43:00 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ static void	entity_follow_path(t_entity *e, double dt)
 	int	target_tile;
 
 	int tx, ty;
-	double target_x, target_y;
 	double dx, dy, dist;
+	double target_x, target_y;
 	double speed, move_x, move_y;
 	if (!e || e->path_idx >= e->pathfinder.path_length)
 		return ;
@@ -90,11 +90,11 @@ static void	enemy_try_damage_player(t_entity *enemy, t_entity *player)
 {
     double	dx;
     double	dy;
+    int		dmg;
     double	dist2;
-    double	threshold;
     double	r_enemy;
     double	r_player;
-    int		dmg;
+    double	threshold;
 
     if (!enemy || !player || player->hp <= 0)
         return ;
@@ -113,11 +113,11 @@ static void	enemy_try_damage_player(t_entity *enemy, t_entity *player)
 
 void	entities_update(double dt)
 {
+    int			i;
     t_gameplay	*gp;
+    t_map		*map;
     t_entity	*ents;
     t_entity	*player;
-    t_map		*map;
-    int			i;
 
     gp = get_gameplay();
     if (!gp || !gp->entities || gp->entity_count <= 0)
@@ -133,7 +133,7 @@ void	entities_update(double dt)
         
         entity_update_timers(e, dt);
         
-        if (!e || e == player || e->radius <= 0.0)
+        if (!e || e->type == ENTITY_PELLET || e->type == ENTITY_PLAYER)
             continue ;
         e->path_timer += dt;
 

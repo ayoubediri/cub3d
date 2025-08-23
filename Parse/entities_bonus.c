@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 09:55:36 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/22 21:16:20 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/23 14:47:26 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,32 +31,13 @@ static int	count_entities(void)
 		{
 			if (parse->map[y][x] == 'X' || parse->map[y][x] == 'N'
 				|| parse->map[y][x] == 'S' || parse->map[y][x] == 'E'
-				|| parse->map[y][x] == 'W')
+				|| parse->map[y][x] == 'W' || parse->map[y][x] == '.')
 				count++;
 			x++;
 		}
 		y++;
 	}
 	return (count);
-}
-
-static int	add_entity(int x, int y)
-{
-	int			idx;
-	t_gameplay	*gameplay;
-
-	gameplay = get_gameplay();
-	idx = gameplay->entity_count++;
-	gameplay->entities[idx].pos.x = x + 0.5;
-	gameplay->entities[idx].pos.y = y + 0.5;
-	gameplay->entities[idx].prev = gameplay->entities[idx].pos;
-	gameplay->entities[idx].radius = 0.2;
-	bfs_init(&gameplay->entities[idx].pathfinder, get_map()->width,
-		get_map()->height);
-	gameplay->entities[idx].path_idx = 0;
-	gameplay->entities[idx].path_timer = 0.0;
-	entity_set_hp(&gameplay->entities[idx], 10);
-	return (idx);
 }
 
 static int	create_player_entity(int x, int y, char dir)
@@ -66,6 +47,7 @@ static int	create_player_entity(int x, int y, char dir)
 
 	gameplay = get_gameplay();
 	idx = add_entity(x, y);
+	gameplay->entities[idx].type = ENTITY_PLAYER;
 	if (dir == 'N')
 		gameplay->entities[idx].dir = (t_vec2){0, -1};
 	else if (dir == 'S')
@@ -85,21 +67,53 @@ static int	create_player_entity(int x, int y, char dir)
 	return (idx);
 }
 
-void	start_entities(void)
+int	add_entity(int x, int y)
 {
-	int			total;
+	int			idx;
 	t_gameplay	*gameplay;
 
-	total = count_entities();
 	gameplay = get_gameplay();
-	gameplay->entity_capacity = total;
-	gameplay->entities = ft_calloc(total, sizeof(t_entity));
+	idx = gameplay->entity_count++;
+	gameplay->entities[idx].pos.x = x + 0.5;
+	gameplay->entities[idx].pos.y = y + 0.5;
+	gameplay->entities[idx].prev = gameplay->entities[idx].pos;
+	gameplay->entities[idx].radius = 0.2;
+	bfs_init(&gameplay->entities[idx].pathfinder, get_map()->width,
+		get_map()->height);
+	gameplay->entities[idx].path_idx = 0;
+	gameplay->entities[idx].path_timer = 0.0;
+	entity_set_hp(&gameplay->entities[idx], 10);
+	return (idx);
+}
+
+void	start_entities(void)
+{
+    t_gameplay	*gameplay;
+
+    gameplay = get_gameplay();
+    gameplay->entity_capacity = count_entities();
+    if (gameplay->entity_capacity < 1)
+        gameplay->entity_capacity = 1;
+    gameplay->entities = ft_calloc((size_t)gameplay->entity_capacity, sizeof(t_entity));
+
+    gameplay->ghost_capacity = count_ghosts();
+    gameplay->ghost_count = 0;
+    if (gameplay->ghost_capacity > 0)
+        gameplay->ghosts = ft_calloc((size_t)gameplay->ghost_capacity, sizeof(t_ghost));
+    else
+        gameplay->ghosts = NULL;
+
+    gameplay->pellet_capacity = count_pellets();
+    gameplay->pellet_count = 0;
+    if (gameplay->pellet_capacity > 0)
+        gameplay->pellets = ft_calloc((size_t)gameplay->pellet_capacity, sizeof(t_pellet));
+    else
+        gameplay->pellets = NULL;
 }
 
 int	mark_entities(char key, int x, int y)
 {
 	t_map	*map;
-	int		idx;
 
 	if (key == '\0')
 		return (-1);
@@ -109,13 +123,11 @@ int	mark_entities(char key, int x, int y)
 		map->player_dir = key;
 		map->player_x = x;
 		map->player_y = y;
-		idx = create_player_entity(x, y, key);
-		return (idx);
+		return (create_player_entity(x, y, key));
 	}
 	if (key == 'X')
-	{
-		idx = add_entity(x, y);
-		return (idx);
-	}
+		return (create_ghost_entity(x, y));
+	if (key == '.')
+		return (create_pellet_entity(x, y));
 	return (-1);
 }

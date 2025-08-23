@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli@student.1337.ma <yjazouli>        +#+  +:+       +#+        */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:48:27 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/23 10:53:27 by yjazouli@st      ###   ########.fr       */
+/*   Updated: 2025/08/23 14:20:28 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,16 @@ typedef enum e_segtype
 {
     SEG_DIR_HORIZ,
     SEG_DIR_VERT,
-    SEG_OUTER_ARC,
-    SEG_INNER_ARC,
     SEG_TOTAL
 }	t_segtype;
+
+typedef enum e_entity_type
+{
+	ENTITY_PLAYER,
+	ENTITY_PELLET,
+	ENTITY_GHOST,
+	ENTITY_TOTAL
+}	t_entity_type;
 
 typedef enum e_key
 {
