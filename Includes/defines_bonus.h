@@ -35,6 +35,7 @@
 # define FLOOR_TEXTURE_PATH "textures/wall_1.xpm"
 # define CEILING_TEXTURE_PATH "textures/wall_1.xpm"
 # define SKY_TEXTURE_PATH "textures/sky1.xpm"
+# define GHOST_TEXTURE_PATH "textures/ghost_packman_red_128.xpm"
 
 // * ======== Enums ========== *
 

@@ -268,33 +268,136 @@ void draw_wall(int x)
 	}
 }
 
+void	sort_sprites_by_distance(t_entity *player, t_entity *ent)
+{
+	t_gameplay	*gameplay;
+	int			i;
+	int			j;
+	double		dist[2];
+	t_entity	temp;
 
-// void render_sprites(double *z_buffer)
-// {
-// 	t_gameplay	*gameplay;
-// 	t_player	*player;
+	gameplay = get_gameplay();
+	i = 0;
+	while (i < gameplay->entity_count - 1)
+	{
+		j = 0;
+		while (j < gameplay->entity_count - i - 1)
+		{
+			dist[0] = (player->pos.x - ent[j].pos.x) * (player->pos.x - ent[j].pos.x)
+				+ (player->pos.y - ent[j].pos.y) * (player->pos.y - ent[j].pos.y);
+			dist[1] = (player->pos.x - ent[j + 1].pos.x) * (player->pos.x - ent[j + 1].pos.x)
+				+ (player->pos.y - ent[j + 1].pos.y) * (player->pos.y - ent[j + 1].pos.y);
+			if (dist[0] < dist[1])
+			{
+				temp = ent[j];
+				ent[j] = ent[j + 1];
+				ent[j + 1] = temp;
+			}
+			j++;
+		}
+		i++;
+	}
+}
 
-// 	gameplay = get_gameplay();
-// 	sort_sprites(player);
-// 	for (int i = 0; i < gameplay->sprite_count; i++)
-// 	{
-// 		init_sprite(i);
-// 		calc_sprite_transform();
-// 		calc_sprite_screen_pos();
-// 		calc_sprite_height();
-// 		calc_sprite_width();
-// 		draw_sprite(z_buffer);
-// 	}
-// }
+static void calculate_sprite_transform(t_entity *player, t_entity *sprite, t_sprite_info *s)
+{
+    double sprite_x;
+    double sprite_y;
+    double inv_det;
+	double plane_x;
+	double plane_y;
 
-// void draw_sprites(double *z_buffer)
-// {
-// 	t_gameplay	*gameplay;
+    sprite_x = sprite->pos.x - player->pos.x;
+    sprite_y = sprite->pos.y - player->pos.y;
 
-// 	gameplay = get_gameplay();
-// 	if (gameplay->sprite_count > 0)
-// 		render_sprites(z_buffer);
-// }
+	plane_x = -player->dir.y * get_camera()->plane_scale;
+	plane_y = player->dir.x * get_camera()->plane_scale;
+    inv_det = 1.0 / (plane_x * player->dir.y - player->dir.x * plane_y);
+    s->transform_x = inv_det * (player->dir.y * sprite_x - player->dir.x * sprite_y);
+    s->transform_y = inv_det * (-plane_y * sprite_x + plane_x * sprite_y);
+
+    s->screen_x = (int)((WIDTH / 2) * (1 + s->transform_x / s->transform_y));
+    s->height = abs((int)(HEIGHT / s->transform_y));
+    s->width = abs((int)(HEIGHT / s->transform_y));
+
+    s->draw_start_y = -s->height / 2 + HEIGHT / 2;
+    if (s->draw_start_y < 0) s->draw_start_y = 0;
+    s->draw_end_y = s->height / 2 + HEIGHT / 2;
+    if (s->draw_end_y >= HEIGHT) s->draw_end_y = HEIGHT - 1;
+
+    s->draw_start_x = -s->width / 2 + s->screen_x;
+    if (s->draw_start_x < 0) s->draw_start_x = 0;
+    s->draw_end_x = s->width / 2 + s->screen_x;
+    if (s->draw_end_x >= WIDTH) s->draw_end_x = WIDTH - 1;
+}
+
+void draw_sprite_stripe(t_sprite_info *s, int stripe, double *z_buffer, t_texture *texture)
+{
+	int     y;
+	int     tex_y;
+	int     color;
+	double  step;
+	double  tex_pos;
+
+	if (s->transform_y > 0 && stripe > 0 && stripe < WIDTH && s->transform_y < z_buffer[stripe])
+	{
+		step = 1.0 * texture->height / s->height;
+		tex_pos = (s->draw_start_y - HALF_HEIGHT + s->height / 2) * step;
+		y = s->draw_start_y;
+		while (y < s->draw_end_y)
+		{
+			tex_y = (int)tex_pos & (texture->height - 1);
+			tex_pos += step;
+			color = get_texture_color(texture, s->tex_x, tex_y);
+			if ((color != 0x000000))
+				pixel_put(stripe, y, color);
+			y+= 1;
+		}
+	}
+}
+
+void render_sprites(double *z_buffer)
+{
+	t_gameplay  	*gameplay;
+    t_entity    	*ent;
+    t_sprite_info   s_info;
+    int             i;
+    int             stripe;
+
+	gameplay = get_gameplay();
+	ent = gameplay->entities;
+	sort_sprites_by_distance(gameplay->player.ent, ent);
+	i = 0;
+	while (i < gameplay->entity_count)
+    {
+        if (gameplay->entities[i].type == ENTITY_PLAYER)
+        {
+            i++;
+            continue ;
+        }
+		calculate_sprite_transform(gameplay->player.ent, &ent[i], &s_info);
+		stripe = s_info.draw_start_x;
+		while (stripe < s_info.draw_end_x)
+		{
+			s_info.tex_x = (int)(256 * (stripe - (-s_info.width / 2 + s_info.screen_x)) * 
+						  gameplay->ghost_texture.width / s_info.width) / 256;
+			
+			if (ent[i].type == ENTITY_GHOST)
+				draw_sprite_stripe(&s_info, stripe, z_buffer, &gameplay->ghost_texture);
+			stripe+= 2;
+		}
+        i++;
+    }
+}
+
+void draw_sprites(double *z_buffer)
+{
+	t_gameplay	*gameplay;
+
+	gameplay = get_gameplay();
+	if (gameplay->entity_count > 1)
+		render_sprites(z_buffer);
+}
 
 void raycasting(void)
 {
@@ -315,5 +418,5 @@ void raycasting(void)
 		z_buffer[x] = camera->ray.perp_wall_dist;
 		x++;
 	}
-	// draw_sprites(z_buffer);
+	draw_sprites(z_buffer);
 }

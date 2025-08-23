@@ -13,9 +13,13 @@
 #ifndef CUB3D_BONUS_H
 # define CUB3D_BONUS_H
 
+
 # include "defines_bonus.h"
 # include "libraries_bonus.h"
 # include "structures_bonus.h"
 # include "prototypes_bonus.h"
+
+
+
 
 #endif

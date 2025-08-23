@@ -15,35 +15,36 @@
 
 // * =========== Typedefs =========== *
 // * Rendering *
-typedef struct s_shape		t_shape;
-typedef struct s_mlx		t_mlx;
+typedef struct s_shape			t_shape;
+typedef struct s_mlx			t_mlx;
 
 // * Minimap *
-typedef struct s_minimap	t_minimap;
-typedef struct s_pacman		t_pacman;
-typedef struct s_mash		t_mash;
-typedef struct s_seg		t_seg;
+typedef struct s_minimap		t_minimap;
+typedef struct s_pacman			t_pacman;
+typedef struct s_mash			t_mash;
+typedef struct s_seg			t_seg;
 
 // * Entities *
-typedef struct s_entity		t_entity;
-typedef struct s_player		t_player;
-typedef struct s_pellet		t_pellet;
-typedef struct s_ghost		t_ghost;
+typedef struct s_entity			t_entity;
+typedef struct s_player			t_player;
+typedef struct s_pellet			t_pellet;
+typedef struct s_ghost			t_ghost;
 
-typedef struct s_gameplay	t_gameplay;
-typedef struct s_camera		t_camera;
-typedef struct s_engine		t_engine;
-typedef struct s_malloc		t_malloc;
-typedef struct s_parse		t_parse;
-typedef struct s_door		t_door;
-typedef struct s_game		t_game;
-typedef struct s_vec2		t_vec2;
-typedef struct s_map		t_map;
-typedef struct s_ray		t_ray;
-typedef struct s_bfs		t_bfs;
-typedef struct s_texture	t_texture;
-typedef struct s_floor		t_floor;
-typedef struct s_sky		t_sky;
+typedef struct s_gameplay		t_gameplay;
+typedef struct s_camera			t_camera;
+typedef struct s_engine			t_engine;
+typedef struct s_malloc			t_malloc;
+typedef struct s_parse			t_parse;
+typedef struct s_door			t_door;
+typedef struct s_game			t_game;
+typedef struct s_vec2			t_vec2;
+typedef struct s_map			t_map;
+typedef struct s_ray			t_ray;
+typedef struct s_bfs			t_bfs;
+typedef struct s_texture		t_texture;
+typedef struct s_floor			t_floor;
+typedef struct s_sky			t_sky;
+typedef struct s_sprite_info	t_sprite_info;
 
 // * =========== Structures =========== *
 
@@ -75,6 +76,34 @@ struct						s_bfs
 	int						path_capacity;
 
 	int						visit_stamp;
+};
+
+// textures
+struct						s_texture
+{
+	int						width;
+	int						height;
+	int						bpp;
+	int						line_length;
+	int						endian;
+	void					*img_ptr;
+	char					*addr;
+	char					*path;
+};
+
+
+struct s_sprite_info
+{
+    double  transform_x;
+    double  transform_y;
+    int     screen_x;
+    int     height;
+    int     width;
+    int     draw_start_y;
+    int     draw_end_y;
+    int     draw_start_x;
+    int     draw_end_x;
+    int     tex_x;
 };
 
 // * Raycasting *
@@ -324,6 +353,7 @@ struct						s_gameplay
 	t_ghost					*ghosts;
 	int						ghost_count;
 	int						ghost_capacity;
+	t_texture				ghost_texture;
 
 	t_pellet				*pellets;
 	int						pellet_count;
@@ -384,18 +414,6 @@ struct						s_malloc
 	void					*ptr;
 	size_t					size;
 	t_malloc				*next;
-};
-
-struct						s_texture
-{
-	int						width;
-	int						height;
-	int						bpp;
-	int						line_length;
-	int						endian;
-	void					*img_ptr;
-	char					*addr;
-	char					*path;
 };
 
 struct						s_game

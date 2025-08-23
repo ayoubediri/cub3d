@@ -78,6 +78,7 @@ t_texture load_texture(char *path)
 	t_texture	texture;
 
 	mlx = get_mlx();
+	memset(&texture, 0, sizeof(t_texture));
 	texture.img_ptr = mlx_xpm_file_to_image(mlx->mlx, path, &texture.width, &texture.height);
 	if (!texture.img_ptr)
 	{
@@ -110,6 +111,7 @@ void config_textures(void)
 	game->floor_texture = load_texture(FLOOR_TEXTURE_PATH);
 	game->ceiling_texture = load_texture(CEILING_TEXTURE_PATH);
 	game->sky_texture = load_texture(SKY_TEXTURE_PATH);
+	game->gameplay.ghost_texture = load_texture(GHOST_TEXTURE_PATH);
 }
 
 int mouse_handler(int x, int y, t_mlx *mlx)
