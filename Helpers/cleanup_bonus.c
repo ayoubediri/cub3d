@@ -34,14 +34,21 @@ void	cleanup(void)
 	t_malloc	*next;
 
 	game = get_game();
+	
+	// Free all tracked memory allocations
 	curr = game->tracker;
 	while (curr)
 	{
 		next = curr->next;
-		free(curr->ptr);
+		if (curr->ptr)
+			free(curr->ptr);
 		free(curr);
 		curr = next;
 	}
+	
+	// Reset tracker pointers
+	game->tracker = NULL;
+	game->tail = NULL;
 }
 
 void	ft_free(void *ptr)

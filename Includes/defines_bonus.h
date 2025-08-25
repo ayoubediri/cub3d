@@ -25,6 +25,10 @@
 # define HALF_WIDTH 960
 # define HALF_HEIGHT 540
 # define MOUSE_SENSITIVITY 0.002
+# define PELLET_U_DIV 3
+# define PELLET_V_DIV 3
+# define GHOST_U_DIV 1.5
+# define GHOST_V_DIV 1.5
 
 # ifndef M_PI
 #  define M_PI		3.14159265358979323846
@@ -36,6 +40,7 @@
 # define CEILING_TEXTURE_PATH "textures/wall_1.xpm"
 # define SKY_TEXTURE_PATH "textures/sky1.xpm"
 # define GHOST_TEXTURE_PATH "textures/ghost_packman_red_128.xpm"
+# define PELLET_TEXTURE_PATH "textures/frame_8.xpm"
 
 // * ======== Enums ========== *
 

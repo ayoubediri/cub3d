@@ -54,10 +54,10 @@ void *ft_malloc(size_t size)
 	return (track(ptr, size));
 }
 
-void *ft_calloc(size_t nmemb, size_t size)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	size_t total;
-	void *ptr;
+	size_t	total;
+	void	*ptr;
 
 	if (nmemb && size > SIZE_MAX / nmemb)
 	{

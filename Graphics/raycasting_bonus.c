@@ -298,8 +298,7 @@ void	sort_sprites_by_distance(t_entity *player, t_rend_ents *ents)
 		i++;
 	}
 }
-
-static void calculate_sprite_transform(t_entity *player, t_rend_ents *sprite, t_sprite_info *s)
+static void calculate_sprite_transform(t_entity *player, t_entity *sprite, t_sprite_info *s)
 {
     double sprite_x;
     double sprite_y;
@@ -307,8 +306,8 @@ static void calculate_sprite_transform(t_entity *player, t_rend_ents *sprite, t_
 	double plane_x;
 	double plane_y;
 
-    sprite_x = sprite->ent->pos.x - player->pos.x;
-    sprite_y = sprite->ent->pos.y - player->pos.y;
+    sprite_x = sprite->pos.x - player->pos.x;
+    sprite_y = sprite->pos.y - player->pos.y;
 
 	plane_x = -player->dir.y * get_camera()->plane_scale;
 	plane_y = player->dir.x * get_camera()->plane_scale;
@@ -317,8 +316,8 @@ static void calculate_sprite_transform(t_entity *player, t_rend_ents *sprite, t_
     s->transform_y = inv_det * (-plane_y * sprite_x + plane_x * sprite_y);
 
     s->screen_x = (int)((WIDTH / 2) * (1 + s->transform_x / s->transform_y));
-    s->height = abs((int)(HEIGHT / s->transform_y));
-    s->width = abs((int)(HEIGHT / s->transform_y));
+    s->height = abs((int)(HEIGHT / s->transform_y)) / s->v_div;
+    s->width = abs((int)(HEIGHT / s->transform_y)) / s->u_div;
 
     s->draw_start_y = -s->height / 2 + HEIGHT / 2;
     if (s->draw_start_y < 0) s->draw_start_y = 0;
@@ -366,20 +365,40 @@ void render_sprites(double *z_buffer)
 
 	gameplay = get_gameplay();
 	ent = gameplay->rend_ents;
-	sort_sprites_by_distance(gameplay->player.ent, gameplay->rend_ents);
+	sort_sprites_by_distance(gameplay->player.ent, ent);
 	i = 0;
 	while (i < gameplay->rend_ent_count)
     {
-		calculate_sprite_transform(gameplay->player.ent, &ent[i], &s_info);
+        if (gameplay->rend_ents[i].ent->type == ENTITY_PLAYER || gameplay->rend_ents[i].ent->gone)
+        {
+            i++;
+            continue ;
+        }
+		s_info.type = gameplay->rend_ents[i].ent->type;
+		if (s_info.type == ENTITY_PELLET)
+		{
+			s_info.u_div = PELLET_U_DIV;
+			s_info.v_div = PELLET_V_DIV;
+		}
+		else
+		{
+			s_info.u_div = GHOST_U_DIV;
+			s_info.v_div = GHOST_V_DIV;
+		}
+		calculate_sprite_transform(gameplay->player.ent, ent[i].ent, &s_info);
 		stripe = s_info.draw_start_x;
 		while (stripe < s_info.draw_end_x)
 		{
-			s_info.tex_x = (int)(256 * (stripe - (-s_info.width / 2 + s_info.screen_x)) * 
+			s_info.tex_x = (int)(256 * (stripe - (-s_info.width / 2 + s_info.screen_x)) *
 						  gameplay->ghost_texture.width / s_info.width) / 256;
-			
-			if (ent[i].type == ENTITY_GHOST)
+			if (s_info.type == ENTITY_GHOST)
 				draw_sprite_stripe(&s_info, stripe, z_buffer, &gameplay->ghost_texture);
-			stripe+= 2;
+			if (s_info.type == ENTITY_PELLET)
+				draw_sprite_stripe(&s_info, stripe, z_buffer, &gameplay->pellet_texture);
+			if (s_info.type == ENTITY_PELLET)
+				stripe++;
+			else
+				stripe+=2;
 		}
         i++;
     }

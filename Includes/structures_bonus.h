@@ -104,6 +104,9 @@ struct							s_sprite_info
 	int							draw_start_x;
 	int							draw_end_x;
 	int							tex_x;
+	int							type;
+	double						u_div;
+	double						v_div;
 };
 
 // * Raycasting *
@@ -383,6 +386,7 @@ struct							s_gameplay
 	t_pellet					*pellets;
 	int							pellet_count;
 	int							pellet_capacity;
+	t_texture					pellet_texture;
 
 	t_rend_ents					*rend_ents;
 	int							rend_ent_count;

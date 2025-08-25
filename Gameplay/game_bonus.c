@@ -23,6 +23,37 @@ static int	game_loop(void)
 
 static int	leave_game(void)
 {
+	t_game *game;
+	t_mlx	*mlx;
+	
+	game = get_game();
+	mlx = get_mlx();
+	
+	if (game->gameplay.pellet_texture.img_ptr)
+		mlx_destroy_image(mlx->mlx, game->gameplay.pellet_texture.img_ptr);
+	if (game->gameplay.ghost_texture.img_ptr)
+		mlx_destroy_image(mlx->mlx, game->gameplay.ghost_texture.img_ptr);
+	for (int i = 0; i < WALL_TOTAL; i++)
+	{
+		if (game->wall_textures[i].img_ptr)
+			mlx_destroy_image(mlx->mlx, game->wall_textures[i].img_ptr);
+	}
+	if (game->floor_texture.img_ptr)
+		mlx_destroy_image(mlx->mlx, game->floor_texture.img_ptr);
+	if (game->ceiling_texture.img_ptr)
+		mlx_destroy_image(mlx->mlx, game->ceiling_texture.img_ptr);
+	if (game->sky_texture.img_ptr)
+		mlx_destroy_image(mlx->mlx, game->sky_texture.img_ptr);
+	if (mlx->img)
+		mlx_destroy_image(mlx->mlx, mlx->img);
+	if (mlx->win)
+		mlx_destroy_window(mlx->mlx, mlx->win);
+	if (mlx->mlx)
+	{
+		mlx_destroy_display(mlx->mlx);
+		free(mlx->mlx);
+		mlx->mlx = NULL;
+	}
 	clean_exit(0);
 	return (1);
 }
@@ -113,6 +144,7 @@ void config_textures(void)
 	game->ceiling_texture = load_texture(CEILING_TEXTURE_PATH);
 	game->sky_texture = load_texture(SKY_TEXTURE_PATH);
 	game->gameplay.ghost_texture = load_texture(GHOST_TEXTURE_PATH);
+	game->gameplay.pellet_texture = load_texture(PELLET_TEXTURE_PATH);
 }
 
 int mouse_handler(int x, int y, t_mlx *mlx)
