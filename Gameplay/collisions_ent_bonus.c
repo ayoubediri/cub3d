@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 11:05:54 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/25 09:44:02 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/25 18:37:26 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,20 @@ t_entity	*check_ent_overlap(t_entity *ent, double x, double y)
 	return (NULL);
 }
 
-void	try_to_eat_pellet(t_entity *player, t_entity *pellet)
+void	try_to_eat_pellet(t_entity *pellet)
 {
-	t_gameplay	*gp;
+    t_player *player;
 
+    player = &get_gameplay()->player;
 	pellet->gone = 1;
-    (void)player;
-	gp = get_gameplay();
-	if (!gp || !gp->pellets || gp->pellet_count <= 0)
-		return ;
+    player->pellets_collected++;
+    if (player->pellets_collected == 5)
+        open_all_doors();
+    if (player->pellets_collected >= player->pellets_total)
+    {
+        printf("All pellets collected! You win!\n");
+        clean_exit(0);
+    }
 }
 
 int try_repel_slide(t_entity *ent, double *nx, double *ny)
@@ -153,9 +158,7 @@ int	resolve_overlap(t_entity *ent, double *nx, double *ny)
 	if (overlap)
 	{
 		if (ent->type == ENTITY_PLAYER && overlap->type == ENTITY_PELLET)
-			try_to_eat_pellet(ent, overlap);
-		else if (ent->type == ENTITY_PELLET && overlap->type == ENTITY_PLAYER)
-			try_to_eat_pellet(overlap, ent);
+			try_to_eat_pellet(overlap);
 		else if (ent->type == ENTITY_PLAYER && overlap->type == ENTITY_GHOST)
 			player_take_dmg(overlap->damage);
 		else if (ent->type == ENTITY_GHOST && overlap->type == ENTITY_PLAYER)

@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 13:51:24 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/24 12:30:37 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/25 18:38:47 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	setup_pacman(t_minimap *minimap, t_gameplay *gameplay)
 {
+	gameplay->player.pellets_total = gameplay->pellet_count;
 	minimap->pacman.color = minimap->col_pacman;
 	minimap->pacman.ent = gameplay->player.ent;
 	minimap->pacman.anim_time = 0.0;

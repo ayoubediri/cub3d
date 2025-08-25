@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 10:33:49 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/25 09:48:45 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/25 18:27:22 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ int	check_corners(double corners[4][2])
 			return (1);
 		if (map->grid[map_y * map->width + map_x] == 1)
 			return (1);
+		if (map->doors_grid[map_y * map->width + map_x] >= 0)
+        {
+            if (!door_is_open(map_x, map_y))
+                return (1);
+        }
 		i++;
 	}
 	return (0);

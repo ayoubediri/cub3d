@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:57:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/25 09:44:15 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/25 18:34:54 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ int			on_keyrelease(int key);
 // * Engine *
 double		now_seconds(void);
 void		game_tick(t_engine *engine);
+// * Doors *
+void		open_all_doors(void);
+void		open_door(int x, int y);
+void		close_door(int x, int y);
+int			door_is_open(int x, int y);
+t_door		*get_door_at(t_game *game, int x, int y);
 // * Pathfinding *
 int			bfs_init(t_bfs *bfs, int width, int height);
 void		bfs_idx_to_xy(int idx, int w, int *x, int *y);

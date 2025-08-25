@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 13:00:56 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/24 15:50:53 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/25 15:42:01 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static void	fill_line(int y, int width, int len, int *door_idx)
 			idx = (*door_idx)++;
 			map->doors[idx].x = x;
 			map->doors[idx].y = y;
-			map->doors[idx].enabled = 1;
+			map->doors[idx].enabled = 0;
 			map->doors[idx].linked_index = -1;
 			map->doors_grid[cell] = idx;
 		}

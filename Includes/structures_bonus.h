@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:51:59 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/25 09:57:57 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/25 18:32:29 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,7 +256,6 @@ struct							s_ghost
 	double						frightened_speed;
 
 	t_vec2						scatter_target;
-	
 };
 
 struct							s_rend_ents
@@ -274,6 +273,9 @@ struct							s_pellet
 struct							s_player
 {
 	t_entity					*ent;
+
+	int							pellets_total;
+	int							pellets_collected;
 };
 
 // * Rendering *
