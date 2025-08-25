@@ -35,7 +35,7 @@ int	on_keypress(int key)
 	t_game	*game;
 
 	if (key == XK_Escape)
-		clean_exit(0);
+		return (leave_game());
 	game = get_game();
 	keycode = map_keypress(key);
 	if (keycode != -1)

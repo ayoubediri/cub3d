@@ -56,9 +56,9 @@ t_entity	*check_ent_overlap(t_entity *ent, double x, double y)
 void	try_to_eat_pellet(t_entity *player, t_entity *pellet)
 {
 	t_gameplay	*gp;
-	int			i;
 
 	pellet->gone = 1;
+    (void)player;
 	gp = get_gameplay();
 	if (!gp || !gp->pellets || gp->pellet_count <= 0)
 		return ;

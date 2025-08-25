@@ -23,5 +23,6 @@ int	main(int ac, char **av)
 	parse(av[1]);
 	setup_minimap();
 	start_game();
+	clean_exit(0);
 	return (0);
 }

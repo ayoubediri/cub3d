@@ -21,7 +21,7 @@ static int	game_loop(void)
 	return (0);
 }
 
-static int	leave_game(void)
+int	leave_game(void)
 {
 	t_game *game;
 	t_mlx	*mlx;
@@ -154,6 +154,7 @@ int mouse_handler(int x, int y, t_mlx *mlx)
 	t_entity	*player;
 
 	(void)mlx;
+	(void)y;
 	dx = x - HALF_WIDTH;
 	if (fabs(dx) < 2)
         return (0);

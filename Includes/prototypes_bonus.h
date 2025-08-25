@@ -110,6 +110,7 @@ void		vec2_move_towards(t_vec2 *pos, t_vec2 target, double speed,
 				double dt);
 // * Error Handling *
 void		cleanup(void);
+int			leave_game(void);
 void		ft_free(void *ptr);
 void		clean_exit(int status);
 void		parse_error(char *msg1);

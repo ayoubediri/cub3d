@@ -1,6 +1,6 @@
 NAME    := cub3d_bonus
 CC      := gcc
-CFLAGS  := -g -IIncludes -Iminilibx-linux
+CFLAGS  := -g -IIncludes -Iminilibx-linux -Wall -Wextra -Werror
 
 MLX_DIR := minilibx-linux
 MLX_LIB := $(MLX_DIR)/libmlx.a

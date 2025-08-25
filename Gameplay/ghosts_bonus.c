@@ -64,6 +64,7 @@ void	ghost_update(t_ghost *ghost, t_entity *player, t_map *map, double dt)
 
 	if (!ghost || !ghost->ent || !player || dt <= 0.0)
 		return ;
+	(void)map;
 	e = ghost->ent;
 	if (e->gone)
 		return ;

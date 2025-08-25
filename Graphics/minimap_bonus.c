@@ -43,30 +43,30 @@ static void world_to_minimap(t_minimap *mm, double wx, double wy, int *px, int *
     *py = mm->content_y + (int)map_y;
 }
 
-static void draw_rect_clipped(int x, int y, int w, int h, unsigned int color,
-                              int ix, int iy, int iw, int ih)
-{
-    int sx = x;
-    int sy = y;
-    int ex = x + w;
-    int ey = y + h;
+// static void draw_rect_clipped(int x, int y, int w, int h, unsigned int color,
+//                               int ix, int iy, int iw, int ih)
+// {
+//     int sx = x;
+//     int sy = y;
+//     int ex = x + w;
+//     int ey = y + h;
 
-    if (ex <= ix || ey <= iy || sx >= ix + iw || sy >= iy + ih)
-        return;
+//     if (ex <= ix || ey <= iy || sx >= ix + iw || sy >= iy + ih)
+//         return;
 
-    if (sx < ix)
-        sx = ix;
-    if (sy < iy)
-        sy = iy;
-    if (ex > ix + iw)
-        ex = ix + iw;
-    if (ey > iy + ih)
-        ey = iy + ih;
+//     if (sx < ix)
+//         sx = ix;
+//     if (sy < iy)
+//         sy = iy;
+//     if (ex > ix + iw)
+//         ex = ix + iw;
+//     if (ey > iy + ih)
+//         ey = iy + ih;
 
-    for (int yy = sy; yy < ey; ++yy)
-        for (int xx = sx; xx < ex; ++xx)
-            pixel_put(xx, yy, color);
-}
+//     for (int yy = sy; yy < ey; ++yy)
+//         for (int xx = sx; xx < ex; ++xx)
+//             pixel_put(xx, yy, color);
+// }
 
 static void draw_circle_clipped(int cx, int cy, int r, unsigned int color,
                                 int ix, int iy, int iw, int ih)
@@ -230,10 +230,6 @@ void minimap_render(void)
 {
     t_gameplay *gameplay;
     t_minimap *mm;
-    t_map *map;
-    t_parse *parse;
-    int i;
-    int j;
     int px;
     int py;
 
@@ -241,8 +237,6 @@ void minimap_render(void)
     if (!gameplay)
         return;
     mm = &gameplay->minimap;
-    parse = get_parse();
-    map = get_map();
 
     draw_rect(mm->ox, mm->oy, mm->size_px, mm->size_px, mm->col_border);
     draw_rect(mm->ox + 2, mm->oy + 2, mm->size_px - 4, mm->size_px - 4, mm->col_bg);
