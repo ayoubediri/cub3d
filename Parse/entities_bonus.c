@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 09:55:36 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/23 14:47:26 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/24 15:50:30 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,12 @@ int	add_entity(int x, int y)
 
 	gameplay = get_gameplay();
 	idx = gameplay->entity_count++;
+	gameplay->entities[idx].type = 0;
+	gameplay->entities[idx].damage = 25;
+	gameplay->entities[idx].radius = 0.2;
 	gameplay->entities[idx].pos.x = x + 0.5;
 	gameplay->entities[idx].pos.y = y + 0.5;
 	gameplay->entities[idx].prev = gameplay->entities[idx].pos;
-	gameplay->entities[idx].radius = 0.2;
 	bfs_init(&gameplay->entities[idx].pathfinder, get_map()->width,
 		get_map()->height);
 	gameplay->entities[idx].path_idx = 0;
@@ -88,32 +90,34 @@ int	add_entity(int x, int y)
 
 void	start_entities(void)
 {
-    t_gameplay	*gameplay;
+	t_gameplay	*gameplay;
 
-    gameplay = get_gameplay();
-    gameplay->entity_capacity = count_entities();
-    if (gameplay->entity_capacity < 1)
-        gameplay->entity_capacity = 1;
-    gameplay->entities = ft_calloc((size_t)gameplay->entity_capacity, sizeof(t_entity));
-
-    gameplay->ghost_capacity = count_ghosts();
-    gameplay->ghost_count = 0;
-    if (gameplay->ghost_capacity > 0)
-        gameplay->ghosts = ft_calloc((size_t)gameplay->ghost_capacity, sizeof(t_ghost));
-    else
-        gameplay->ghosts = NULL;
-
-    gameplay->pellet_capacity = count_pellets();
-    gameplay->pellet_count = 0;
-    if (gameplay->pellet_capacity > 0)
-        gameplay->pellets = ft_calloc((size_t)gameplay->pellet_capacity, sizeof(t_pellet));
-    else
-        gameplay->pellets = NULL;
+	gameplay = get_gameplay();
+	gameplay->entity_capacity = count_entities();
+	if (gameplay->entity_capacity < 1)
+		gameplay->entity_capacity = 1;
+	gameplay->entities = ft_calloc(gameplay->entity_capacity, sizeof(t_entity));
+	gameplay->ghost_capacity = count_ghosts();
+	gameplay->ghost_count = 0;
+	if (gameplay->ghost_capacity > 0)
+		gameplay->ghosts = ft_calloc(gameplay->ghost_capacity, sizeof(t_ghost));
+	else
+		gameplay->ghosts = NULL;
+	gameplay->pellet_capacity = count_pellets();
+	gameplay->pellet_count = 0;
+	if (gameplay->pellet_capacity > 0)
+		gameplay->pellets = ft_calloc(gameplay->pellet_capacity,
+				sizeof(t_pellet));
+	else
+		gameplay->pellets = NULL;
+	gameplay->rend_ent_capacity = gameplay->pellet_capacity + gameplay->ghost_capacity;
+	gameplay->rend_ents = ft_calloc(gameplay->rend_ent_capacity, sizeof(t_rend_ents));
 }
 
 int	mark_entities(char key, int x, int y)
 {
 	t_map	*map;
+	int		idx;
 
 	if (key == '\0')
 		return (-1);
@@ -123,11 +127,18 @@ int	mark_entities(char key, int x, int y)
 		map->player_dir = key;
 		map->player_x = x;
 		map->player_y = y;
-		return (create_player_entity(x, y, key));
+		idx = create_player_entity(x, y, key);
+		return (idx);
 	}
 	if (key == 'X')
-		return (create_ghost_entity(x, y));
+	{
+		idx = create_ghost_entity(x, y);
+		return (idx);
+	}
 	if (key == '.')
-		return (create_pellet_entity(x, y));
+	{
+		idx = create_pellet_entity(x, y);
+		return (idx);
+	}
 	return (-1);
 }

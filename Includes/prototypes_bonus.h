@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:57:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/23 18:17:38 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/25 09:44:15 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 
 // * =========== Gameplay =========== *
 // * Entities *
-void		entities_update(double dt);
+void		ghosts_update(double dt);
+void		timers_update(double dt);
 int			entity_try_move_by(t_entity *ent, double dx, double dy);
 // * Minimap *
 void		minimap_update(double dt);
 // * Movement *
 void		update_movement(void);
-int			check_collision(double new_x, double new_y);
+int			resolve_overlap(t_entity *ent, double *nx, double *ny);
+int			check_collision(double new_x, double new_y, double radius);
 // * Input *
 int			on_keypress(int key);
 int			on_keyrelease(int key);
@@ -31,6 +33,8 @@ void		game_tick(t_engine *engine);
 // * Pathfinding *
 int			bfs_init(t_bfs *bfs, int width, int height);
 void		bfs_idx_to_xy(int idx, int w, int *x, int *y);
+int			request_path(t_entity *ent, double x, double y);
+void		follow_path(t_entity *ent, double dt, double speed);
 int			bfs_find_path(t_bfs *bfs, t_map *map, int sx, int sy, int tx,
 				int ty);
 // * game *
@@ -39,8 +43,7 @@ void		game_update(double dt);
 void		game_render(double alpha);
 // * Hp *
 void		entity_kill(t_entity *ent);
-int			entity_get_hp(t_entity *ent);
-int			entity_heal(t_entity *ent, int amount);
+void		player_take_dmg(int dmg);
 void		entity_set_hp(t_entity *ent, int max_hp);
 int			entity_apply_damage(t_entity *ent, int dmg);
 void		entity_update_timers(t_entity *ent, double dt);
@@ -50,7 +53,6 @@ void		entity_update_timers(t_entity *ent, double dt);
 void		raycasting(void);
 // * Minimap *
 void		minimap_render(void);
-void		draw_pacman(t_minimap *minimap, t_map *map);
 // * Pixel Manipulation *
 void		put_image(void);
 void		clear_image(void);
@@ -100,6 +102,12 @@ int			imax(int a, int b);
 char		*ft_strdup(char *str);
 char		*ft_strsdup(char *str);
 char		*ft_strndup(char *str, size_t n);
+// * Maths *
+double		vec2_dist(t_vec2 a, t_vec2 b);
+double		vec2_dist_sq(t_vec2 a, t_vec2 b);
+double		vec2_dir_and_dist(t_vec2 from, t_vec2 to, t_vec2 *out_dir);
+void		vec2_move_towards(t_vec2 *pos, t_vec2 target, double speed,
+				double dt);
 // * Error Handling *
 void		cleanup(void);
 void		ft_free(void *ptr);
@@ -125,8 +133,6 @@ void		setup_config(void);
 void		setup_minimap(void);
 void		init_mash(t_mash *mash, t_map *map);
 void		minimap_ensure_built(t_minimap *minimap);
-void		vert_seg(t_mash *mash, t_map *map, uint32_t color);
-void		horiz_seg(t_mash *mash, t_map *map, uint32_t color);
 void		build_border_segs(t_mash *mash, t_map *map, uint32_t color);
 
 // =========== movement =========== //

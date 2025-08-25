@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 18:23:31 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/22 21:20:12 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/24 20:24:09 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ void	game_update(double dt)
 	update_movement();
 	update_camera();
 	minimap_update(dt);
-	entities_update(dt);
+	ghosts_update(dt);
+	timers_update(dt);
 
 	{
         t_gameplay *gp = get_gameplay();

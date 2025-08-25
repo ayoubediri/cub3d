@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:00:52 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/22 16:16:14 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/24 15:54:15 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,30 +268,30 @@ void draw_wall(int x)
 	}
 }
 
-void	sort_sprites_by_distance(t_entity *player, t_entity *ent)
+void	sort_sprites_by_distance(t_entity *player, t_rend_ents *ents)
 {
 	t_gameplay	*gameplay;
 	int			i;
 	int			j;
 	double		dist[2];
-	t_entity	temp;
+	t_rend_ents	temp;
 
 	gameplay = get_gameplay();
 	i = 0;
-	while (i < gameplay->entity_count - 1)
+	while (i < gameplay->rend_ent_count - 1)
 	{
 		j = 0;
-		while (j < gameplay->entity_count - i - 1)
+		while (j < gameplay->rend_ent_count - i - 1)
 		{
-			dist[0] = (player->pos.x - ent[j].pos.x) * (player->pos.x - ent[j].pos.x)
-				+ (player->pos.y - ent[j].pos.y) * (player->pos.y - ent[j].pos.y);
-			dist[1] = (player->pos.x - ent[j + 1].pos.x) * (player->pos.x - ent[j + 1].pos.x)
-				+ (player->pos.y - ent[j + 1].pos.y) * (player->pos.y - ent[j + 1].pos.y);
+			dist[0] = (player->pos.x - ents[j].ent->pos.x) * (player->pos.x - ents[j].ent->pos.x)
+				+ (player->pos.y - ents[j].ent->pos.y) * (player->pos.y - ents[j].ent->pos.y);
+			dist[1] = (player->pos.x - ents[j + 1].ent->pos.x) * (player->pos.x - ents[j + 1].ent->pos.x)
+				+ (player->pos.y - ents[j + 1].ent->pos.y) * (player->pos.y - ents[j + 1].ent->pos.y);
 			if (dist[0] < dist[1])
 			{
-				temp = ent[j];
-				ent[j] = ent[j + 1];
-				ent[j + 1] = temp;
+				temp = ents[j];
+				ents[j] = ents[j + 1];
+				ents[j + 1] = temp;
 			}
 			j++;
 		}
@@ -299,7 +299,7 @@ void	sort_sprites_by_distance(t_entity *player, t_entity *ent)
 	}
 }
 
-static void calculate_sprite_transform(t_entity *player, t_entity *sprite, t_sprite_info *s)
+static void calculate_sprite_transform(t_entity *player, t_rend_ents *sprite, t_sprite_info *s)
 {
     double sprite_x;
     double sprite_y;
@@ -307,8 +307,8 @@ static void calculate_sprite_transform(t_entity *player, t_entity *sprite, t_spr
 	double plane_x;
 	double plane_y;
 
-    sprite_x = sprite->pos.x - player->pos.x;
-    sprite_y = sprite->pos.y - player->pos.y;
+    sprite_x = sprite->ent->pos.x - player->pos.x;
+    sprite_y = sprite->ent->pos.y - player->pos.y;
 
 	plane_x = -player->dir.y * get_camera()->plane_scale;
 	plane_y = player->dir.x * get_camera()->plane_scale;
@@ -359,22 +359,17 @@ void draw_sprite_stripe(t_sprite_info *s, int stripe, double *z_buffer, t_textur
 void render_sprites(double *z_buffer)
 {
 	t_gameplay  	*gameplay;
-    t_entity    	*ent;
+    t_rend_ents    	*ent;
     t_sprite_info   s_info;
     int             i;
     int             stripe;
 
 	gameplay = get_gameplay();
-	ent = gameplay->entities;
-	sort_sprites_by_distance(gameplay->player.ent, ent);
+	ent = gameplay->rend_ents;
+	sort_sprites_by_distance(gameplay->player.ent, gameplay->rend_ents);
 	i = 0;
-	while (i < gameplay->entity_count)
+	while (i < gameplay->rend_ent_count)
     {
-        if (gameplay->entities[i].type == ENTITY_PLAYER)
-        {
-            i++;
-            continue ;
-        }
 		calculate_sprite_transform(gameplay->player.ent, &ent[i], &s_info);
 		stripe = s_info.draw_start_x;
 		while (stripe < s_info.draw_end_x)

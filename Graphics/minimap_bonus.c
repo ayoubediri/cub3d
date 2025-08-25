@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 11:31:18 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/23 17:56:48 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/24 12:02:43 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,38 +254,21 @@ void minimap_render(void)
 
     draw_segs_clipped(mm, ix, iy, iw, ih);
 
-    j = 0;
-    while (j < map->height)
+    if (gameplay && gameplay->pellet_count > 0 && gameplay->pellets)
     {
-        i = 0;
-        while (i < map->width)
+        for (int pi = 0; pi < gameplay->pellet_count; ++pi)
         {
-            int is_pellet = 0;
-            if (parse && parse->map[j] && i < (int)strlen(parse->map[j]) && parse->map[j][i] == '.')
-                is_pellet = 1;
-            else if (map && map->grid && map->grid[j * map->width + i] == 2)
-                is_pellet = 1;
-            if (is_pellet)
-            {
-                world_to_minimap(mm, (double)i, (double)j, &px, &py);
-                draw_rect_clipped(px + mm->cell_px / 3, py + mm->cell_px / 3,
-                                  mm->cell_px / 3, mm->cell_px / 3, mm->col_pellet, ix, iy, iw, ih);
-            }
-            ++i;
+            t_entity *pent = gameplay->pellets[pi].ent;
+            if (!pent)
+                continue;
+            if (pent->gone || pent->type != ENTITY_PELLET)
+                continue;
+            world_to_minimap(mm, pent->pos.x, pent->pos.y, &px, &py);
+            int pr = (int)((pent->radius > 0.0) ? (pent->radius * mm->world_to_px)
+                                                 : (mm->cell_px / 3));
+            if (pr < 1) pr = 1;
+            draw_circle_clipped(px, py, pr, mm->col_pellet, ix, iy, iw, ih);
         }
-        ++j;
-    }
-
-    for (i = 0; i < gameplay->entity_count; ++i)
-    {
-        t_entity *e = &gameplay->entities[i];
-        if (!e || e == mm->pacman.ent)
-            continue;
-        world_to_minimap(mm, e->pos.x, e->pos.y, &px, &py);
-        int er = (int)((e->radius > 0.0) ? (e->radius * mm->world_to_px) : (mm->cell_px / 4));
-        if (er < 1)
-            er = 1;
-        draw_circle_clipped(px, py, er, mm->col_pellet ^ 0x00FF8080, ix, iy, iw, ih);
     }
 
     if (mm->pacman.ent)

@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 13:00:56 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/23 14:49:17 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/24 15:50:53 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,25 @@ static void	fill_line(int y, int width, int len, int *door_idx)
 	}
 }
 
+void	fill_rend_ents(void)
+{
+	t_gameplay	*gameplay;
+	int			i;
+
+	gameplay = get_gameplay();
+	i = 0;
+	while (i < gameplay->entity_count)
+	{
+		if (gameplay->entities[i].type != ENTITY_PLAYER)
+		{
+			gameplay->rend_ents[i].ent = &gameplay->entities[i];
+			gameplay->rend_ents[i].type = gameplay->entities[i].type;
+			gameplay->rend_ent_count++;
+		}
+		i++;
+	}
+}
+
 void	build_map(void)
 {
 	int		y;
@@ -109,4 +128,5 @@ void	build_map(void)
 		fill_line(y, game->map.width, len, &door_idx);
 		y++;
 	}
+	fill_rend_ents();
 }

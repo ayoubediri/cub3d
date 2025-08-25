@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 13:51:24 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/23 16:18:14 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/24 12:30:37 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,13 @@ void	setup_cell_size(t_minimap *minimap, t_map *map)
 	int			denom_h;
 	int			max_denom;
 	int			preferred;
-	const int	PREFERRED = 16;
 
 	maxdim = imax(map->width, map->height);
 	minimap->cell_px = minimap->size_px / maxdim;
 	if (minimap->cell_px < 2)
 		minimap->cell_px = 2;
-	denom_w = imin(map->width, PREFERRED);
-	denom_h = imin(map->height, PREFERRED);
+	denom_w = imin(map->width, 16);
+	denom_h = imin(map->height, 16);
 	max_denom = imax(denom_w, denom_h);
 	preferred = minimap->size_px / max_denom;
 	if (preferred > minimap->cell_px)
