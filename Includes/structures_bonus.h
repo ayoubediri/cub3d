@@ -107,6 +107,7 @@ struct							s_sprite_info
 	int							type;
 	double						u_div;
 	double						v_div;
+	t_texture					*texture;
 };
 
 // * Raycasting *
@@ -233,6 +234,9 @@ struct							s_entity
 
 	int							gone;
 	int							damage;
+	t_texture					*texture;
+	int							tex_idx;
+	int							idx;
 
 	t_entity_type				type;
 };
@@ -242,6 +246,7 @@ struct							s_ghost
 	t_entity					*ent;
 
 	uint32_t					color;
+	int							idx;
 	t_vec2						spawn_point;
 
 	t_ghost_state				state;
@@ -339,6 +344,7 @@ struct							s_engine
 	double						last;
 
 	int							target_fps;
+	unsigned long long			num_frames;
 
 	void						(*update)(double);
 	void						(*render)(double);
@@ -393,6 +399,8 @@ struct							s_gameplay
 	t_rend_ents					*rend_ents;
 	int							rend_ent_count;
 	int							rend_ent_capacity;
+	t_texture					start_screen_texture;
+	t_texture					end_screen_texture;
 };
 
 // * Parsing *

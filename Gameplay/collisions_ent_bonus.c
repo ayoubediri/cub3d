@@ -59,13 +59,15 @@ void	try_to_eat_pellet(t_entity *pellet)
 
     player = &get_gameplay()->player;
 	pellet->gone = 1;
+    system("aplay -q ./assets/sounds/coin.wav &");
     player->pellets_collected++;
     if (player->pellets_collected == 5)
         open_all_doors();
     if (player->pellets_collected >= player->pellets_total)
     {
+        // win_end(1);
         printf("All pellets collected! You win!\n");
-        clean_exit(0);
+        leave_game();
     }
 }
 

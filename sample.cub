@@ -1,13 +1,19 @@
-NO ./textures/no.xpm
-SO ./textures/so.xpm
-WE ./textures/we.xpm
-EA ./textures/ea.xpm
+NO       ./assets/wall/13.xpm
+SO   ./assets/wall/13.xpm
+
+
+
+WE ./assets/wall/13.xpm
+
+
+
+EA ./assets/wall/13.xpm
 
 
 F 139,69,19
 C 135,206,235
 
-        1111111111111111111111111
+        111111111111111111111111111111111111
         1000000000110000000000001
         10110X0001110000......001
         1001000000D00000......001

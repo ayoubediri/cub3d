@@ -59,6 +59,7 @@ void game_tick(t_engine *engine)
     }
     alpha = engine->acc / engine->dt;
     engine->render(alpha);
-
+    if (engine->num_frames == 60)
+        engine->num_frames = 0;
     framecap(start, engine->dt);
 }

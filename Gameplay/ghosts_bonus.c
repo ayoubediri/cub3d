@@ -46,7 +46,7 @@ void	detect_state(t_ghost *ghost)
 	dx = player->pos.x - ghost->ent->pos.x;
 	dy = player->pos.y - ghost->ent->pos.y;
 	dist_sq = dx * dx + dy * dy;
-	detect_radius = 5.0;
+	detect_radius = 10.0;
 	if (dist_sq < detect_radius * detect_radius)
 	{
 		ghost->state = GHOST_STATE_CHASING;

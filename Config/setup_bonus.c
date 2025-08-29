@@ -30,6 +30,7 @@ static void	config_engine(void)
 	engine->dt = 1.0 / (double)engine->target_fps;
 	engine->last = now_seconds();
 	engine->acc = 0.0;
+	engine->num_frames = 0;
 	engine->update = game_update;
 	engine->render = game_render;
 }

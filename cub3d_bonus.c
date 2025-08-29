@@ -18,11 +18,11 @@ int	main(int ac, char **av)
 	{
 		report_error("Usage: cub3d_bonus <map.cub>", NULL);
 		clean_exit(1);
-	}
+	}	
 	setup_config();
 	parse(av[1]);
 	setup_minimap();
 	start_game();
-	clean_exit(0);
+	leave_game();
 	return (0);
 }

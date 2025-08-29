@@ -55,6 +55,7 @@ int	create_ghost_entity(int x, int y)
 		gameplay->ghosts[gameplay->ghost_count].base_speed = 2.0;
 		gameplay->ghosts[gameplay->ghost_count].frightened_speed = 1.6;
 		gameplay->ghosts[gameplay->ghost_count].eaten_speed = 4.0;
+		gameplay->ghosts[gameplay->ghost_count].idx = idx;
 		gameplay->ghost_count++;
 	}
 	return (idx);

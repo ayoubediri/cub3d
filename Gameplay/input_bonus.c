@@ -14,13 +14,13 @@
 
 static int	map_keypress(int key)
 {
-	if (key == XK_w || key == XK_W || key == XK_Up || key == 'w')
+	if (key == XK_w || key == XK_W || key == XK_Up || key == 'w' || key == 1493)
 		return (KEY_W);
-	else if (key == XK_a || key == XK_A || key == 'a')
+	else if (key == XK_a || key == XK_A || key == 'a' || key == 1492)
 		return (KEY_A);
-	else if (key == XK_s || key == XK_S || key == XK_Down || key == 's')
+	else if (key == XK_s || key == XK_S || key == XK_Down || key == 's' || key == 1491)
 		return (KEY_S);
-	else if (key == XK_d || key == XK_D || key == 'd')
+	else if (key == XK_d || key == XK_D || key == 'd' || key == 1514)
 		return (KEY_D);
 	else if (key == XK_Left)
 		return (KEY_LEFT);

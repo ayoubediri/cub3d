@@ -1,0 +1,15 @@
+NO ./textures/custom/texture1.xpm
+SO ./textures/custom/texture2.xpm
+WE ./textures/custom/texture3.xpm
+EA ./textures/custom/texture4.xpm
+
+
+F 139,69,19
+C 135,206,235
+
+1111111111111111
+1000000000000001
+1000000000000001
+1000000N00000001
+1000000000000001
+1111111111111111

@@ -16,19 +16,19 @@
 // * ========= Defines ========== *
 
 # define BUFFER_SIZE 1024
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 800
+# define HEIGHT 600
 # define FPS 60
 # define FOV 60.0
 # define ROT_SPEED 0.05
 # define MOVE_SPEED 0.05
-# define HALF_WIDTH 960
-# define HALF_HEIGHT 540
+# define HALF_WIDTH 400
+# define HALF_HEIGHT 300
 # define MOUSE_SENSITIVITY 0.002
 # define PELLET_U_DIV 3
 # define PELLET_V_DIV 3
-# define GHOST_U_DIV 1.5
-# define GHOST_V_DIV 1.5
+# define GHOST_U_DIV 1.2
+# define GHOST_V_DIV 1.2
 
 # ifndef M_PI
 #  define M_PI		3.14159265358979323846
@@ -41,6 +41,28 @@
 # define SKY_TEXTURE_PATH "textures/sky1.xpm"
 # define GHOST_TEXTURE_PATH "textures/ghost_packman_red_128.xpm"
 # define PELLET_TEXTURE_PATH "textures/frame_8.xpm"
+
+# define START_SCREEN_TEXTURE_PATH "/home/adiri/Desktop/cub3d/assets/start_game/17.xpm"
+
+// enemy textures number 1
+# define ENEMY1_TEXTURE_MED "assets/enemy1/1.xpm"
+# define ENEMY1_TEXTURE_DOWN "assets/enemy1/2.xpm"
+# define ENEMY1_TEXTURE_UP "assets/enemy1/3.xpm"
+
+// enemy textures number 2
+# define ENEMY2_TEXTURE_MED "assets/enemy2/1.xpm"
+# define ENEMY2_TEXTURE_DOWN "assets/enemy2/2.xpm"
+# define ENEMY2_TEXTURE_UP "assets/enemy2/3.xpm"
+
+// enemy textures number 3
+# define ENEMY3_TEXTURE_MED "assets/enemy3/1.xpm"
+# define ENEMY3_TEXTURE_DOWN "assets/enemy3/2.xpm"
+# define ENEMY3_TEXTURE_UP "assets/enemy3/3.xpm"
+
+// sky textures
+# define SKY_TEXTURE_1 "assets/sky/1.xpm"
+# define SKY_TEXTURE_2 "assets/sky/2.xpm"
+# define SKY_TEXTURE_3 "assets/sky/3.xpm"
 
 // * ======== Enums ========== *
 

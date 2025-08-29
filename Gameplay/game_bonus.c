@@ -75,8 +75,6 @@ void update_camera(void)
 
 void	game_update(double dt)
 {
-	(void)dt;
-
 	update_movement();
 	update_camera();
 	minimap_update(dt);
@@ -88,7 +86,7 @@ void	game_update(double dt)
         if (gp && gp->player.ent && gp->player.ent->hp <= 0)
         {
             fprintf(stderr, "Player died\n");
-            clean_exit(0);
+            leave_game();
         }
     }
 
@@ -129,13 +127,54 @@ t_texture load_texture(char *path)
 	return (texture);
 }
 
+t_texture **enemy_texture(void)
+{
+	static t_texture enemy1[4];
+	static t_texture enemy2[4];
+	static t_texture enemy3[4];
+	static t_texture *enemy[3] = {enemy1, enemy2, enemy3};
+	return (enemy);
+}
+
+void init_ghosts_textures(void)
+{
+	t_game		*game;
+	t_texture	**enemy_textures;
+	int			idx;
+	int			i;
+
+	game = get_game();
+	enemy_textures = enemy_texture();
+	i = 0;
+	while (i < game->gameplay.ghost_count )
+	{
+		idx = game->gameplay.ghosts[i].ent->tex_idx;
+		game->gameplay.ghosts[i].ent->texture = &enemy_textures[idx][0];
+		i++;
+	}
+}
+
 void config_textures(void)
 {
 	t_parse		*parse;
 	t_game		*game;
+	t_texture	**enemy;
 
 	parse = get_parse();
 	game = get_game();
+	enemy = enemy_texture();
+	enemy[0][0] = load_texture(ENEMY1_TEXTURE_MED);
+	enemy[0][1] = load_texture(ENEMY1_TEXTURE_DOWN);
+	enemy[0][2] = enemy[0][0];
+	enemy[0][3] = load_texture(ENEMY1_TEXTURE_UP);
+	enemy[1][0] = load_texture(ENEMY2_TEXTURE_MED);
+	enemy[1][1] = load_texture(ENEMY2_TEXTURE_DOWN);
+	enemy[1][2] = enemy[1][0];
+	enemy[1][3] = load_texture(ENEMY2_TEXTURE_UP);
+	enemy[2][0] = load_texture(ENEMY3_TEXTURE_MED);
+	enemy[2][1] = load_texture(ENEMY3_TEXTURE_DOWN);
+	enemy[2][2] = enemy[2][0];
+	enemy[2][3] = load_texture(ENEMY3_TEXTURE_UP);
 	game->wall_textures[WALL_NORTH] = load_texture(parse->no_texture);
 	game->wall_textures[WALL_SOUTH] = load_texture(parse->so_texture);
 	game->wall_textures[WALL_EAST] = load_texture(parse->ea_texture);
@@ -145,6 +184,7 @@ void config_textures(void)
 	game->sky_texture = load_texture(SKY_TEXTURE_PATH);
 	game->gameplay.ghost_texture = load_texture(GHOST_TEXTURE_PATH);
 	game->gameplay.pellet_texture = load_texture(PELLET_TEXTURE_PATH);
+	init_ghosts_textures();
 }
 
 int mouse_handler(int x, int y, t_mlx *mlx)
@@ -163,6 +203,32 @@ int mouse_handler(int x, int y, t_mlx *mlx)
 	rotate_player(player, angle);
 	mlx_mouse_move(get_mlx()->mlx, get_mlx()->win, HALF_WIDTH, HALF_HEIGHT);
 	return (0);
+}
+
+void start_screen(void)
+{
+	t_mlx	*mlx;
+	t_gameplay *gameplay;
+	t_texture  *texture;
+
+	mlx = get_mlx();
+	gameplay = get_gameplay();
+	texture = &gameplay->start_screen_texture;
+	texture->img_ptr = mlx_xpm_file_to_image(mlx->mlx, START_SCREEN_TEXTURE_PATH, &texture->width, &texture->height);
+	if (!texture->img_ptr)
+	{
+		report_error("mlx", "failed to load start screen texture");
+		clean_exit(1);
+	}
+	gameplay->start_screen_texture.addr = mlx_get_data_addr(gameplay->start_screen_texture.img_ptr, &texture->bpp, &texture->line_length, &texture->endian);
+	if (!gameplay->start_screen_texture.addr)
+	{
+		report_error("mlx", "failed to get start screen texture data address");
+		clean_exit(1);
+	}
+	mlx_put_image_to_window(mlx->mlx, mlx->win, gameplay->start_screen_texture.img_ptr, HALF_WIDTH - 256, HALF_HEIGHT - 256);
+	sleep(3);
+	mlx_destroy_image(mlx->mlx, gameplay->start_screen_texture.img_ptr);
 }
 
 void	start_game(void)
@@ -185,6 +251,7 @@ void	start_game(void)
 	mlx->img = mlx_new_image(mlx->mlx, mlx->width, mlx->height);
 	mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bpp, &mlx->line,
 			&mlx->endian);
+	start_screen();
 	config_textures();
 	mlx_mouse_hide(mlx->mlx, mlx->win);
 	mlx_hook(mlx->win, 6, 1L << 6, mouse_handler, NULL);
