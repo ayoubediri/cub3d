@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 11:31:18 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/24 12:02:43 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/29 09:50:17 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,13 +229,13 @@ static void draw_segs_clipped(t_minimap *mm, int ix, int iy, int iw, int ih)
 void minimap_render(void)
 {
     t_gameplay *gameplay;
+    t_game *game;
     t_minimap *mm;
     int px;
     int py;
 
     gameplay = get_gameplay();
-    if (!gameplay)
-        return;
+    game = get_game();
     mm = &gameplay->minimap;
 
     draw_rect(mm->ox, mm->oy, mm->size_px, mm->size_px, mm->col_border);
@@ -262,6 +262,52 @@ void minimap_render(void)
                                                  : (mm->cell_px / 3));
             if (pr < 1) pr = 1;
             draw_circle_clipped(px, py, pr, mm->col_pellet, ix, iy, iw, ih);
+        }
+    }
+
+    if (gameplay && gameplay->ghost_count > 0 && gameplay->ghosts)
+    {
+        for (int ei = 0; ei < gameplay->ghost_count; ++ei)
+        {
+            t_entity *eent = gameplay->ghosts[ei].ent;
+            if (!eent)
+                continue;
+            if (eent->gone || eent->type != ENTITY_GHOST)
+                continue;
+            world_to_minimap(mm, eent->pos.x, eent->pos.y, &px, &py);
+            int er = (int)((eent->radius > 0.0) ? (eent->radius * mm->world_to_px)
+                                                 : (mm->cell_px * 0.4));
+            if (er < 2) er = 2;
+            draw_circle_clipped(px, py, er, 0xFF0000, ix, iy, iw, ih);
+        }
+    }
+
+    if (game && game->map.door_count > 0 && game->map.doors)
+    {
+        for (int di = 0; di < game->map.door_count; ++di)
+        {
+            t_door *door = &game->map.doors[di];
+            if (door->x < 0 || door->y < 0)
+                continue;
+            world_to_minimap(mm, (double)door->x + 0.5, (double)door->y + 0.5, &px, &py);
+            int dw = (int)(mm->cell_px * 0.6);
+            int dh = (int)(mm->cell_px * 0.2);
+            if (dw < 2) dw = 2;
+            if (dh < 1) dh = 1;
+            unsigned int door_color = door->enabled ? 0x00FF00 : 0xFF0000;
+            
+            int rx = px - dw / 2;
+            int ry = py - dh / 2;
+            int rw = dw;
+            int rh = dh;
+            
+            if (rx < ix) { rw -= (ix - rx); rx = ix; }
+            if (ry < iy) { rh -= (iy - ry); ry = iy; }
+            if (rx + rw > ix + iw) rw = ix + iw - rx;
+            if (ry + rh > iy + ih) rh = iy + ih - ry;
+            
+            if (rw > 0 && rh > 0)
+                draw_rect(rx, ry, rw, rh, door_color);
         }
     }
 

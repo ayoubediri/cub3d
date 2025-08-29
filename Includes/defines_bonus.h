@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:48:27 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/24 20:30:44 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/29 09:44:30 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@
 // * ========= Defines ========== *
 
 # define BUFFER_SIZE 1024
-# define WIDTH 800
-# define HEIGHT 600
+# define WIDTH 1920
+# define HEIGHT 1080
 # define FPS 60
 # define FOV 60.0
 # define ROT_SPEED 0.05
 # define MOVE_SPEED 0.05
-# define HALF_WIDTH 400
-# define HALF_HEIGHT 300
+# define HALF_WIDTH 960
+# define HALF_HEIGHT 540
 # define MOUSE_SENSITIVITY 0.002
 # define PELLET_U_DIV 3
 # define PELLET_V_DIV 3
@@ -42,7 +42,7 @@
 # define GHOST_TEXTURE_PATH "textures/ghost_packman_red_128.xpm"
 # define PELLET_TEXTURE_PATH "textures/frame_8.xpm"
 
-# define START_SCREEN_TEXTURE_PATH "/home/adiri/Desktop/cub3d/assets/start_game/17.xpm"
+# define START_SCREEN_TEXTURE_PATH "assets/start_game/17.xpm"
 
 // enemy textures number 1
 # define ENEMY1_TEXTURE_MED "assets/enemy1/1.xpm"
