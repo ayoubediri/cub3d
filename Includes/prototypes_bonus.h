@@ -16,6 +16,7 @@
 // * =========== Gameplay =========== *
 // * Entities *
 void		ghosts_update(double dt);
+void		update_enemy_texture(t_ghost *ghost);
 void		timers_update(double dt);
 int			entity_try_move_by(t_entity *ent, double dx, double dy);
 // * Minimap *
@@ -116,7 +117,7 @@ void		vec2_move_towards(t_vec2 *pos, t_vec2 target, double speed,
 				double dt);
 // * Error Handling *
 void		cleanup(void);
-int			leave_game(void);
+int			leave_game(int exit_code);
 void		ft_free(void *ptr);
 void		clean_exit(int status);
 void		parse_error(char *msg1);
@@ -147,5 +148,8 @@ void		build_border_segs(t_mash *mash, t_map *map, uint32_t color);
 void		move_player(int direction);
 void		move_sideways(t_entity *ent, int direction);
 void		rotate_player(t_entity *ent, double angle);
+
+// music
+void		stop_background_music(void);
 
 #endif

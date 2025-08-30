@@ -53,21 +53,50 @@ t_entity	*check_ent_overlap(t_entity *ent, double x, double y)
 	return (NULL);
 }
 
+
+void win_end(void)
+{
+    t_mlx *mlx;
+    t_texture  win_texture;
+
+    mlx = get_mlx();
+    win_texture.img_ptr = mlx_xpm_file_to_image(mlx->mlx, WIN_TEXTURE_PATH, &win_texture.width, &win_texture.height);
+    if (!win_texture.img_ptr)
+    {
+        fprintf(stderr, "Failed to load win texture SKY\n");
+        leave_game(1);
+    }
+    win_texture.addr = mlx_get_data_addr(win_texture.img_ptr, &win_texture.bpp, &win_texture.line_length, &win_texture.endian);
+    if (!win_texture.addr)
+    {
+        fprintf(stderr, "Failed to get win texture data address\n");
+        mlx_destroy_image(mlx->mlx, win_texture.img_ptr);
+        leave_game(1);
+    }
+    mlx_clear_window(mlx->mlx, mlx->win);
+    stop_background_music();
+    mlx_put_image_to_window(mlx->mlx, mlx->win, win_texture.img_ptr, HALF_WIDTH - 256, HALF_HEIGHT - 256);
+    mlx_do_sync(mlx->mlx);
+    system("aplay -q " WIN_SOUND_PATH " &");
+    mlx_destroy_image(mlx->mlx, win_texture.img_ptr);
+    sleep(9);
+}
+
 void	try_to_eat_pellet(t_entity *pellet)
 {
     t_player *player;
 
     player = &get_gameplay()->player;
 	pellet->gone = 1;
-    system("aplay -q ./assets/sounds/coin.wav &");
+    system("aplay -q " COIN_SOUND_PATH " &");
     player->pellets_collected++;
     if (player->pellets_collected == 5)
         open_all_doors();
     if (player->pellets_collected >= player->pellets_total)
     {
-        // win_end(1);
+        win_end();
         printf("All pellets collected! You win!\n");
-        leave_game();
+        leave_game(0);
     }
 }
 
@@ -166,7 +195,7 @@ int	resolve_overlap(t_entity *ent, double *nx, double *ny)
 		else if (ent->type == ENTITY_GHOST && overlap->type == ENTITY_PLAYER)
 			player_take_dmg(ent->damage);
 		else if (ent->type == ENTITY_GHOST && overlap->type == ENTITY_GHOST)
-			try_repel_slide(ent, nx, ny);
+			// try_repel_slide(ent, nx, ny);
 		return (0);
 	}
 	return (0);

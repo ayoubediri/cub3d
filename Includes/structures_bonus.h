@@ -401,6 +401,8 @@ struct							s_gameplay
 	int							rend_ent_capacity;
 	t_texture					start_screen_texture;
 	t_texture					end_screen_texture;
+	int							start_game_sound;
+	_Atomic pid_t				pid_sound;
 };
 
 // * Parsing *

@@ -18,6 +18,58 @@
 #define PATH_MIN_INTERVAL   0.12 
 #define PATH_FAIL_BACKOFF   0.6 
 
+void	update_enemy_texture(t_ghost *ghost)
+{
+	t_entity	*e;
+	t_texture	**enemy_textures;
+	int			tex_direction_idx;
+	int			animation_cycle;
+	
+	if (!ghost || !ghost->ent)
+		return ;
+	
+	e = ghost->ent;
+	enemy_textures = enemy_texture();
+	
+	/* Ensure tex_idx is within valid range (0-2) */
+	if (e->tex_idx < 0 || e->tex_idx >= 3)
+		e->tex_idx = 0;
+	
+	/* Determine texture index based on movement direction */
+	if (fabs(e->dir.y) > fabs(e->dir.x))
+	{
+		/* Moving more vertically */
+		if (e->dir.y > 0)
+			tex_direction_idx = 1; /* DOWN */
+		else
+			tex_direction_idx = 3; /* UP */
+	}
+	else
+	{
+		/* Moving more horizontally or stationary */
+		tex_direction_idx = 0; /* MED (neutral) */
+	}
+	
+	/* Create per-entity animation using entity index for timing offset */
+	animation_cycle = ((int)(e->path_timer * 20.0) + e->idx * 7) % 4; /* Different timing per entity */
+	
+	/* Apply animation by occasionally switching between available textures */
+	if (animation_cycle == 1 && tex_direction_idx != 1)
+		tex_direction_idx = 2; /* Use texture index 2 for variation */
+	else if (animation_cycle == 3 && tex_direction_idx == 0)
+		tex_direction_idx = 2; /* More variation for neutral state */
+	
+	/* Update the texture pointer */
+	e->texture = &enemy_textures[e->tex_idx][tex_direction_idx];
+	
+	/* Verify the texture is valid */
+	if (!e->texture || !e->texture->img_ptr)
+	{
+		/* Fallback to the default texture */
+		e->texture = &enemy_textures[e->tex_idx][0];
+	}
+}
+
 void	timers_update(double dt)
 {
 	t_gameplay	*gameplay;
@@ -46,7 +98,7 @@ void	detect_state(t_ghost *ghost)
 	dx = player->pos.x - ghost->ent->pos.x;
 	dy = player->pos.y - ghost->ent->pos.y;
 	dist_sq = dx * dx + dy * dy;
-	detect_radius = 10.0;
+	detect_radius = 5.0;
 	if (dist_sq < detect_radius * detect_radius)
 	{
 		ghost->state = GHOST_STATE_CHASING;
@@ -74,6 +126,12 @@ void	ghost_update(t_ghost *ghost, t_entity *player, t_map *map, double dt)
 	{
 		e->vel.x = 0.0;
 		e->vel.y = 0.0;
+		/* Set neutral texture for idle enemies */
+		if (e->texture)
+		{
+			t_texture **enemy_textures = enemy_texture();
+			e->texture = &enemy_textures[e->tex_idx][0]; /* MED texture */
+		}
 		return ;
 	}
 
@@ -142,6 +200,9 @@ void	ghost_update(t_ghost *ghost, t_entity *player, t_map *map, double dt)
 		{
 			e->dir.x = mvx / mlen;
 			e->dir.y = mvy / mlen;
+			
+			/* Update texture based on movement direction */
+			update_enemy_texture(ghost);
 		}
 	}
 }

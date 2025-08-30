@@ -21,7 +21,7 @@ static int	game_loop(void)
 	return (0);
 }
 
-int	leave_game(void)
+int	leave_game(int exit_code)
 {
 	t_game *game;
 	t_mlx	*mlx;
@@ -54,7 +54,8 @@ int	leave_game(void)
 		free(mlx->mlx);
 		mlx->mlx = NULL;
 	}
-	clean_exit(0);
+	stop_background_music();
+	clean_exit(exit_code);
 	return (1);
 }
 
@@ -73,6 +74,44 @@ void update_camera(void)
 	camera->plane.y = camera->dir.x * camera->plane_scale;
 }
 
+void stop_background_music(void)
+{
+	t_gameplay	*gameplay;
+
+	gameplay = get_gameplay();
+	if (gameplay->start_game_sound)
+		kill(gameplay->pid_sound, SIGKILL);
+	gameplay->start_game_sound = 0;
+}
+
+void lose_screen(void)
+{
+	t_mlx		*mlx;
+	t_texture	lose_texture;
+
+	mlx = get_mlx();
+	lose_texture.img_ptr = mlx_xpm_file_to_image(mlx->mlx, LOSE_TEXTURE_PATH, &lose_texture.width, &lose_texture.height);
+	if (!lose_texture.img_ptr)
+	{
+		fprintf(stderr, "Failed to load lose texture\n");
+		leave_game(1);
+	}
+	lose_texture.addr = mlx_get_data_addr(lose_texture.img_ptr, &lose_texture.bpp, &lose_texture.line_length, &lose_texture.endian);
+	if (!lose_texture.addr)
+	{
+		fprintf(stderr, "Failed to get lose texture data address\n");
+		mlx_destroy_image(mlx->mlx, lose_texture.img_ptr);
+		leave_game(1);
+	}
+	stop_background_music();
+	mlx_clear_window(mlx->mlx, mlx->win);
+	mlx_put_image_to_window(mlx->mlx, mlx->win, lose_texture.img_ptr, HALF_WIDTH - 256, HALF_HEIGHT - 256);
+	mlx_do_sync(mlx->mlx);
+	system("aplay -q " LOSE_SOUND_PATH " &");
+	mlx_destroy_image(mlx->mlx, lose_texture.img_ptr);
+	sleep(4);
+}
+
 void	game_update(double dt)
 {
 	update_movement();
@@ -85,8 +124,9 @@ void	game_update(double dt)
         t_gameplay *gp = get_gameplay();
         if (gp && gp->player.ent && gp->player.ent->hp <= 0)
         {
+			lose_screen();
             fprintf(stderr, "Player died\n");
-            leave_game();
+            leave_game(0);
         }
     }
 
@@ -149,6 +189,8 @@ void init_ghosts_textures(void)
 	while (i < game->gameplay.ghost_count )
 	{
 		idx = game->gameplay.ghosts[i].ent->tex_idx;
+		if (idx < 0 || idx >= 3)
+			idx = 0;
 		game->gameplay.ghosts[i].ent->texture = &enemy_textures[idx][0];
 		i++;
 	}
@@ -213,22 +255,54 @@ void start_screen(void)
 
 	mlx = get_mlx();
 	gameplay = get_gameplay();
+	gameplay->start_game_sound = 0;
 	texture = &gameplay->start_screen_texture;
 	texture->img_ptr = mlx_xpm_file_to_image(mlx->mlx, START_SCREEN_TEXTURE_PATH, &texture->width, &texture->height);
 	if (!texture->img_ptr)
 	{
 		report_error("mlx", "failed to load start screen texture");
-		clean_exit(1);
+		leave_game(1);
 	}
 	gameplay->start_screen_texture.addr = mlx_get_data_addr(gameplay->start_screen_texture.img_ptr, &texture->bpp, &texture->line_length, &texture->endian);
 	if (!gameplay->start_screen_texture.addr)
 	{
 		report_error("mlx", "failed to get start screen texture data address");
-		clean_exit(1);
+		leave_game(1);
 	}
 	mlx_put_image_to_window(mlx->mlx, mlx->win, gameplay->start_screen_texture.img_ptr, HALF_WIDTH - 256, HALF_HEIGHT - 256);
 	sleep(3);
 	mlx_destroy_image(mlx->mlx, gameplay->start_screen_texture.img_ptr);
+}
+
+void *start_music_thread(void *arg)
+{
+	(void)arg;
+	t_gameplay *gameplay;
+
+	gameplay = get_gameplay();
+	while (gameplay->start_game_sound)
+	{
+		gameplay->pid_sound = fork();
+		if (gameplay->pid_sound == 0)
+		{
+			execlp("aplay", "aplay", "-q", BACKGROUND_MUSIC_PATH, NULL);
+			exit(1);
+		}
+		waitpid(gameplay->pid_sound, NULL, 0);
+	}
+	return (NULL);
+}
+
+void start_music(void)
+{
+	t_gameplay *gameplay;
+	pthread_t thread;
+
+	gameplay = get_gameplay();
+	gameplay->start_game_sound = 1;
+	gameplay->pid_sound = 0;
+	pthread_create(&thread, NULL, start_music_thread, NULL);
+	pthread_detach(thread);
 }
 
 void	start_game(void)
@@ -240,13 +314,13 @@ void	start_game(void)
 	if (!mlx->mlx)
 	{
 		report_error("mlx", "failed to initialize session");
-		clean_exit(1);
+		leave_game(1);
 	}
 	mlx->win = mlx_new_window(mlx->mlx, mlx->width, mlx->height, "Cub3d");
 	if (!mlx->win)
 	{
 		report_error("mlx", "failed to create window");
-		clean_exit(1);
+		leave_game(1);
 	}
 	mlx->img = mlx_new_image(mlx->mlx, mlx->width, mlx->height);
 	mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bpp, &mlx->line,
@@ -254,6 +328,7 @@ void	start_game(void)
 	start_screen();
 	config_textures();
 	mlx_mouse_hide(mlx->mlx, mlx->win);
+	start_music();
 	mlx_hook(mlx->win, 6, 1L << 6, mouse_handler, NULL);
 	mlx_hook(mlx->win, 17, 1L << 17, leave_game, NULL);
 	mlx_hook(mlx->win, 2, 1L << 0, on_keypress, NULL);

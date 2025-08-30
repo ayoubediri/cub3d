@@ -27,5 +27,11 @@
 # include <unistd.h>
 # include <stdbool.h>
 # include <X11/keysym.h>
+# include <sys/time.h>
+# include <unistd.h>
+# include <signal.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <pthread.h>
 
 #endif

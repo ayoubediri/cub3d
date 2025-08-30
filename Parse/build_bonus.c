@@ -103,8 +103,8 @@ void	fill_rend_ents(void)
 	{
 		if (gameplay->entities[i].type != ENTITY_PLAYER)
 		{
-			gameplay->rend_ents[i].ent = &gameplay->entities[i];
-			gameplay->rend_ents[i].type = gameplay->entities[i].type;
+			gameplay->rend_ents[gameplay->rend_ent_count].ent = &gameplay->entities[i];
+			gameplay->rend_ents[gameplay->rend_ent_count].type = gameplay->entities[i].type;
 			gameplay->rend_ent_count++;
 		}
 		i++;

@@ -26,6 +26,8 @@ static int	map_keypress(int key)
 		return (KEY_LEFT);
 	else if (key == XK_Right)
 		return (KEY_RIGHT);
+	else if (key == XK_Escape)
+		return (KEY_ESC);
 	return (-1);
 }
 
@@ -34,12 +36,12 @@ int	on_keypress(int key)
 	int		keycode;
 	t_game	*game;
 
-	if (key == XK_Escape)
-		return (leave_game());
 	game = get_game();
 	keycode = map_keypress(key);
 	if (keycode != -1)
 		game->keys[keycode] = true;
+	if (key == XK_Escape)
+		return (leave_game(0));
 	return (0);
 }
 

@@ -17,18 +17,18 @@
 
 # define BUFFER_SIZE 1024
 # define WIDTH 1920
-# define HEIGHT 1080
+# define HEIGHT 1010
 # define FPS 60
 # define FOV 60.0
 # define ROT_SPEED 0.05
 # define MOVE_SPEED 0.05
 # define HALF_WIDTH 960
-# define HALF_HEIGHT 540
+# define HALF_HEIGHT 505
 # define MOUSE_SENSITIVITY 0.002
 # define PELLET_U_DIV 3
 # define PELLET_V_DIV 3
-# define GHOST_U_DIV 1.2
-# define GHOST_V_DIV 1.2
+# define GHOST_U_DIV 1.0
+# define GHOST_V_DIV 1.0
 
 # ifndef M_PI
 #  define M_PI		3.14159265358979323846
@@ -58,6 +58,29 @@
 # define ENEMY3_TEXTURE_MED "assets/enemy3/1.xpm"
 # define ENEMY3_TEXTURE_DOWN "assets/enemy3/2.xpm"
 # define ENEMY3_TEXTURE_UP "assets/enemy3/3.xpm"
+
+// enemy textures number 4
+# define ENEMY4_TEXTURE_MED "assets/enemy4/1.xpm"
+# define ENEMY4_TEXTURE_DOWN "assets/enemy4/2.xpm"
+# define ENEMY4_TEXTURE_UP "assets/enemy4/3.xpm"
+
+// win texture
+# define WIN_TEXTURE_PATH "assets/WIN_GAME.xpm"
+
+// win sound
+# define WIN_SOUND_PATH "assets/win_game_sound.wav"
+
+// lose texture
+# define LOSE_TEXTURE_PATH "assets/15.xpm"
+
+// lose sound
+# define LOSE_SOUND_PATH "assets/lose_sound.wav"
+
+// coin sound
+# define COIN_SOUND_PATH "assets/coin-sound.wav"
+
+// back ground music
+# define BACKGROUND_MUSIC_PATH "assets/sounds/back_music_pac_man.wav"
 
 // sky textures
 # define SKY_TEXTURE_1 "assets/sky/1.xpm"
@@ -112,6 +135,7 @@ typedef enum e_key
 	KEY_D,
 	KEY_LEFT,
 	KEY_RIGHT,
+	KEY_ESC,
 	KEY_TOTAL
 }	t_key;
 

@@ -380,20 +380,6 @@ void init_div(t_sprite_info *s)
 	}
 }
 
-// void init_texture(t_sprite_info *s)
-// {
-// 	t_gameplay	*gameplay;
-// 	int			idx;
-// 	gameplay = get_gameplay();
-// 	if (s->type == ENTITY_PELLET)
-// 		s->texture = &gameplay->pellet_texture;
-// 	else
-// 	{
-// 		idx = gameplay->ghosts
-// 		s->texture = &gameplay->ghost_texture;
-// 	}
-// }
-
 void render_sprites(double *z_buffer)
 {
 	t_gameplay  	*gameplay;
@@ -415,22 +401,26 @@ void render_sprites(double *z_buffer)
         }
 		s_info.type = gameplay->rend_ents[i].ent->type;
 		init_div(&s_info);
-		// init_texture(&s_info, );
 		calculate_sprite_transform(gameplay->player.ent, ent[i].ent, &s_info);
 		stripe = s_info.draw_start_x;
 		while (stripe < s_info.draw_end_x)
 		{
-			s_info.tex_x = (int)(512 * (stripe - (-s_info.width / 2 + s_info.screen_x)) *
-						  gameplay->ghost_texture.width / s_info.width) / 512;
-			
 			if (s_info.type == ENTITY_GHOST)
-				draw_sprite_stripe(&s_info, stripe, z_buffer, gameplay->rend_ents[i].ent->texture);
-			if (s_info.type == ENTITY_PELLET)
+			{
+				if (gameplay->rend_ents[i].ent->texture)
+				{
+					s_info.tex_x = (int)(512 * (stripe - (-s_info.width / 2 + s_info.screen_x)) *
+								  gameplay->rend_ents[i].ent->texture->width / s_info.width) / 512;
+					draw_sprite_stripe(&s_info, stripe, z_buffer, gameplay->rend_ents[i].ent->texture);
+				}
+			}
+			else if (s_info.type == ENTITY_PELLET)
+			{
+				s_info.tex_x = (int)(512 * (stripe - (-s_info.width / 2 + s_info.screen_x)) *
+							  gameplay->pellet_texture.width / s_info.width) / 512;
 				draw_sprite_stripe(&s_info, stripe, z_buffer, &gameplay->pellet_texture);
-			if (s_info.type == ENTITY_PELLET)
-				stripe++;
-			else
-				stripe++;
+			}
+			stripe++;
 		}
         i++;
     }
