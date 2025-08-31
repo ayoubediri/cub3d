@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prototypes_bonus.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yjazouli@student.1337.ma <yjazouli>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:57:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/25 18:34:54 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/31 20:00:21 by yjazouli@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void		entity_update_timers(t_entity *ent, double dt);
 void		raycasting(void);
 // * Minimap *
 void		minimap_render(void);
+// * Health-Bar*
+void render_health_ui(void);
 // * Pixel Manipulation *
 void		put_image(void);
 void		clear_image(void);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: yjazouli@student.1337.ma <yjazouli>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 18:23:31 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/24 20:24:09 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/31 20:00:42 by yjazouli@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ void	game_render(double alpha)
 	// clear_image();
 	raycasting();
 	minimap_render();
+	render_health_ui();
 	put_image();
 }
 
