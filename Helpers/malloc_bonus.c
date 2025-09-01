@@ -12,10 +12,10 @@
 
 #include "cub3d_bonus.h"
 
-void *track(void *ptr, size_t size)
+void	*track(void *ptr, size_t size)
 {
-	t_game *game;
-	t_malloc *node;
+	t_game		*game;
+	t_malloc	*node;
 
 	game = get_game();
 	node = malloc(sizeof(t_malloc));
@@ -41,9 +41,9 @@ void *track(void *ptr, size_t size)
 	return (ptr);
 }
 
-void *ft_malloc(size_t size)
+void	*ft_malloc(size_t size)
 {
-	void *ptr;
+	void	*ptr;
 
 	ptr = malloc(size);
 	if (!ptr)
@@ -70,10 +70,10 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	return (ptr);
 }
 
-void *ft_realloc(void *ptr, size_t size)
+void	*ft_realloc(void *ptr, size_t size)
 {
-	t_malloc *curr;
-	void *newptr;
+	t_malloc	*curr;
+	void		*newptr;
 
 	if (!ptr)
 		return (ft_malloc(size));

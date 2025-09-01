@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 13:51:24 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/25 18:38:47 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/01 09:59:14 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,12 @@ void	setup_pacman(t_minimap *minimap, t_gameplay *gameplay)
 	minimap->pacman.scale = 0.75;
 	minimap->pacman.min_radius = 2;
 	minimap->pacman.max_radius = minimap->cell_px / 2;
-	minimap->pacman.radius = minimap->pacman.scale * minimap->cell_px;
+	minimap->pacman.radius = (int)(minimap->pacman.scale
+			* (double)minimap->cell_px);
+	if (minimap->pacman.radius < minimap->pacman.min_radius)
+		minimap->pacman.radius = minimap->pacman.min_radius;
+	if (minimap->pacman.radius > minimap->pacman.max_radius)
+		minimap->pacman.radius = minimap->pacman.max_radius;
 	minimap->pacman.world_to_px = minimap->world_to_px;
 	minimap->pacman.world_offset_x = minimap->world_offset_x;
 	minimap->pacman.world_offset_y = minimap->world_offset_y;
@@ -35,11 +40,11 @@ void	setup_pacman(t_minimap *minimap, t_gameplay *gameplay)
 
 void	setup_cell_size(t_minimap *minimap, t_map *map)
 {
-	int			maxdim;
-	int			denom_w;
-	int			denom_h;
-	int			max_denom;
-	int			preferred;
+	int	maxdim;
+	int	denom_w;
+	int	denom_h;
+	int	max_denom;
+	int	preferred;
 
 	maxdim = imax(map->width, map->height);
 	minimap->cell_px = minimap->size_px / maxdim;

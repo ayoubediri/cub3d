@@ -113,8 +113,10 @@ void	start_entities(void)
 				sizeof(t_pellet));
 	else
 		gameplay->pellets = NULL;
-	gameplay->rend_ent_capacity = gameplay->pellet_capacity + gameplay->ghost_capacity;
-	gameplay->rend_ents = ft_calloc(gameplay->rend_ent_capacity, sizeof(t_rend_ents));
+	gameplay->rend_ent_capacity = gameplay->pellet_capacity
+		+ gameplay->ghost_capacity;
+	gameplay->rend_ents = ft_calloc(gameplay->rend_ent_capacity,
+			sizeof(t_rend_ents));
 }
 
 int	mark_entities(char key, int x, int y)

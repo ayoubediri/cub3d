@@ -27,7 +27,7 @@ t_parse	*get_parse(void)
 	return (&game->parse);
 }
 
-t_map *get_map(void)
+t_map	*get_map(void)
 {
 	t_game	*game;
 

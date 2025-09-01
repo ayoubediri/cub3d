@@ -53,4 +53,3 @@ double	vec2_dir_and_dist(t_vec2 from, t_vec2 to, t_vec2 *out_dir)
 	}
 	return (d);
 }
-

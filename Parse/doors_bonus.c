@@ -20,20 +20,20 @@ int	count_doors(void)
 	int		count;
 	t_parse	*parse;
 
-    y = 0;
-    count = 0;
-    parse = get_parse();
-    while (y < parse->height)
-    {
-        x = 0;
-        len = strlen(parse->map[y]);
-        while (x < len)
-        {
-            if (parse->map[y][x] == 'D')
-                count++;
-            x++;
-        }
-        y++;
-    }
-    return (count);
+	y = 0;
+	count = 0;
+	parse = get_parse();
+	while (y < parse->height)
+	{
+		x = 0;
+		len = strlen(parse->map[y]);
+		while (x < len)
+		{
+			if (parse->map[y][x] == 'D')
+				count++;
+			x++;
+		}
+		y++;
+	}
+	return (count);
 }

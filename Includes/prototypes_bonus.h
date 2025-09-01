@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prototypes_bonus.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli@student.1337.ma <yjazouli>        +#+  +:+       +#+        */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:57:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/31 20:00:21 by yjazouli@st      ###   ########.fr       */
+/*   Updated: 2025/09/01 14:47:10 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,27 @@ void		entity_update_timers(t_entity *ent, double dt);
 // * =========== Graphics =========== *
 // * Raycasting *
 void		raycasting(void);
-// * Minimap *
-void		minimap_render(void);
 // * Health-Bar*
-void render_health_ui(void);
+void		render_health_ui(void);
 // * Pixel Manipulation *
 void		put_image(void);
 void		clear_image(void);
 void		pixel_put(int x, int y, int color);
+// * Minimap *
+void		minimap_render(void);
+void		draw_walls(t_minimap *mm);
+void		draw_pacman(t_pacman *pac);
+void		draw_entities(t_entity *ents);
+void		world_to_minimap(double wx, double wy, int *px, int *py);
+// * Shapes *
+void		draw_arc(t_shape s);
+void		draw_rect(t_shape s);
+void		draw_line(t_shape s);
+void		rect_filler(t_shape s);
+void		draw_circle(t_shape s);
+void		circle_filler(t_shape s);
+void		line_filler(t_shape s, int e2);
+void		arc_filler(t_shape s, double facing, double span);
 
 // * =========== Parsing =========== *
 // * Build *
@@ -115,8 +128,6 @@ char		*ft_strndup(char *str, size_t n);
 double		vec2_dist(t_vec2 a, t_vec2 b);
 double		vec2_dist_sq(t_vec2 a, t_vec2 b);
 double		vec2_dir_and_dist(t_vec2 from, t_vec2 to, t_vec2 *out_dir);
-void		vec2_move_towards(t_vec2 *pos, t_vec2 target, double speed,
-				double dt);
 // * Error Handling *
 void		cleanup(void);
 int			leave_game(int exit_code);
@@ -144,6 +155,8 @@ void		setup_config(void);
 void		setup_minimap(void);
 void		init_mash(t_mash *mash, t_map *map);
 void		minimap_ensure_built(t_minimap *minimap);
+void		add_seg(t_mash *mash, t_seg *seg, uint32_t color);
+void		build_door_segs(t_mash *mash, t_map *map, uint32_t color);
 void		build_border_segs(t_mash *mash, t_map *map, uint32_t color);
 
 // =========== movement =========== //

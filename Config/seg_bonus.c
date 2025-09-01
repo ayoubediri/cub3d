@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 11:25:13 by yjazouli@st       #+#    #+#             */
-/*   Updated: 2025/08/23 15:51:26 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/01 13:37:21 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,6 @@ static void	ensure_seg_capacity(t_mash *mash, int extra)
 	memset(mash->segs + mash->seg_capacity, 0, sizeof(t_seg) * (newcap
 			- mash->seg_capacity));
 	mash->seg_capacity = newcap;
-}
-
-static void	add_seg(t_mash *mash, t_seg *seg, uint32_t color)
-{
-	ensure_seg_capacity(mash, 1);
-	seg->color = color;
-	mash->segs[mash->seg_count] = *seg;
-	mash->seg_count++;
 }
 
 static void	add_tile_h_edges(t_mash *mash, int x, int y, uint32_t color)
@@ -89,6 +81,14 @@ static void	add_tile_v_edges(t_mash *mash, int x, int y, uint32_t color)
 	}
 }
 
+void	add_seg(t_mash *mash, t_seg *seg, uint32_t color)
+{
+	ensure_seg_capacity(mash, 1);
+	seg->color = color;
+	mash->segs[mash->seg_count] = *seg;
+	mash->seg_count++;
+}
+
 void	build_border_segs(t_mash *mash, t_map *map, uint32_t color)
 {
 	int	x;
@@ -109,4 +109,5 @@ void	build_border_segs(t_mash *mash, t_map *map, uint32_t color)
 		}
 		y++;
 	}
+	build_door_segs(mash, map, 0xFF0000);
 }

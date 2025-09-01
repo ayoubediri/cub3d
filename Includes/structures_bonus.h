@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:51:59 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/25 18:32:29 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/01 14:09:35 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -369,9 +369,25 @@ struct							s_shape
 	int							clip_w;
 	int							clip_h;
 
+	int							min_x;
+	int							max_x;
+	int							min_y;
+	int							max_y;
+
 	int							tmp_x;
 	int							tmp_y;
 	int							tmp_err;
+
+	double						tmp_dx;
+	double						tmp_dy;
+	double						tmp_nx;
+	double						tmp_ny;
+	double						tmp_ang;
+	double						tmp_dist;
+	double						tmp_diff;
+
+	double						arc_span;
+	double						arc_facing;
 };
 
 // * Gameplay *
@@ -402,7 +418,7 @@ struct							s_gameplay
 	t_texture					start_screen_texture;
 	t_texture					end_screen_texture;
 	int							start_game_sound;
-	_Atomic pid_t				pid_sound;
+	_Atomic pid_t pid_sound;
 };
 
 // * Parsing *
