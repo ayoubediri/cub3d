@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:51:59 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/01 14:09:35 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/01 17:18:54 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -418,7 +418,7 @@ struct							s_gameplay
 	t_texture					start_screen_texture;
 	t_texture					end_screen_texture;
 	int							start_game_sound;
-	_Atomic pid_t pid_sound;
+	_Atomic pid_t				pid_sound;
 };
 
 // * Parsing *

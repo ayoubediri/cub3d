@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 18:38:05 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/20 19:38:17 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/01 17:19:57 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static int	map_keypress(int key)
 		return (KEY_W);
 	else if (key == XK_a || key == XK_A || key == 'a' || key == 1492)
 		return (KEY_A);
-	else if (key == XK_s || key == XK_S || key == XK_Down || key == 's' || key == 1491)
+	else if (key == XK_s || key == XK_S || key == XK_Down || key == 's'
+		|| key == 1491)
 		return (KEY_S);
 	else if (key == XK_d || key == XK_D || key == 'd' || key == 1514)
 		return (KEY_D);

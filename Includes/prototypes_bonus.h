@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:57:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/01 14:47:10 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/01 17:13:36 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,15 @@ void		arc_filler(t_shape s, double facing, double span);
 // * =========== Parsing =========== *
 // * Build *
 void		build_map(void);
-// * Doors *
-int			count_doors(void);
 // * Parse *
 void		parse(char *path);
 // * Validate *
 void		validate_map(void);
 // * Map *
 void		parse_map_line(char *line);
+// * Doors *
+int			count_doors(void);
+void		add_door(int *door_idx, int cell, int x, int y);
 // * Pellets *
 int			count_pellets(void);
 int			create_pellet_entity(int x, int y);

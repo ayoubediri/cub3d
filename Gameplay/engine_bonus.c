@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 20:08:37 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/21 11:30:59 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/01 17:20:33 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,27 +39,26 @@ static void	framecap(double start, double dt)
 	nanosleep(&rq, NULL);
 }
 
-void game_tick(t_engine *engine)
+void	game_tick(t_engine *engine)
 {
-    double now;
-    double alpha;
-    double start;
-    double elapsed;
+	double	now;
+	double	alpha;
+	double	start;
+	double	elapsed;
 
-    start = now_seconds();
-    now = start;
-    elapsed = now - engine->last;
-    engine->last = now;
-    engine->acc += elapsed;
-
-    while (engine->acc >= engine->dt)
-    {
-        engine->update(engine->dt);
-        engine->acc -= engine->dt;
-    }
-    alpha = engine->acc / engine->dt;
-    engine->render(alpha);
-    if (engine->num_frames == 60)
-        engine->num_frames = 0;
-    framecap(start, engine->dt);
+	start = now_seconds();
+	now = start;
+	elapsed = now - engine->last;
+	engine->last = now;
+	engine->acc += elapsed;
+	while (engine->acc >= engine->dt)
+	{
+		engine->update(engine->dt);
+		engine->acc -= engine->dt;
+	}
+	alpha = engine->acc / engine->dt;
+	engine->render(alpha);
+	if (engine->num_frames == 60)
+		engine->num_frames = 0;
+	framecap(start, engine->dt);
 }

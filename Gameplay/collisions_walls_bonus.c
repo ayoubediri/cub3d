@@ -6,11 +6,21 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 10:33:49 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/25 18:27:22 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/01 17:36:02 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
+
+int	check_door(int x, int y)
+{
+	t_game	*game;
+
+	game = get_game();
+	if (get_door_at(game, x, y) == NULL)
+		return (0);
+	return (!door_is_open(x, y));
+}
 
 int	check_corners(double corners[4][2])
 {
@@ -34,11 +44,8 @@ int	check_corners(double corners[4][2])
 			return (1);
 		if (map->grid[map_y * map->width + map_x] == 1)
 			return (1);
-		if (map->doors_grid[map_y * map->width + map_x] >= 0)
-        {
-            if (!door_is_open(map_x, map_y))
-                return (1);
-        }
+		if (check_door(map_x, map_y))
+			return (1);
 		i++;
 	}
 	return (0);
@@ -89,7 +96,6 @@ int	entity_try_move_by(t_entity *ent, double dx, double dy)
 	ny = ent->pos.y + dy;
 	if (entity_try_move_to(ent, nx, ny))
 		return (1);
-	
 	if (dx != 0.0 && entity_try_move_to(ent, ent->pos.x + dx, ent->pos.y))
 		return (1);
 	if (dy != 0.0 && entity_try_move_to(ent, ent->pos.x, ent->pos.y + dy))

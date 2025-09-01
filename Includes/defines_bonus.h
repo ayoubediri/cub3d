@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:48:27 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/29 09:44:30 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/01 17:19:16 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define GHOST_V_DIV 1.0
 
 # ifndef M_PI
-#  define M_PI		3.14159265358979323846
+#  define M_PI 3.14159265358979323846
 # endif
 
 // * ======== Textures ========== *
@@ -97,9 +97,9 @@ typedef enum e_parse_state
 
 typedef enum e_segtype
 {
-    SEG_DIR_HORIZ,
-    SEG_DIR_VERT,
-    SEG_TOTAL
+	SEG_DIR_HORIZ,
+	SEG_DIR_VERT,
+	SEG_TOTAL
 }	t_segtype;
 
 typedef enum e_entity_type

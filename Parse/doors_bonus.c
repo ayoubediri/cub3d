@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:29:53 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/20 16:46:57 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/01 17:13:25 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,18 @@ int	count_doors(void)
 		y++;
 	}
 	return (count);
+}
+
+void	add_door(int *door_idx, int cell, int x, int y)
+{
+	int		idx;
+	t_map	*map;
+
+	map = get_map();
+	idx = (*door_idx)++;
+	map->doors[idx].x = x;
+	map->doors[idx].y = y;
+	map->doors[idx].enabled = 0;
+	map->doors[idx].linked_index = -1;
+	map->doors_grid[cell] = idx;
 }

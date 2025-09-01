@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 14:32:12 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/24 12:37:11 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/01 17:17:46 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	count_pellets(void)
 int	create_pellet_entity(int x, int y)
 {
 	int			idx;
+	t_pellet	*curr;
 	t_gameplay	*gameplay;
 
 	gameplay = get_gameplay();
@@ -50,7 +51,8 @@ int	create_pellet_entity(int x, int y)
 	gameplay->entities[idx].type = ENTITY_PELLET;
 	if (gameplay->pellets && gameplay->pellet_count < gameplay->pellet_capacity)
 	{
-		gameplay->pellets[gameplay->pellet_count].ent = &gameplay->entities[idx];
+		curr = gameplay->pellets + gameplay->pellet_count;
+		curr->ent = &gameplay->entities[idx];
 		gameplay->pellet_count++;
 	}
 	return (idx);

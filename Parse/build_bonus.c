@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 13:00:56 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/25 15:42:01 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/01 17:15:18 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static void	create_map(void)
 		map->doors[i].x = -1;
 		map->doors[i].y = -1;
 		map->doors[i].enabled = 1;
-		map->doors[i].linked_index = -1;
 		i++;
 	}
 	start_entities();
@@ -59,35 +58,22 @@ static void	fill_line(int y, int width, int len, int *door_idx)
 {
 	int		x;
 	char	key;
-	int		idx;
-	int		cell;
 	int		tile;
 	t_map	*map;
-	t_parse	*parse;
 
 	x = 0;
-	cell = 0;
 	map = get_map();
-	parse = get_parse();
 	while (x < width)
 	{
 		key = ' ';
-		cell = y * width + x;
-		if (x < len && parse->map[y])
-			key = parse->map[y][x];
+		if (x < len && get_parse()->map[y])
+			key = get_parse()->map[y][x];
 		tile = tile_converter(key);
 		if (mark_entities(key, x, y) >= 0)
 			tile = 0;
 		if (tile == 3 && map->doors && *door_idx < map->door_count)
-		{
-			idx = (*door_idx)++;
-			map->doors[idx].x = x;
-			map->doors[idx].y = y;
-			map->doors[idx].enabled = 0;
-			map->doors[idx].linked_index = -1;
-			map->doors_grid[cell] = idx;
-		}
-		map->grid[cell] = tile;
+			add_door(door_idx, y * width + x, x, y);
+		map->grid[y * width + x] = tile;
 		x++;
 	}
 }
@@ -95,6 +81,7 @@ static void	fill_line(int y, int width, int len, int *door_idx)
 void	fill_rend_ents(void)
 {
 	t_gameplay	*gameplay;
+	t_rend_ents	*curr;
 	int			i;
 
 	gameplay = get_gameplay();
@@ -103,8 +90,9 @@ void	fill_rend_ents(void)
 	{
 		if (gameplay->entities[i].type != ENTITY_PLAYER)
 		{
-			gameplay->rend_ents[gameplay->rend_ent_count].ent = &gameplay->entities[i];
-			gameplay->rend_ents[gameplay->rend_ent_count].type = gameplay->entities[i].type;
+			curr = &gameplay->rend_ents[gameplay->rend_ent_count];
+			curr->ent = &gameplay->entities[i];
+			curr->type = gameplay->entities[i].type;
 			gameplay->rend_ent_count++;
 		}
 		i++;
