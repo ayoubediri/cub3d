@@ -97,6 +97,7 @@ void perform_dda(void)
 		if (ray->map_x < 0 || ray->map_x >= map->width || 
 			ray->map_y < 0 || ray->map_y >= map->height)
 			break;
+		
 		if (map->grid[ray->map_y * map->width + ray->map_x] == 1)
 			break;
 	}

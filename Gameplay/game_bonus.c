@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 18:23:31 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/31 20:00:42 by yjazouli@st      ###   ########.fr       */
+/*   Updated: 2025/08/24 20:24:09 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,8 @@ t_texture	**enemy_texture(void)
 	static t_texture enemy1[4];
 	static t_texture enemy2[4];
 	static t_texture enemy3[4];
-	static t_texture *enemy[3] = {enemy1, enemy2, enemy3};
+	static t_texture enemy4[4];
+	static t_texture *enemy[4] = {enemy1, enemy2, enemy3, enemy4};
 	return (enemy);
 }
 
@@ -331,6 +332,7 @@ void	start_screen(void)
 		leave_game(1);
 	}
 	mlx_put_image_to_window(mlx->mlx, mlx->win, gameplay->start_screen_texture.img_ptr, HALF_WIDTH - 256, HALF_HEIGHT - 256);
+	system("aplay -q " START_SCREEN_SOUND_PATH " &");
 	sleep(3);
 	mlx_destroy_image(mlx->mlx, gameplay->start_screen_texture.img_ptr);
 }
