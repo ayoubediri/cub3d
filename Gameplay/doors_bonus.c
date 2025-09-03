@@ -6,80 +6,95 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:49:31 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/01 17:20:42 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/03 10:29:28 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-t_door	*get_door_at(t_game *game, int x, int y)
+int	door_exists(int x, int y)
 {
+	t_game	*game;
 	t_map	*map;
-	int		index;
+	int		idx;
+	int		val;
 
+	game = get_game();
+	if (!game)
+		return (0);
 	map = &game->map;
-	if (x < 0 || x >= map->width || y < 0 || y >= map->height)
-		return (NULL);
-	index = map->doors_grid[y * map->width + x];
-	if (index < 0 || index >= map->door_count)
-		return (NULL);
-	return (&map->doors[index]);
+	if (!map || x < 0 || x >= map->width || y < 0 || y >= map->height)
+		return (0);
+	idx = y * map->width + x;
+	val = map->grid[idx];
+	return (val == 3 || val == 4);
 }
 
 int	door_is_open(int x, int y)
 {
 	t_game	*game;
-	t_door	*door;
+	t_map	*map;
+	int		idx;
 
 	game = get_game();
 	if (!game)
 		return (0);
-	door = get_door_at(game, x, y);
-	if (!door)
+	map = &game->map;
+	if (!map || x < 0 || x >= map->width || y < 0 || y >= map->height)
 		return (0);
-	return (door->enabled);
+	idx = y * map->width + x;
+	return (map->grid[idx] == 4);
 }
 
 void	open_door(int x, int y)
 {
 	t_game	*game;
-	t_door	*door;
+	t_map	*map;
+	int		idx;
 
 	game = get_game();
 	if (!game)
 		return ;
-	door = get_door_at(game, x, y);
-	if (!door)
+	map = &game->map;
+	if (!map || x < 0 || x >= map->width || y < 0 || y >= map->height)
 		return ;
-	door->enabled = 1;
+	idx = y * map->width + x;
+	if (map->grid[idx] == 3)
+		map->grid[idx] = 4;
 }
 
 void	close_door(int x, int y)
 {
 	t_game	*game;
-	t_door	*door;
+	t_map	*map;
+	int		idx;
 
 	game = get_game();
 	if (!game)
 		return ;
-	door = get_door_at(game, x, y);
-	if (!door)
+	map = &game->map;
+	if (!map || x < 0 || x >= map->width || y < 0 || y >= map->height)
 		return ;
-	door->enabled = 0;
+	idx = y * map->width + x;
+	if (map->grid[idx] == 4)
+		map->grid[idx] = 3;
 }
 
-void	open_all_doors(void)
+void	toggle_door_in_front(void)
 {
-	t_game	*game;
-	t_map	*map;
-	int		i;
+	t_gameplay	*gp;
+	t_entity	*player;
+	int			tx;
+	int			ty;
 
-	i = 0;
-	game = get_game();
-	map = &game->map;
-	while (i < map->door_count)
-	{
-		map->doors[i].enabled = 1;
-		i++;
-	}
+	gp = get_gameplay();
+	player = gp->player.ent;
+	tx = (int)round(player->pos.x + player->dir.x);
+	ty = (int)round(player->pos.y + player->dir.y);
+	if (!door_exists(tx, ty))
+		return ;
+	if (door_is_open(tx, ty))
+		close_door(tx, ty);
+	else
+		open_door(tx, ty);
 }

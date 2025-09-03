@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 18:38:05 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/01 17:19:57 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/03 10:29:19 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static int	map_keypress(int key)
 		return (KEY_S);
 	else if (key == XK_d || key == XK_D || key == 'd' || key == 1514)
 		return (KEY_D);
+	else if (key == XK_e || key == XK_E || key == 'e' || key == 1515)
+		return (KEY_E);
 	else if (key == XK_Left)
 		return (KEY_LEFT);
 	else if (key == XK_Right)
@@ -41,6 +43,8 @@ int	on_keypress(int key)
 	keycode = map_keypress(key);
 	if (keycode != -1)
 		game->keys[keycode] = true;
+	if (keycode == KEY_E)
+		toggle_door_in_front();
 	if (key == XK_Escape)
 		return (leave_game(0));
 	return (0);

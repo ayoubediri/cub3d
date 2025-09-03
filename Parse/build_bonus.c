@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 13:00:56 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/01 17:15:18 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/03 10:17:01 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,9 @@ static int	tile_converter(char c)
 
 static void	create_map(void)
 {
-	int		i;
 	t_map	*map;
 	t_parse	*parse;
 
-	i = 0;
 	map = get_map();
 	parse = get_parse();
 	map->width = parse->width;
@@ -39,22 +37,11 @@ static void	create_map(void)
 	map->player_x = parse->player_x;
 	map->player_y = parse->player_y;
 	map->grid = ft_malloc(sizeof(int) * (map->width * map->height));
-	map->doors_grid = ft_malloc(sizeof(int) * (map->width * map->height));
 	memset(map->grid, -1, sizeof(int) * (map->width * map->height));
-	memset(map->doors_grid, -1, sizeof(int) * (map->width * map->height));
-	map->door_count = count_doors();
-	map->doors = ft_malloc(sizeof(t_door) * map->door_count);
-	while (i < map->door_count)
-	{
-		map->doors[i].x = -1;
-		map->doors[i].y = -1;
-		map->doors[i].enabled = 1;
-		i++;
-	}
 	start_entities();
 }
 
-static void	fill_line(int y, int width, int len, int *door_idx)
+static void	fill_line(int y, int width, int len)
 {
 	int		x;
 	char	key;
@@ -71,8 +58,6 @@ static void	fill_line(int y, int width, int len, int *door_idx)
 		tile = tile_converter(key);
 		if (mark_entities(key, x, y) >= 0)
 			tile = 0;
-		if (tile == 3 && map->doors && *door_idx < map->door_count)
-			add_door(door_idx, y * width + x, x, y);
 		map->grid[y * width + x] = tile;
 		x++;
 	}
@@ -104,16 +89,14 @@ void	build_map(void)
 	int		y;
 	int		len;
 	t_game	*game;
-	int		door_idx;
 
 	y = 0;
 	create_map();
-	door_idx = 0;
 	game = get_game();
 	while (y < game->map.height)
 	{
 		len = strlen(game->parse.map[y]);
-		fill_line(y, game->map.width, len, &door_idx);
+		fill_line(y, game->map.width, len);
 		y++;
 	}
 	fill_rend_ents();

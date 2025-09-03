@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 11:05:54 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/25 18:37:26 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/03 10:23:39 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@ void	try_to_eat_pellet(t_entity *pellet)
 	pellet->gone = 1;
     system("aplay -q " COIN_SOUND_PATH " &");
     player->pellets_collected++;
-    if (player->pellets_collected == 5)
-        open_all_doors();
     if (player->pellets_collected >= player->pellets_total)
     {
         win_end();

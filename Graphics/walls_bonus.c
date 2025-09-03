@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 11:12:33 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/01 14:11:05 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/03 10:20:12 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static t_shape	fill_door_coords(t_seg *seg)
 	return (d);
 }
 
-static void	draw_door(t_minimap *mm, t_seg *seg, t_door *door)
+static void	draw_door(t_minimap *mm, t_seg *seg, int enabled)
 {
 	t_shape	d;
 	double	inset;
@@ -58,7 +58,7 @@ static void	draw_door(t_minimap *mm, t_seg *seg, t_door *door)
 	d.p2.x -= (int)(round(d.tmp_nx * inset));
 	d.p2.y -= (int)(round(d.tmp_ny * inset));
 	d.color = seg->color;
-	if (door->enabled)
+	if (enabled)
 		d.color = 0x00FF00;
 	d.clip_x = mm->ox + 2;
 	d.clip_y = mm->oy + 2;
@@ -96,13 +96,17 @@ static void	draw_wall(t_minimap *mm, t_seg *seg)
 
 static void	draw_segment(t_minimap *mm, t_seg *seg)
 {
-	t_door	*door;
+	int	enabled;
 
-	door = get_door_at(get_game(), seg->x, seg->y);
-	if (door && seg->color != mm->col_wall)
-		draw_door(mm, seg, door);
+	if (door_exists(seg->x, seg->y) && seg->color != mm->col_wall)
+	{
+		enabled = door_is_open(seg->x, seg->y);
+		draw_door(mm, seg, enabled);
+	}
 	else
+	{
 		draw_wall(mm, seg);
+	}
 }
 
 void	draw_walls(t_minimap *mm)

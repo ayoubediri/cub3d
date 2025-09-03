@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:51:59 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/01 17:18:54 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/03 09:38:09 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -423,14 +423,6 @@ struct							s_gameplay
 
 // * Parsing *
 
-struct							s_door
-{
-	int							x;
-	int							y;
-	int							enabled;
-	int							linked_index;
-};
-
 struct							s_parse
 {
 	int							fd;
@@ -455,8 +447,7 @@ struct							s_parse
 struct							s_map
 {
 	int							*grid;
-	int							*doors_grid;
-
+	
 	int							width;
 	int							height;
 
@@ -464,8 +455,6 @@ struct							s_map
 	int							player_y;
 	char						player_dir;
 
-	t_door						*doors;
-	int							door_count;
 };
 
 // * General *

@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 10:33:49 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/01 17:36:02 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/03 10:09:26 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 
 int	check_door(int x, int y)
 {
-	t_game	*game;
-
-	game = get_game();
-	if (get_door_at(game, x, y) == NULL)
+	if (!door_exists(x, y))
 		return (0);
 	return (!door_is_open(x, y));
 }
@@ -32,7 +29,7 @@ int	check_corners(double corners[4][2])
 
 	game = get_game();
 	map = &game->map;
-	if (!map || !map->grid || !map->doors_grid)
+	if (!map || !map->grid)
 		return (1);
 	i = 0;
 	while (i < 4)

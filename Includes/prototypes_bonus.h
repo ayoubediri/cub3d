@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:57:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/01 17:13:36 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/03 10:29:41 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ int			on_keyrelease(int key);
 double		now_seconds(void);
 void		game_tick(t_engine *engine);
 // * Doors *
-void		open_all_doors(void);
 void		open_door(int x, int y);
 void		close_door(int x, int y);
+int			door_exists(int x, int y);
 int			door_is_open(int x, int y);
-t_door		*get_door_at(t_game *game, int x, int y);
+void		toggle_door_in_front(void);
 // * Pathfinding *
 int			bfs_init(t_bfs *bfs, int width, int height);
 void		bfs_idx_to_xy(int idx, int w, int *x, int *y);
@@ -89,9 +89,6 @@ void		parse(char *path);
 void		validate_map(void);
 // * Map *
 void		parse_map_line(char *line);
-// * Doors *
-int			count_doors(void);
-void		add_door(int *door_idx, int cell, int x, int y);
 // * Pellets *
 int			count_pellets(void);
 int			create_pellet_entity(int x, int y);

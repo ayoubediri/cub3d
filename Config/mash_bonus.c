@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 11:01:57 by yjazouli@st       #+#    #+#             */
-/*   Updated: 2025/09/01 11:36:55 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/03 10:14:40 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,5 @@ void	minimap_build_cache(t_minimap *mm)
 void	minimap_ensure_built(t_minimap *minimap)
 {
 	if (minimap->mash.dirty)
-	{
-		printf("HERE\n");
 		minimap_build_cache(minimap);
-	}
 }

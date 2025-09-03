@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:00:52 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/25 15:40:00 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/03 10:16:25 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void init_steps(void)
 
 void perform_dda(void)
 {
-	int 		door_idx;
 	t_camera	*camera;
 	t_ray		*ray;
 	t_map		*map;
@@ -97,17 +96,7 @@ void perform_dda(void)
 		if (ray->map_x < 0 || ray->map_x >= map->width || 
 			ray->map_y < 0 || ray->map_y >= map->height)
 			break;
-		
-		door_idx = map->doors_grid[ray->map_y * map->width + ray->map_x];
-        if (door_idx >= 0)
-        {
-            if (!door_is_open(ray->map_x, ray->map_y))
-                break;
-            else
-                continue;
-        }
-		
-		if (map->grid[ray->map_y * map->width + ray->map_x] == 1)
+		if (map->grid[ray->map_y * map->width + ray->map_x] == 1 || map->grid[ray->map_y * map->width + ray->map_x] == 3)
 			break;
 	}
 }
