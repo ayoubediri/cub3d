@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli@student.1337.ma <yjazouli>        +#+  +:+       +#+        */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 18:23:31 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/31 20:00:42 by yjazouli@st      ###   ########.fr       */
+/*   Updated: 2025/09/03 11:11:57 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,11 @@ static int	game_loop(void)
 
 int	leave_game(int exit_code)
 {
-	t_game *game;
+	t_game	*game;
 	t_mlx	*mlx;
-	
+
 	game = get_game();
 	mlx = get_mlx();
-	
 	if (game->gameplay.pellet_texture.img_ptr)
 		mlx_destroy_image(mlx->mlx, game->gameplay.pellet_texture.img_ptr);
 	if (game->gameplay.ghost_texture.img_ptr)
@@ -59,7 +58,7 @@ int	leave_game(int exit_code)
 	return (1);
 }
 
-void update_camera(void)
+void	update_camera(void)
 {
 	t_gameplay	*gameplay;
 	t_camera	*camera;
@@ -74,7 +73,7 @@ void update_camera(void)
 	camera->plane.y = camera->dir.x * camera->plane_scale;
 }
 
-void stop_background_music(void)
+void	stop_background_music(void)
 {
 	t_gameplay	*gameplay;
 
@@ -84,19 +83,21 @@ void stop_background_music(void)
 	gameplay->start_game_sound = 0;
 }
 
-void lose_screen(void)
+void	lose_screen(void)
 {
 	t_mlx		*mlx;
 	t_texture	lose_texture;
 
 	mlx = get_mlx();
-	lose_texture.img_ptr = mlx_xpm_file_to_image(mlx->mlx, LOSE_TEXTURE_PATH, &lose_texture.width, &lose_texture.height);
+	lose_texture.img_ptr = mlx_xpm_file_to_image(mlx->mlx, LOSE_TEXTURE_PATH,
+			&lose_texture.width, &lose_texture.height);
 	if (!lose_texture.img_ptr)
 	{
 		fprintf(stderr, "Failed to load lose texture\n");
 		leave_game(1);
 	}
-	lose_texture.addr = mlx_get_data_addr(lose_texture.img_ptr, &lose_texture.bpp, &lose_texture.line_length, &lose_texture.endian);
+	lose_texture.addr = mlx_get_data_addr(lose_texture.img_ptr,
+			&lose_texture.bpp, &lose_texture.line_length, &lose_texture.endian);
 	if (!lose_texture.addr)
 	{
 		fprintf(stderr, "Failed to get lose texture data address\n");
@@ -105,7 +106,8 @@ void lose_screen(void)
 	}
 	stop_background_music();
 	mlx_clear_window(mlx->mlx, mlx->win);
-	mlx_put_image_to_window(mlx->mlx, mlx->win, lose_texture.img_ptr, HALF_WIDTH - 256, HALF_HEIGHT - 256);
+	mlx_put_image_to_window(mlx->mlx, mlx->win, lose_texture.img_ptr, HALF_WIDTH
+		- 256, HALF_HEIGHT - 256);
 	mlx_do_sync(mlx->mlx);
 	system("aplay -q " LOSE_SOUND_PATH " &");
 	mlx_destroy_image(mlx->mlx, lose_texture.img_ptr);
@@ -114,24 +116,49 @@ void lose_screen(void)
 
 void	game_update(double dt)
 {
+	t_gameplay	*gp;
+
 	update_movement();
 	update_camera();
 	minimap_update(dt);
 	ghosts_update(dt);
 	timers_update(dt);
-
 	{
-        t_gameplay *gp = get_gameplay();
-        if (gp && gp->player.ent && gp->player.ent->hp <= 0)
-        {
+		gp = get_gameplay();
+		if (gp && gp->player.ent && gp->player.ent->hp <= 0)
+		{
 			lose_screen();
-            fprintf(stderr, "Player died\n");
-            leave_game(0);
-        }
-    }
-
+			fprintf(stderr, "Player died\n");
+			leave_game(0);
+		}
+	}
 }
 
+static void	draw_crosshair(void)
+{
+    int		cx = HALF_WIDTH;
+    int		cy = HALF_HEIGHT;
+    int		len = 8;
+    int		gap = 2;
+    uint32_t	color = 0xFFFFFFFF;
+    int		i;
+
+    i = gap + 1;
+    while (i <= len)
+    {
+        pixel_put(cx + i, cy, color);
+        pixel_put(cx - i, cy, color);
+        i++;
+    }
+    i = gap + 1;
+    while (i <= len)
+    {
+        pixel_put(cx, cy + i, color);
+        pixel_put(cx, cy - i, color);
+        i++;
+    }
+    pixel_put(cx, cy, color);
+}
 
 void	game_render(double alpha)
 {
@@ -140,25 +167,27 @@ void	game_render(double alpha)
 	raycasting();
 	minimap_render();
 	render_health_ui();
+	draw_crosshair();
 	put_image();
 }
 
-t_texture load_texture(char *path)
+t_texture	load_texture(char *path)
 {
 	t_mlx		*mlx;
 	t_texture	texture;
 
 	mlx = get_mlx();
 	memset(&texture, 0, sizeof(t_texture));
-	texture.img_ptr = mlx_xpm_file_to_image(mlx->mlx, path, &texture.width, &texture.height);
+	texture.img_ptr = mlx_xpm_file_to_image(mlx->mlx, path, &texture.width,
+			&texture.height);
 	if (!texture.img_ptr)
 	{
 		report_error("mlx", "failed to load texture from path");
 		printf("Texture path: %s\n", path);
 		clean_exit(1);
 	}
-	texture.addr = mlx_get_data_addr(
-		texture.img_ptr, &texture.bpp, &texture.line_length, &texture.endian);
+	texture.addr = mlx_get_data_addr(texture.img_ptr, &texture.bpp,
+			&texture.line_length, &texture.endian);
 	if (!texture.addr)
 	{
 		report_error("mlx", "failed to get texture data address");
@@ -168,16 +197,17 @@ t_texture load_texture(char *path)
 	return (texture);
 }
 
-t_texture **enemy_texture(void)
+t_texture	**enemy_texture(void)
 {
-	static t_texture enemy1[4];
-	static t_texture enemy2[4];
-	static t_texture enemy3[4];
-	static t_texture *enemy[3] = {enemy1, enemy2, enemy3};
+	static t_texture	enemy1[4];
+	static t_texture	enemy2[4];
+	static t_texture	enemy3[4];
+	static t_texture	*enemy[3] = {enemy1, enemy2, enemy3};
+
 	return (enemy);
 }
 
-void init_ghosts_textures(void)
+void	init_ghosts_textures(void)
 {
 	t_game		*game;
 	t_texture	**enemy_textures;
@@ -187,7 +217,7 @@ void init_ghosts_textures(void)
 	game = get_game();
 	enemy_textures = enemy_texture();
 	i = 0;
-	while (i < game->gameplay.ghost_count )
+	while (i < game->gameplay.ghost_count)
 	{
 		idx = game->gameplay.ghosts[i].ent->tex_idx;
 		if (idx < 0 || idx >= 3)
@@ -197,7 +227,7 @@ void init_ghosts_textures(void)
 	}
 }
 
-void config_textures(void)
+void	config_textures(void)
 {
 	t_parse		*parse;
 	t_game		*game;
@@ -230,7 +260,7 @@ void config_textures(void)
 	init_ghosts_textures();
 }
 
-int mouse_handler(int x, int y, t_mlx *mlx)
+int	mouse_handler(int x, int y, t_mlx *mlx)
 {
 	double		dx;
 	double		angle;
@@ -240,7 +270,7 @@ int mouse_handler(int x, int y, t_mlx *mlx)
 	(void)y;
 	dx = x - HALF_WIDTH;
 	if (fabs(dx) < 2)
-        return (0);
+		return (0);
 	angle = dx * MOUSE_SENSITIVITY;
 	player = get_gameplay()->player.ent;
 	rotate_player(player, angle);
@@ -248,38 +278,42 @@ int mouse_handler(int x, int y, t_mlx *mlx)
 	return (0);
 }
 
-void start_screen(void)
+void	start_screen(void)
 {
-	t_mlx	*mlx;
-	t_gameplay *gameplay;
-	t_texture  *texture;
+	t_mlx		*mlx;
+	t_gameplay	*gameplay;
+	t_texture	*texture;
 
 	mlx = get_mlx();
 	gameplay = get_gameplay();
 	gameplay->start_game_sound = 0;
 	texture = &gameplay->start_screen_texture;
-	texture->img_ptr = mlx_xpm_file_to_image(mlx->mlx, START_SCREEN_TEXTURE_PATH, &texture->width, &texture->height);
+	texture->img_ptr = mlx_xpm_file_to_image(mlx->mlx,
+			START_SCREEN_TEXTURE_PATH, &texture->width, &texture->height);
 	if (!texture->img_ptr)
 	{
 		report_error("mlx", "failed to load start screen texture");
 		leave_game(1);
 	}
-	gameplay->start_screen_texture.addr = mlx_get_data_addr(gameplay->start_screen_texture.img_ptr, &texture->bpp, &texture->line_length, &texture->endian);
+	gameplay->start_screen_texture.addr = mlx_get_data_addr(gameplay->start_screen_texture.img_ptr,
+			&texture->bpp, &texture->line_length, &texture->endian);
 	if (!gameplay->start_screen_texture.addr)
 	{
 		report_error("mlx", "failed to get start screen texture data address");
 		leave_game(1);
 	}
-	mlx_put_image_to_window(mlx->mlx, mlx->win, gameplay->start_screen_texture.img_ptr, HALF_WIDTH - 256, HALF_HEIGHT - 256);
+	mlx_put_image_to_window(mlx->mlx, mlx->win,
+		gameplay->start_screen_texture.img_ptr, HALF_WIDTH - 256, HALF_HEIGHT
+		- 256);
 	sleep(3);
 	mlx_destroy_image(mlx->mlx, gameplay->start_screen_texture.img_ptr);
 }
 
-void *start_music_thread(void *arg)
+void	*start_music_thread(void *arg)
 {
-	(void)arg;
-	t_gameplay *gameplay;
+	t_gameplay	*gameplay;
 
+	(void)arg;
 	gameplay = get_gameplay();
 	while (gameplay->start_game_sound)
 	{
@@ -294,10 +328,10 @@ void *start_music_thread(void *arg)
 	return (NULL);
 }
 
-void start_music(void)
+void	start_music(void)
 {
-	t_gameplay *gameplay;
-	pthread_t thread;
+	t_gameplay	*gameplay;
+	pthread_t	thread;
 
 	gameplay = get_gameplay();
 	gameplay->start_game_sound = 1;
