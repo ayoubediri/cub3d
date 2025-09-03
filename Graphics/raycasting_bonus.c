@@ -75,7 +75,6 @@ void perform_dda(void)
 	t_camera	*camera;
 	t_ray		*ray;
 	t_map		*map;
-	int			door_idx;
 
 	camera = get_camera();
 	ray = &camera->ray;
@@ -98,19 +97,6 @@ void perform_dda(void)
 		if (ray->map_x < 0 || ray->map_x >= map->width || 
 			ray->map_y < 0 || ray->map_y >= map->height)
 			break;
-		if (map->grid[ray->map_y * map->width + ray->map_x] == 1 || map->grid[ray->map_y * map->width + ray->map_x] == 3)
-		{
-			door_idx = map->doors_grid[ray->map_y * map->width + ray->map_x];
-			if (door_idx >= 0)
-			{
-				if (!door_is_open(ray->map_x, ray->map_y))
-				{
-					ray->is_door = 1;
-                break;
-			}
-            else
-				continue;
-        }
 		if (map->grid[ray->map_y * map->width + ray->map_x] == 1)
 			break;
 	}
