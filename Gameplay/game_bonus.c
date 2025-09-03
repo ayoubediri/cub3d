@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 18:23:31 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/03 11:11:57 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/08/31 20:00:42 by yjazouli@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,29 @@ static int	game_loop(void)
 	engine = get_engine();
 	game_tick(engine);
 	return (0);
+}
+
+void des_enemy_textures(void)
+{
+	t_texture	**enemy;
+	t_mlx		*mlx;
+
+	enemy = enemy_texture();
+	if (!enemy)
+		return;
+	mlx = get_mlx();
+	mlx_destroy_image(mlx->mlx, enemy[0][0].img_ptr);
+	mlx_destroy_image(mlx->mlx, enemy[0][1].img_ptr);
+	mlx_destroy_image(mlx->mlx, enemy[0][3].img_ptr);
+	mlx_destroy_image(mlx->mlx, enemy[1][0].img_ptr);
+	mlx_destroy_image(mlx->mlx, enemy[1][1].img_ptr);
+	mlx_destroy_image(mlx->mlx, enemy[1][3].img_ptr);
+	mlx_destroy_image(mlx->mlx, enemy[2][0].img_ptr);
+	mlx_destroy_image(mlx->mlx, enemy[2][1].img_ptr);
+	mlx_destroy_image(mlx->mlx, enemy[2][3].img_ptr);
+	mlx_destroy_image(mlx->mlx, enemy[3][0].img_ptr);
+	mlx_destroy_image(mlx->mlx, enemy[3][1].img_ptr);
+	mlx_destroy_image(mlx->mlx, enemy[3][3].img_ptr);
 }
 
 int	leave_game(int exit_code)
@@ -37,6 +60,7 @@ int	leave_game(int exit_code)
 		if (game->wall_textures[i].img_ptr)
 			mlx_destroy_image(mlx->mlx, game->wall_textures[i].img_ptr);
 	}
+	des_enemy_textures();
 	if (game->floor_texture.img_ptr)
 		mlx_destroy_image(mlx->mlx, game->floor_texture.img_ptr);
 	if (game->ceiling_texture.img_ptr)
@@ -184,14 +208,14 @@ t_texture	load_texture(char *path)
 	{
 		report_error("mlx", "failed to load texture from path");
 		printf("Texture path: %s\n", path);
-		clean_exit(1);
+		leave_game(1);
 	}
 	texture.addr = mlx_get_data_addr(texture.img_ptr, &texture.bpp,
 			&texture.line_length, &texture.endian);
 	if (!texture.addr)
 	{
 		report_error("mlx", "failed to get texture data address");
-		clean_exit(1);
+		leave_game(1);
 	}
 	texture.path = path;
 	return (texture);
@@ -199,11 +223,10 @@ t_texture	load_texture(char *path)
 
 t_texture	**enemy_texture(void)
 {
-	static t_texture	enemy1[4];
-	static t_texture	enemy2[4];
-	static t_texture	enemy3[4];
-	static t_texture	*enemy[3] = {enemy1, enemy2, enemy3};
-
+	static t_texture enemy1[4];
+	static t_texture enemy2[4];
+	static t_texture enemy3[4];
+	static t_texture *enemy[3] = {enemy1, enemy2, enemy3};
 	return (enemy);
 }
 
@@ -220,7 +243,7 @@ void	init_ghosts_textures(void)
 	while (i < game->gameplay.ghost_count)
 	{
 		idx = game->gameplay.ghosts[i].ent->tex_idx;
-		if (idx < 0 || idx >= 3)
+		if (idx < 0 || idx >= 4)
 			idx = 0;
 		game->gameplay.ghosts[i].ent->texture = &enemy_textures[idx][0];
 		i++;
@@ -248,6 +271,10 @@ void	config_textures(void)
 	enemy[2][1] = load_texture(ENEMY3_TEXTURE_DOWN);
 	enemy[2][2] = enemy[2][0];
 	enemy[2][3] = load_texture(ENEMY3_TEXTURE_UP);
+	enemy[3][0] = load_texture(ENEMY4_TEXTURE_MED);
+	enemy[3][1] = load_texture(ENEMY4_TEXTURE_DOWN);
+	enemy[3][2] = enemy[3][0];
+	enemy[3][3] = load_texture(ENEMY4_TEXTURE_UP);
 	game->wall_textures[WALL_NORTH] = load_texture(parse->no_texture);
 	game->wall_textures[WALL_SOUTH] = load_texture(parse->so_texture);
 	game->wall_textures[WALL_EAST] = load_texture(parse->ea_texture);
@@ -257,6 +284,7 @@ void	config_textures(void)
 	game->sky_texture = load_texture(SKY_TEXTURE_PATH);
 	game->gameplay.ghost_texture = load_texture(GHOST_TEXTURE_PATH);
 	game->gameplay.pellet_texture = load_texture(PELLET_TEXTURE_PATH);
+	game->gameplay.door_texture_close = load_texture(DOOR_TEXTURE_CLOSE_PATH);
 	init_ghosts_textures();
 }
 
@@ -302,9 +330,7 @@ void	start_screen(void)
 		report_error("mlx", "failed to get start screen texture data address");
 		leave_game(1);
 	}
-	mlx_put_image_to_window(mlx->mlx, mlx->win,
-		gameplay->start_screen_texture.img_ptr, HALF_WIDTH - 256, HALF_HEIGHT
-		- 256);
+	mlx_put_image_to_window(mlx->mlx, mlx->win, gameplay->start_screen_texture.img_ptr, HALF_WIDTH - 256, HALF_HEIGHT - 256);
 	sleep(3);
 	mlx_destroy_image(mlx->mlx, gameplay->start_screen_texture.img_ptr);
 }
@@ -321,7 +347,7 @@ void	*start_music_thread(void *arg)
 		if (gameplay->pid_sound == 0)
 		{
 			execlp("aplay", "aplay", "-q", BACKGROUND_MUSIC_PATH, NULL);
-			exit(1);
+			leave_game(1);
 		}
 		waitpid(gameplay->pid_sound, NULL, 0);
 	}

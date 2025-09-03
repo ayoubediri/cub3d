@@ -75,10 +75,12 @@ void perform_dda(void)
 	t_camera	*camera;
 	t_ray		*ray;
 	t_map		*map;
+	int			door_idx;
 
 	camera = get_camera();
 	ray = &camera->ray;
 	map = get_map();
+	ray->is_door = 0;
 	while (1)
 	{
 		if (ray->side_dist.x < ray->side_dist.y)
@@ -97,6 +99,19 @@ void perform_dda(void)
 			ray->map_y < 0 || ray->map_y >= map->height)
 			break;
 		if (map->grid[ray->map_y * map->width + ray->map_x] == 1 || map->grid[ray->map_y * map->width + ray->map_x] == 3)
+		{
+			door_idx = map->doors_grid[ray->map_y * map->width + ray->map_x];
+			if (door_idx >= 0)
+			{
+				if (!door_is_open(ray->map_x, ray->map_y))
+				{
+					ray->is_door = 1;
+                break;
+			}
+            else
+				continue;
+        }
+		if (map->grid[ray->map_y * map->width + ray->map_x] == 1)
 			break;
 	}
 }
@@ -165,12 +180,32 @@ void calc_tex_x(void)
 	ray->tex_x = tex_x;
 }
 
+void calc_door_texture(t_ray *ray)
+{
+	t_camera	*camera;
+
+	camera = get_camera();
+	ray->texture = &get_gameplay()->door_texture_close;
+	if (ray->hit_side == 0)
+		ray->wall_x = camera->pos.y + ray->perp_wall_dist * ray->dir.y;
+	else
+		ray->wall_x = camera->pos.x + ray->perp_wall_dist * ray->dir.x;
+	ray->wall_x -= floor(ray->wall_x);
+}
+
 void calc_texture(void)
 {
-	calc_perp_wall_dist();
-	calc_wall_tex_idx();
-	calc_tex_x();
+	t_camera	*camera;
+	t_ray		*ray;
 
+	camera = get_camera();
+	ray = &camera->ray;
+	calc_perp_wall_dist();
+	if (ray->is_door)
+		calc_door_texture(ray);
+	else
+		calc_wall_tex_idx();
+	calc_tex_x();
 }
 
 void draw_floor(int x, int y)
@@ -216,7 +251,7 @@ void draw_sky(int x)
 	sky.tex_x = (int)((sky.angle / (2 * M_PI)) * sky.texture->width);
 	sky.tex_x = (sky.tex_x % sky.texture->width + sky.texture->width) % sky.texture->width;
 	y = 0;
-	while (y <= camera->ray.start)
+	while (y <= HEIGHT)
 	{
 		sky.tex_y = (int)(y * sky.texture->height / (HALF_HEIGHT)) % sky.texture->height;
 		sky.color = get_texture_color(sky.texture, sky.tex_x, sky.tex_y);

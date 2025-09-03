@@ -9,6 +9,7 @@
         "time.h": "c",
         "fcntl.h": "c",
         "stdbool.h": "c",
-        "ctype.h": "c"
+        "ctype.h": "c",
+        "cmath": "c"
     }
 }

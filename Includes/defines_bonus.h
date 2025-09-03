@@ -41,6 +41,8 @@
 # define SKY_TEXTURE_PATH "textures/sky1.xpm"
 # define GHOST_TEXTURE_PATH "textures/ghost_packman_red_128.xpm"
 # define PELLET_TEXTURE_PATH "textures/frame_8.xpm"
+# define DOOR_TEXTURE_CLOSE_PATH "assets/door_background (1)/colse_door.xpm"
+# define DOOR_TEXTURE_OPEN_PATH "assets/door_background (1)/open_door.xpm"
 
 # define START_SCREEN_TEXTURE_PATH "assets/start_game/17.xpm"
 
@@ -81,6 +83,10 @@
 
 // back ground music
 # define BACKGROUND_MUSIC_PATH "assets/sounds/back_music_pac_man.wav"
+
+// start screen sound
+# define START_SCREEN_SOUND_PATH "assets/start_music.wav"
+
 
 // sky textures
 # define SKY_TEXTURE_1 "assets/sky/1.xpm"

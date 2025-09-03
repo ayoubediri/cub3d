@@ -131,6 +131,7 @@ struct							s_ray
 	double						perp_wall_dist;
 	double						wall_x;
 	int							tex_x;
+	int							is_door;
 };
 
 // * Minimap *
@@ -419,6 +420,7 @@ struct							s_gameplay
 	t_texture					end_screen_texture;
 	int							start_game_sound;
 	_Atomic pid_t				pid_sound;
+	t_texture					door_texture_close;
 };
 
 // * Parsing *
