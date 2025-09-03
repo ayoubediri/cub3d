@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 16:00:52 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/03 10:16:25 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/03 13:00:52 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ void perform_dda(void)
 		if (ray->map_x < 0 || ray->map_x >= map->width || 
 			ray->map_y < 0 || ray->map_y >= map->height)
 			break;
-		
-		if (map->grid[ray->map_y * map->width + ray->map_x] == 1)
+
+		if (map->grid[ray->map_y * map->width + ray->map_x] == 1 || map->grid[ray->map_y * map->width + ray->map_x] == 3)
 			break;
 	}
 }
