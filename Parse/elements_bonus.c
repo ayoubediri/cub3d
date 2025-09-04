@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:07:56 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/20 11:33:18 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/03 21:34:12 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,18 +103,18 @@ void	parse_elements(char *line)
 	parse = get_parse();
 	while (*line && isspace(*line))
 		line++;
-	if (!strncmp(line, "NO", 2) && isspace(line[2]))
+	if (!strncmp(line, "NO", 2) && isspace(line[2]) && !parse->no_texture)
 		parse->no_texture = parse_texture(&line, "NO");
-	else if (!strncmp(line, "SO", 2) && isspace(line[2]))
+	else if (!strncmp(line, "SO", 2) && isspace(line[2]) && !parse->so_texture)
 		parse->so_texture = parse_texture(&line, "SO");
-	else if (!strncmp(line, "WE", 2) && isspace(line[2]))
+	else if (!strncmp(line, "WE", 2) && isspace(line[2]) && !parse->we_texture)
 		parse->we_texture = parse_texture(&line, "WE");
-	else if (!strncmp(line, "EA", 2) && isspace(line[2]))
+	else if (!strncmp(line, "EA", 2) && isspace(line[2]) && !parse->ea_texture)
 		parse->ea_texture = parse_texture(&line, "EA");
-	else if (*line == 'F')
+	else if (*line == 'F' && isspace(line[1]) && !parse->floor_col)
 		parse->floor_col = parse_xor(line + 1);
-	else if (*line == 'C')
+	else if (*line == 'C' && !parse->ceiling_col)
 		parse->ceiling_col = parse_xor(line + 1);
 	else
-		parse_error("Unknown element");
+		parse_error("Duplicate element");
 }

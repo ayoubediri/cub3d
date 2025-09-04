@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:57:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/03 10:29:41 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/04 12:47:23 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int			entity_try_move_by(t_entity *ent, double dx, double dy);
 void		minimap_update(double dt);
 // * Movement *
 void		update_movement(void);
+int			entity_in_cell(int x, int y);
 int			resolve_overlap(t_entity *ent, double *nx, double *ny);
 int			check_collision(double new_x, double new_y, double radius);
 // * Input *

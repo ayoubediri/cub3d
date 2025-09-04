@@ -6,11 +6,36 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 14:15:18 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/24 12:03:55 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/04 12:47:09 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
+
+int	entity_in_cell(int x, int y)
+{
+	t_gameplay	*gp;
+	t_entity	*ents;
+	int			i;
+	int			ex;
+	int			ey;
+
+	i = 0;
+	gp = get_gameplay();
+	ents = gp->entities;
+	while (i < gp->entity_count)
+	{
+		if (!ents[i].gone)
+		{
+			ex = (int)floor(ents[i].pos.x);
+			ey = (int)floor(ents[i].pos.y);
+			if (ex == x && ey == y)
+				return (1);
+		}
+		i++;
+	}
+	return (0);
+}
 
 void	move_player(int direction)
 {
