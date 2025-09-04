@@ -416,7 +416,6 @@ struct							s_gameplay
 	t_rend_ents					*rend_ents;
 	int							rend_ent_count;
 	int							rend_ent_capacity;
-	t_texture					start_screen_texture;
 	t_texture					end_screen_texture;
 	int							start_game_sound;
 	_Atomic pid_t				pid_sound;

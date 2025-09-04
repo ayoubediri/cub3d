@@ -23,7 +23,7 @@ static int	map_keypress(int key)
 		return (KEY_S);
 	else if (key == XK_d || key == XK_D || key == 'd' || key == 1514)
 		return (KEY_D);
-	else if (key == XK_e || key == XK_E || key == 'e' || key == 1515)
+	else if (key == XK_e || key == XK_E || key == 'e' || key == 1483)
 		return (KEY_E);
 	else if (key == XK_Left)
 		return (KEY_LEFT);
@@ -32,6 +32,22 @@ static int	map_keypress(int key)
 	else if (key == XK_Escape)
 		return (KEY_ESC);
 	return (-1);
+}
+
+void end_game_screen(void)
+{
+	t_mlx		*mlx;
+	t_texture	texture_escape;
+
+	mlx = get_mlx();
+	texture_escape = load_texture(ESCAPE_SCREEN_TEXTURE_PATH);
+	stop_background_music();
+	mlx_clear_window(mlx->mlx, mlx->win);
+	system("aplay -q " ESCAPE_SCREEN_SOUND_PATH " > /dev/null 2>&1 &");
+	mlx_put_image_to_window(mlx->mlx, mlx->win, texture_escape.img_ptr, 448, 0);
+	mlx_do_sync(mlx->mlx);
+	mlx_destroy_image(mlx->mlx, texture_escape.img_ptr);
+	sleep(6);
 }
 
 int	on_keypress(int key)
@@ -46,7 +62,7 @@ int	on_keypress(int key)
 	if (keycode == KEY_E)
 		toggle_door_in_front();
 	if (key == XK_Escape)
-		return (leave_game(0));
+		return (end_game_screen(), leave_game(0));
 	return (0);
 }
 

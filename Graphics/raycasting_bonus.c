@@ -70,6 +70,22 @@ void init_steps(void)
 	}
 }
 
+void dda_calculte(t_ray *ray)
+{
+	if (ray->side_dist.x < ray->side_dist.y)
+	{
+		ray->side_dist.x += ray->delta_dist.x;
+		ray->map_x += ray->step.x;
+		ray->hit_side = 0;
+	}
+	else
+	{
+		ray->side_dist.y += ray->delta_dist.y;
+		ray->map_y += ray->step.y;
+		ray->hit_side = 1;
+	}
+}
+
 void perform_dda(void)
 {
 	t_camera	*camera;
@@ -82,24 +98,20 @@ void perform_dda(void)
 	ray->is_door = 0;
 	while (1)
 	{
-		if (ray->side_dist.x < ray->side_dist.y)
-		{
-			ray->side_dist.x += ray->delta_dist.x;
-			ray->map_x += ray->step.x;
-			ray->hit_side = 0;
-		}
-		else
-		{
-			ray->side_dist.y += ray->delta_dist.y;
-			ray->map_y += ray->step.y;
-			ray->hit_side = 1;
-		}
+		dda_calculte(ray);
 		if (ray->map_x < 0 || ray->map_x >= map->width || 
 			ray->map_y < 0 || ray->map_y >= map->height)
 			break;
-
-		if (map->grid[ray->map_y * map->width + ray->map_x] == 1 || map->grid[ray->map_y * map->width + ray->map_x] == 3)
+		if (map->grid[ray->map_y * map->width + ray->map_x] == 1)
+		{
+			ray->is_door = 0;
 			break;
+		}
+		if (map->grid[ray->map_y * map->width + ray->map_x] == 3)
+		{
+			ray->is_door = 1;
+			break;
+		}
 	}
 }
 

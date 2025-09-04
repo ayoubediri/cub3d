@@ -164,5 +164,7 @@ void		rotate_player(t_entity *ent, double angle);
 
 // music
 void		stop_background_music(void);
+t_texture	load_texture(char *path);
+void		end_game_screen(void);
 
 #endif

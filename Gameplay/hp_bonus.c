@@ -31,6 +31,7 @@ void	player_take_dmg(int dmg)
 		return ;
 	gameplay = get_gameplay();
 	player = gameplay->player.ent;
+	system("aplay -q " PLAYER_HIT_SOUND_PATH " > /dev/null 2>&1 &");
 	entity_apply_damage(player, dmg);
 }
 

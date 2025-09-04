@@ -36,7 +36,7 @@
 
 // * ======== Textures ========== *
 
-# define FLOOR_TEXTURE_PATH "assets/ground.xpm"
+# define FLOOR_TEXTURE_PATH "assets/ground0.xpm"
 # define CEILING_TEXTURE_PATH "textures/wall_1.xpm"
 # define SKY_TEXTURE_PATH "textures/sky1.xpm"
 # define GHOST_TEXTURE_PATH "textures/ghost_packman_red_128.xpm"
@@ -87,6 +87,14 @@
 // start screen sound
 # define START_SCREEN_SOUND_PATH "assets/start_music.wav"
 
+// escepe screen sound
+# define ESCAPE_SCREEN_SOUND_PATH "assets/sad_music.wav"
+
+// ecape screen texture
+# define ESCAPE_SCREEN_TEXTURE_PATH "assets/esc.xpm"
+
+// hurt player sound
+# define PLAYER_HIT_SOUND_PATH "assets/hurt_sound.wav"
 
 // sky textures
 # define SKY_TEXTURE_1 "assets/sky/1.xpm"

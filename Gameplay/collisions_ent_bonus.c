@@ -60,24 +60,12 @@ void win_end(void)
     t_texture  win_texture;
 
     mlx = get_mlx();
-    win_texture.img_ptr = mlx_xpm_file_to_image(mlx->mlx, WIN_TEXTURE_PATH, &win_texture.width, &win_texture.height);
-    if (!win_texture.img_ptr)
-    {
-        fprintf(stderr, "Failed to load win texture SKY\n");
-        leave_game(1);
-    }
-    win_texture.addr = mlx_get_data_addr(win_texture.img_ptr, &win_texture.bpp, &win_texture.line_length, &win_texture.endian);
-    if (!win_texture.addr)
-    {
-        fprintf(stderr, "Failed to get win texture data address\n");
-        mlx_destroy_image(mlx->mlx, win_texture.img_ptr);
-        leave_game(1);
-    }
+    win_texture = load_texture(WIN_TEXTURE_PATH);
     mlx_clear_window(mlx->mlx, mlx->win);
     stop_background_music();
     mlx_put_image_to_window(mlx->mlx, mlx->win, win_texture.img_ptr, HALF_WIDTH - 256, HALF_HEIGHT - 256);
     mlx_do_sync(mlx->mlx);
-    system("aplay -q " WIN_SOUND_PATH " &");
+    system("aplay -q " WIN_SOUND_PATH " > /dev/null 2>&1 &");
     mlx_destroy_image(mlx->mlx, win_texture.img_ptr);
     sleep(9);
 }
@@ -88,7 +76,7 @@ void	try_to_eat_pellet(t_entity *pellet)
 
     player = &get_gameplay()->player;
 	pellet->gone = 1;
-    system("aplay -q " COIN_SOUND_PATH " &");
+    system("aplay -q " COIN_SOUND_PATH " > /dev/null 2>&1 &");
     player->pellets_collected++;
     if (player->pellets_collected >= player->pellets_total)
     {
