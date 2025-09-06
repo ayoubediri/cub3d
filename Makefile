@@ -6,7 +6,7 @@ MLX_DIR := minilibx-linux
 MLX_LIB := $(MLX_DIR)/libmlx.a
 MLX_LINK := -L$(MLX_DIR) -lmlx -lX11 -lXext -lm
 
-SRCS := $(shell find . -name '*.c' -not -path "./minilibx-linux/*")
+SRCS := $(shell find . \( -path "./minilibx-linux" -o -path "./Mandatory" \) -prune -o -name '*.c' -print)
 OBJS := $(SRCS:.c=.o)
 
 all: $(NAME)
