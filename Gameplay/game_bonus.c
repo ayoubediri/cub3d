@@ -21,15 +21,13 @@ static int	game_loop(void)
 	return (0);
 }
 
-void des_enemy_textures(void)
+void destroy_enemy_textures(t_mlx *mlx)
 {
 	t_texture	**enemy;
-	t_mlx		*mlx;
 
 	enemy = enemy_texture();
 	if (!enemy)
 		return;
-	mlx = get_mlx();
 	mlx_destroy_image(mlx->mlx, enemy[0][0].img_ptr);
 	mlx_destroy_image(mlx->mlx, enemy[0][1].img_ptr);
 	mlx_destroy_image(mlx->mlx, enemy[0][3].img_ptr);
@@ -44,31 +42,37 @@ void des_enemy_textures(void)
 	mlx_destroy_image(mlx->mlx, enemy[3][3].img_ptr);
 }
 
-int	leave_game(int exit_code)
+void destroy_wall(t_mlx *mlx , t_game *game)
 {
-	t_game	*game;
-	t_mlx	*mlx;
+	int	i;
 
-	game = get_game();
-	mlx = get_mlx();
+	i = 0;
+	while (i < WALL_TOTAL)
+	{
+		if (game->wall_textures[i].img_ptr)
+			mlx_destroy_image(mlx->mlx, game->wall_textures[i].img_ptr);
+		i++;
+	}
+}
+
+void destroy_other_textures(t_mlx *mlx, t_game *game)
+{
 	if (game->gameplay.door_texture_close.img_ptr)
 		mlx_destroy_image(mlx->mlx, game->gameplay.door_texture_close.img_ptr);
 	if (game->gameplay.pellet_texture.img_ptr)
 		mlx_destroy_image(mlx->mlx, game->gameplay.pellet_texture.img_ptr);
 	if (game->gameplay.ghost_texture.img_ptr)
 		mlx_destroy_image(mlx->mlx, game->gameplay.ghost_texture.img_ptr);
-	for (int i = 0; i < WALL_TOTAL; i++)
-	{
-		if (game->wall_textures[i].img_ptr)
-			mlx_destroy_image(mlx->mlx, game->wall_textures[i].img_ptr);
-	}
-	des_enemy_textures();
 	if (game->floor_texture.img_ptr)
 		mlx_destroy_image(mlx->mlx, game->floor_texture.img_ptr);
 	if (game->ceiling_texture.img_ptr)
 		mlx_destroy_image(mlx->mlx, game->ceiling_texture.img_ptr);
 	if (game->sky_texture.img_ptr)
 		mlx_destroy_image(mlx->mlx, game->sky_texture.img_ptr);
+}
+
+void destroy_mlx(t_mlx *mlx)
+{
 	if (mlx->img)
 		mlx_destroy_image(mlx->mlx, mlx->img);
 	if (mlx->win)
@@ -79,6 +83,19 @@ int	leave_game(int exit_code)
 		free(mlx->mlx);
 		mlx->mlx = NULL;
 	}
+}
+
+int	leave_game(int exit_code)
+{
+	t_game	*game;
+	t_mlx	*mlx;
+
+	game = get_game();
+	mlx = get_mlx();
+	destroy_wall(mlx, game);
+	destroy_enemy_textures(mlx);
+	destroy_other_textures(mlx, game);
+	destroy_mlx(mlx);
 	stop_background_music();
 	clean_exit(exit_code);
 	return (1);
@@ -97,6 +114,11 @@ void	update_camera(void)
 	camera->dir.y = gameplay->player.ent->dir.y;
 	camera->plane.x = -camera->dir.y * camera->plane_scale;
 	camera->plane.y = camera->dir.x * camera->plane_scale;
+	camera->floor.dir_x0 = camera->dir.x - camera->plane.x;
+	camera->floor.dir_y0 = camera->dir.y - camera->plane.y;
+	camera->floor.dir_x1 = camera->dir.x + camera->plane.x;
+	camera->floor.dir_y1 = camera->dir.y + camera->plane.y;
+	camera->floor.player_z = HALF_HEIGHT;
 }
 
 void	stop_background_music(void)
@@ -135,51 +157,21 @@ void	game_update(double dt)
 	minimap_update(dt);
 	ghosts_update(dt);
 	timers_update(dt);
+	gp = get_gameplay();
+	if (gp && gp->player.ent && gp->player.ent->hp <= 0)
 	{
-		gp = get_gameplay();
-		if (gp && gp->player.ent && gp->player.ent->hp <= 0)
-		{
-			lose_screen();
-			fprintf(stderr, "Player died\n");
-			leave_game(0);
-		}
+		lose_screen();
+		fprintf(stderr, "Player died\n");
+		leave_game(0);
 	}
-}
-
-static void	draw_crosshair(void)
-{
-    int		cx = HALF_WIDTH;
-    int		cy = HALF_HEIGHT;
-    int		len = 8;
-    int		gap = 2;
-    uint32_t	color = 0xFFFFFFFF;
-    int		i;
-
-    i = gap + 1;
-    while (i <= len)
-    {
-        pixel_put(cx + i, cy, color);
-        pixel_put(cx - i, cy, color);
-        i++;
-    }
-    i = gap + 1;
-    while (i <= len)
-    {
-        pixel_put(cx, cy + i, color);
-        pixel_put(cx, cy - i, color);
-        i++;
-    }
-    pixel_put(cx, cy, color);
 }
 
 void	game_render(double alpha)
 {
 	(void)alpha;
-	// clear_image();
 	raycasting();
 	minimap_render();
 	render_health_ui();
-	draw_crosshair();
 	put_image();
 }
 
@@ -239,15 +231,8 @@ void	init_ghosts_textures(void)
 	}
 }
 
-void	config_textures(void)
+void load_enemy(t_texture **enemy)
 {
-	t_parse		*parse;
-	t_game		*game;
-	t_texture	**enemy;
-
-	parse = get_parse();
-	game = get_game();
-	enemy = enemy_texture();
 	enemy[0][0] = load_texture(ENEMY1_TEXTURE_MED);
 	enemy[0][1] = load_texture(ENEMY1_TEXTURE_DOWN);
 	enemy[0][2] = enemy[0][0];
@@ -264,16 +249,35 @@ void	config_textures(void)
 	enemy[3][1] = load_texture(ENEMY4_TEXTURE_DOWN);
 	enemy[3][2] = enemy[3][0];
 	enemy[3][3] = load_texture(ENEMY4_TEXTURE_UP);
+}
+
+void load_wall_textures(t_game *game)
+{
+	t_parse	*parse;
+
+	parse = get_parse();
 	game->wall_textures[WALL_NORTH] = load_texture(parse->no_texture);
 	game->wall_textures[WALL_SOUTH] = load_texture(parse->so_texture);
 	game->wall_textures[WALL_EAST] = load_texture(parse->ea_texture);
 	game->wall_textures[WALL_WEST] = load_texture(parse->we_texture);
+}
+
+void load_other_textures(t_game *game)
+{
 	game->floor_texture = load_texture(FLOOR_TEXTURE_PATH);
-	game->ceiling_texture = load_texture(CEILING_TEXTURE_PATH);
 	game->sky_texture = load_texture(SKY_TEXTURE_PATH);
 	game->gameplay.ghost_texture = load_texture(GHOST_TEXTURE_PATH);
 	game->gameplay.pellet_texture = load_texture(PELLET_TEXTURE_PATH);
-	game->gameplay.door_texture_close = load_texture(DOOR_TEXTURE_CLOSE_PATH);
+	game->gameplay.door_texture_close = load_texture(DOOR_TEXTURE_CLOSE_PATH);}
+
+void	config_textures(void)
+{
+	t_game		*game;
+
+	game = get_game();
+	load_enemy(enemy_texture());
+	load_wall_textures(game);
+	load_other_textures(game);
 	init_ghosts_textures();
 }
 

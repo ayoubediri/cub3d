@@ -85,7 +85,7 @@ int	add_entity(int x, int y)
 	gameplay->entities[idx].path_idx = 0;
 	gameplay->entities[idx].path_timer = 0.0;
 	gameplay->entities[idx].idx = idx;
-	gameplay->entities[idx].tex_idx = (x + y) % 3;
+	gameplay->entities[idx].tex_idx = (x + y) % 4;
 	gameplay->entities[idx].texture = NULL;
 	entity_set_hp(&gameplay->entities[idx], 10);
 	return (idx);

@@ -321,6 +321,7 @@ struct							s_camera
 	t_vec2						dir;
 	t_vec2						plane;
 	t_ray						ray;
+	t_floor						floor;
 	double						fov;
 	double						plane_scale;
 };

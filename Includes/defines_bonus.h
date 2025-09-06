@@ -38,7 +38,7 @@
 
 # define FLOOR_TEXTURE_PATH "assets/ground0.xpm"
 # define CEILING_TEXTURE_PATH "textures/wall_1.xpm"
-# define SKY_TEXTURE_PATH "textures/sky1.xpm"
+# define SKY_TEXTURE_PATH "assets/panoramic-sea.xpm"
 # define GHOST_TEXTURE_PATH "textures/ghost_packman_red_128.xpm"
 # define PELLET_TEXTURE_PATH "textures/frame_8.xpm"
 # define DOOR_TEXTURE_CLOSE_PATH "assets/door_background (1)/colse_door.xpm"

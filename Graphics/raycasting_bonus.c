@@ -22,8 +22,8 @@ void init_raycasting(int x)
 	ray->camera_x = 2 * x / (double)WIDTH - 1;
 	ray->dir.x = camera->dir.x + camera->plane.x * ray->camera_x;
 	ray->dir.y = camera->dir.y + camera->plane.y * ray->camera_x;
-	ray->map_x = (int)camera->pos.x;
-	ray->map_y = (int)camera->pos.y;
+	ray->map_x = camera->pos.x;
+	ray->map_y = camera->pos.y;
 	ray->delta_dist.x = fabs(1 / ray->dir.x);
 	ray->delta_dist.y = fabs(1 / ray->dir.y);
 	ray->hit_side = 0;
@@ -43,8 +43,8 @@ unsigned int get_texture_color(t_texture *texture, int x, int y)
 
 void init_steps(void)
 {
-	t_camera	*camera;
-	t_ray		*ray;
+	t_camera		*camera;
+	t_ray			*ray;
 
 	camera = get_camera();
 	ray = &camera->ray;
@@ -88,9 +88,9 @@ void dda_calculte(t_ray *ray)
 
 void perform_dda(void)
 {
-	t_camera	*camera;
-	t_ray		*ray;
-	t_map		*map;
+	t_camera		*camera;
+	t_ray			*ray;
+	t_map			*map;
 
 	camera = get_camera();
 	ray = &camera->ray;
@@ -127,10 +127,10 @@ void calc_perp_wall_dist(void)
 	else
 		ray->perp_wall_dist = (ray->map_y - camera->pos.y + (1 - ray->step.y) / 2) / ray->dir.y;
 	ray->height = (int)(HEIGHT / ray->perp_wall_dist);
-	ray->start = -ray->height / 2 + HEIGHT / 2;
+	ray->start = -ray->height / 2 + HALF_HEIGHT;
 	if (ray->start < 0)
 		ray->start = 0;
-	ray->end = ray->height / 2 + HEIGHT / 2;
+	ray->end = ray->height / 2 + HALF_HEIGHT;
 	if (ray->end >= HEIGHT)
 		ray->end = HEIGHT - 1;
 }
@@ -211,27 +211,22 @@ void draw_floor(int x, int y)
 {
 	t_camera	*camera;
 	t_texture	*floor_txt;
-	t_floor		info;
+	t_floor		*info;
 
 	camera = get_camera();
 	floor_txt = &get_game()->floor_texture;
-	info.player_z = HALF_HEIGHT;
-	info.dir_x0 = camera->dir.x - camera->plane.x;
-	info.dir_y0 = camera->dir.y - camera->plane.y;
-	info.dir_x1 = camera->dir.x + camera->plane.x;
-	info.dir_y1 = camera->dir.y + camera->plane.y;
+	info = &camera->floor;
 	while (y < HEIGHT)
 	{
-		info.row_distance = info.player_z / (y - HEIGHT / 2);
-		info.floor_step_x = info.row_distance * (info.dir_x1 - info.dir_x0) / WIDTH;
-		info.floor_step_y = info.row_distance * (info.dir_y1 - info.dir_y0) / WIDTH;
-		info.floor_x = camera->pos.x + info.row_distance * info.dir_x0 + info.floor_step_x * x;
-		info.floor_y = camera->pos.y + info.row_distance * info.dir_y0 + info.floor_step_y * x;
-		info.tex_x = (int)(info.floor_x * floor_txt->width) % floor_txt->width;
-		info.tex_y = (int)(info.floor_y * floor_txt->height) % floor_txt->height;
-		info.color = *(unsigned int *)(floor_txt->addr +
-			(info.tex_y * floor_txt->line_length + info.tex_x * (floor_txt->bpp / 8)));
-		pixel_put(x, y, info.color);
+		info->row_distance = info->player_z / (y - HALF_HEIGHT);
+		info->floor_step_x = info->row_distance * (info->dir_x1 - info->dir_x0) / WIDTH;
+		info->floor_step_y = info->row_distance * (info->dir_y1 - info->dir_y0) / WIDTH;
+		info->floor_x = camera->pos.x + info->row_distance * info->dir_x0 + info->floor_step_x * x;
+		info->floor_y = camera->pos.y + info->row_distance * info->dir_y0 + info->floor_step_y * x;
+		info->tex_x = (int)(info->floor_x * floor_txt->width) % floor_txt->width;
+		info->tex_y = (int)(info->floor_y * floor_txt->height) % floor_txt->height;
+		info->color = get_texture_color(floor_txt, info->tex_x, info->tex_y);
+		pixel_put(x, y, info->color);
 		y++;
 	}
 }
@@ -250,9 +245,9 @@ void draw_sky(int x)
 	sky.tex_x = (int)((sky.angle / (2 * M_PI)) * sky.texture->width);
 	sky.tex_x = (sky.tex_x % sky.texture->width + sky.texture->width) % sky.texture->width;
 	y = 0;
-	while (y <= HEIGHT)
+	while (y <= HALF_HEIGHT)
 	{
-		sky.tex_y = (int)(y * sky.texture->height / (HALF_HEIGHT)) % sky.texture->height;
+		sky.tex_y = (int)(y * sky.texture->height / HEIGHT) % sky.texture->height;
 		sky.color = get_texture_color(sky.texture, sky.tex_x, sky.tex_y);
 		pixel_put(x, y, sky.color);
 		y++;
@@ -460,9 +455,9 @@ void draw_sprites(double *z_buffer)
 
 void raycasting(void)
 {
-	int	x;
-	double z_buffer[WIDTH];
-	t_camera	*camera;
+	int				x;
+	double			z_buffer[WIDTH];
+	t_camera		*camera;
 
 	x = 0;
 	camera = get_camera();
