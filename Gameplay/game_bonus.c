@@ -148,12 +148,26 @@ void	lose_screen(void)
 	sleep(4);
 }
 
+
+void update_coins_text(double dt)
+{
+	static double	last_update_time = 0.0;
+	int				idx;
+
+	last_update_time += dt;
+	if (last_update_time > TOTAL_FRAMES_SECONDS)
+		last_update_time -= TOTAL_FRAMES_SECONDS;
+	idx = (int)(last_update_time / (FLIB_COINS_ANIM_TIME));
+	get_gameplay()->pellet_texture = get_coin_texture()[idx];
+}
+
 void	game_update(double dt)
 {
 	t_gameplay	*gp;
 
 	update_movement();
 	update_camera();
+	update_coins_text(dt);
 	minimap_update(dt);
 	ghosts_update(dt);
 	timers_update(dt);
@@ -268,7 +282,49 @@ void load_other_textures(t_game *game)
 	game->sky_texture = load_texture(SKY_TEXTURE_PATH);
 	game->gameplay.ghost_texture = load_texture(GHOST_TEXTURE_PATH);
 	game->gameplay.pellet_texture = load_texture(PELLET_TEXTURE_PATH);
-	game->gameplay.door_texture_close = load_texture(DOOR_TEXTURE_CLOSE_PATH);}
+	game->gameplay.door_texture_close = load_texture(DOOR_TEXTURE_CLOSE_PATH);
+}
+
+t_texture *get_coin_texture(void)
+{
+	static t_texture coin_textures[34];
+
+	return (coin_textures);
+}
+
+char *get_coin_texture_path(int index)
+{
+	char	*path;
+	int		len;
+
+	len = snprintf(NULL, 0, "%s%d.xpm", COIN_TEXTURE_PATH, index);
+	path = ft_malloc(len + 1);
+	if (!path)
+		return (NULL);
+	snprintf(path, len + 1, "%s%d.xpm", COIN_TEXTURE_PATH, index);
+	return (path);
+}
+
+void load_coins_textures(void)
+{
+	t_texture	*coin_textures;
+	int			i;
+	char		*path;
+
+	coin_textures = get_coin_texture();
+	i = 0;
+	while (i < 34)
+	{
+		path = get_coin_texture_path(i + 1);
+		if (!path)
+		{
+			report_error("malloc", "failed to allocate memory for coin texture path");
+			leave_game(1);
+		}
+		coin_textures[i] = load_texture(path);
+		i++;
+	}
+}
 
 void	config_textures(void)
 {
@@ -277,6 +333,7 @@ void	config_textures(void)
 	game = get_game();
 	load_enemy(enemy_texture());
 	load_wall_textures(game);
+	load_coins_textures();
 	load_other_textures(game);
 	init_ghosts_textures();
 }
@@ -289,7 +346,7 @@ int	mouse_handler(int x, int y, t_mlx *mlx)
 
 	(void)y;
 	dx = x - HALF_WIDTH;
-	if (fabs(dx) < 2)
+	if (fabs(dx) < 2 || mlx->blocked)
 		return (0);
 	angle = dx * MOUSE_SENSITIVITY;
 	player = get_gameplay()->player.ent;
@@ -371,6 +428,7 @@ void init_window_screen(void)
 	mlx->img = mlx_new_image(mlx->mlx, mlx->width, mlx->height);
 	mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bpp, &mlx->line,
 			&mlx->endian);
+	mlx->blocked = 1;
 }
 
 void init_game(void)

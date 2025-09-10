@@ -41,7 +41,6 @@ typedef struct s_game			t_game;
 typedef struct s_vec2			t_vec2;
 typedef struct s_map			t_map;
 typedef struct s_ray			t_ray;
-typedef struct s_bfs			t_bfs;
 typedef struct s_texture		t_texture;
 typedef struct s_floor			t_floor;
 typedef struct s_sky			t_sky;
@@ -55,29 +54,6 @@ struct							s_vec2
 	double						y;
 };
 
-struct							s_bfs
-{
-	int							n;
-	int							width;
-	int							height;
-
-	int							*came;
-	int							*queue;
-	int							*visited;
-
-	int							queue_end;
-	int							queue_start;
-	int							queue_capacity;
-
-	int							start;
-	int							goal;
-
-	int							*path;
-	int							path_length;
-	int							path_capacity;
-
-	int							visit_stamp;
-};
 
 // textures
 struct							s_texture
@@ -225,7 +201,6 @@ struct							s_entity
 
 	double						radius;
 	int							path_idx;
-	t_bfs						pathfinder;
 	double						path_timer;
 
 	int							hp;
@@ -247,7 +222,6 @@ struct							s_ghost
 	t_entity					*ent;
 
 	uint32_t					color;
-	int							idx;
 	t_vec2						spawn_point;
 
 	t_ghost_state				state;
@@ -337,6 +311,7 @@ struct							s_mlx
 	int							width;
 	int							endian;
 	int							height;
+	int							blocked;
 };
 
 struct							s_engine
@@ -346,7 +321,6 @@ struct							s_engine
 	double						last;
 
 	int							target_fps;
-	unsigned long long			num_frames;
 
 	void						(*update)(double);
 	void						(*render)(double);

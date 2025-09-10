@@ -80,8 +80,6 @@ int	add_entity(int x, int y)
 	gameplay->entities[idx].pos.x = x + 0.5;
 	gameplay->entities[idx].pos.y = y + 0.5;
 	gameplay->entities[idx].prev = gameplay->entities[idx].pos;
-	bfs_init(&gameplay->entities[idx].pathfinder, get_map()->width,
-		get_map()->height);
 	gameplay->entities[idx].path_idx = 0;
 	gameplay->entities[idx].path_timer = 0.0;
 	gameplay->entities[idx].idx = idx;

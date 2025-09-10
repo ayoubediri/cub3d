@@ -57,7 +57,6 @@ int	create_ghost_entity(int x, int y)
 		curr->base_speed = 2.0;
 		curr->frightened_speed = 1.6;
 		curr->eaten_speed = 4.0;
-		curr->idx = idx;
 		gameplay->ghost_count++;
 	}
 	return (idx);

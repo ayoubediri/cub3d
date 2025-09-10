@@ -66,6 +66,13 @@
 # define ENEMY4_TEXTURE_DOWN "assets/enemy4/2.xpm"
 # define ENEMY4_TEXTURE_UP "assets/enemy4/3.xpm"
 
+// coin texture path
+# define COIN_TEXTURE_PATH "assets/coin/coin_"
+
+// coin animation time
+# define FLIB_COINS_ANIM_TIME 0.11764705882
+# define TOTAL_FRAMES_SECONDS 4.0
+
 // win texture
 # define WIN_TEXTURE_PATH "assets/WIN_GAME.xpm"
 

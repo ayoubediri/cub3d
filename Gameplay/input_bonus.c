@@ -58,7 +58,10 @@ int	on_keypress(int key)
 	game = get_game();
 	keycode = map_keypress(key);
 	if (keycode != -1)
+	{
+		game->mlx.blocked = 0;
 		game->keys[keycode] = true;
+	}
 	if (keycode == KEY_E)
 		toggle_door_in_front();
 	if (key == XK_Escape)

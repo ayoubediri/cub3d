@@ -38,13 +38,6 @@ void		close_door(int x, int y);
 int			door_exists(int x, int y);
 int			door_is_open(int x, int y);
 void		toggle_door_in_front(void);
-// * Pathfinding *
-int			bfs_init(t_bfs *bfs, int width, int height);
-void		bfs_idx_to_xy(int idx, int w, int *x, int *y);
-int			request_path(t_entity *ent, double x, double y);
-void		follow_path(t_entity *ent, double dt, double speed);
-int			bfs_find_path(t_bfs *bfs, t_map *map, int sx, int sy, int tx,
-				int ty);
 // * game *
 void		start_game(void);
 void		game_update(double dt);
@@ -167,5 +160,6 @@ void		rotate_player(t_entity *ent, double angle);
 void		stop_background_music(void);
 t_texture	load_texture(char *path);
 void		end_game_screen(void);
+t_texture	*get_coin_texture(void);
 
 #endif

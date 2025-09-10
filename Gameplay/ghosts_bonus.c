@@ -12,64 +12,6 @@
 
 #include "cub3d_bonus.h"
 
-#define PATH_REQUEST_INTERVAL 0.2
-#define GHOST_BASE_SPEED 2.0
-#define PATH_RECALC_DIST    0.9 
-#define PATH_MIN_INTERVAL   0.12 
-#define PATH_FAIL_BACKOFF   0.6 
-
-void	update_enemy_texture(t_ghost *ghost)
-{
-	t_entity	*e;
-	t_texture	**enemy_textures;
-	int			tex_direction_idx;
-	int			animation_cycle;
-	
-	if (!ghost || !ghost->ent)
-		return ;
-	
-	e = ghost->ent;
-	enemy_textures = enemy_texture();
-	
-	/* Ensure tex_idx is within valid range (0-2) */
-	if (e->tex_idx < 0 || e->tex_idx >= 3)
-		e->tex_idx = 0;
-	
-	/* Determine texture index based on movement direction */
-	if (fabs(e->dir.y) > fabs(e->dir.x))
-	{
-		/* Moving more vertically */
-		if (e->dir.y > 0)
-			tex_direction_idx = 1; /* DOWN */
-		else
-			tex_direction_idx = 3; /* UP */
-	}
-	else
-	{
-		/* Moving more horizontally or stationary */
-		tex_direction_idx = 0; /* MED (neutral) */
-	}
-	
-	/* Create per-entity animation using entity index for timing offset */
-	animation_cycle = ((int)(e->path_timer * 20.0) + e->idx * 7) % 4; /* Different timing per entity */
-	
-	/* Apply animation by occasionally switching between available textures */
-	if (animation_cycle == 1 && tex_direction_idx != 1)
-		tex_direction_idx = 2; /* Use texture index 2 for variation */
-	else if (animation_cycle == 3 && tex_direction_idx == 0)
-		tex_direction_idx = 2; /* More variation for neutral state */
-	
-	/* Update the texture pointer */
-	e->texture = &enemy_textures[e->tex_idx][tex_direction_idx];
-	
-	/* Verify the texture is valid */
-	if (!e->texture || !e->texture->img_ptr)
-	{
-		/* Fallback to the default texture */
-		e->texture = &enemy_textures[e->tex_idx][0];
-	}
-}
-
 void	timers_update(double dt)
 {
 	t_gameplay	*gameplay;
@@ -100,111 +42,111 @@ void	detect_state(t_ghost *ghost)
 	dist_sq = dx * dx + dy * dy;
 	detect_radius = 5.0;
 	if (dist_sq < detect_radius * detect_radius)
-	{
 		ghost->state = GHOST_STATE_CHASING;
-	}
+	else
+		ghost->state = GHOST_STATE_IDLE;
+}
+
+void update_enemy_texture(t_ghost *ghost)
+{
+	t_texture **enemy;
+	int			idx;
+
+	if (!ghost || !ghost->ent)
+		return ;
+	enemy = enemy_texture();
+	if (!enemy)
+		return ;
+	idx = ghost->ent->tex_idx;
+	if (ghost->ent->path_timer <= 0.25)
+		ghost->ent->texture = &enemy[idx][0];
+	else if (ghost->ent->path_timer <= 0.5)
+		ghost->ent->texture = &enemy[idx][1];
+	else if (ghost->ent->path_timer <= 0.75)
+		ghost->ent->texture = &enemy[idx][2];
+	else if (ghost->ent->path_timer <= 1.0)
+		ghost->ent->texture = &enemy[idx][3];
 	else
 	{
-		ghost->state = GHOST_STATE_IDLE;
+		ghost->ent->texture = &enemy[idx][0];
+		ghost->ent->path_timer = 0.0;
 	}
 }
 
+void move_entity(t_entity *ent, t_map *map, double dt)
+{
+	t_vec2	new_pos;
+
+	new_pos.x = ent->pos.x + ent->vel.x * dt;
+	new_pos.y = ent->pos.y + ent->vel.y * dt;
+	if (!is_wall(map, new_pos.x, ent->pos.y))
+		ent->pos.x = new_pos.x;
+	if (!is_wall(map, ent->pos.x, new_pos.y))
+		ent->pos.y = new_pos.y;
+}
+
+// typedef struct s_bfs	t_bfs;
+
+// struct s_bfs
+// {
+// 	int							*queue;
+// 	int							*parent;
+// 	int							*visited;
+// 	int							width;
+// 	int							height;
+// 	int							capacity;
+// };
+
+// void bfs_init(t_bfs *bfs, int width, int height)
+// {
+// 	bfs->width = width;
+// 	bfs->height = height;
+// 	bfs->capacity = width * height;
+// 	bfs->visited = ft_malloc(bfs->capacity * sizeof(int));
+// 	bfs->parent = ft_malloc(bfs->capacity * sizeof(int));
+// 	bfs->queue = ft_malloc(bfs->capacity * sizeof(int));
+// 	memset(bfs->visited, 0, bfs->capacity * sizeof(int));
+// }
+
+// void add_the_four_dir(t_bfs *bfs, t_map *map, int x, int y, int current)
+// {
+// 	int	neighbors[4][2] = {
+// 		{0, -1}, // Up
+// 		{0, 1},  // Down
+// 		{-1, 0}, // Left
+// 		{1, 0}   // Right
+// 	};
+// 	for (int i = 0; i < 4; i++)
+// 	{
+// 		int nx = x + neighbors[i][0];
+// 		int ny = y + neighbors[i][1];
+// 		if (is_wall(map, nx, ny))
+// 			continue ;
+// 		int n_idx = ny * map->width + nx;
+// 		if (!bfs->visited[n_idx])
+// 		{
+// 			bfs->visited[n_idx] = 1;
+// 			bfs->parent[n_idx] = current;
+// 			bfs->queue[bfs->capacity++] = n_idx;
+// 		}
+// 	}
+// }
+
+// void update_ghost_movement(t_ghost *ghost, t_entity *player, t_map *map, double dt)
+// {
+// 	t_bfs	bfs;
+
+// 	bfs_init(&bfs, map->width, map->height);
+// }
+// }
+
 void	ghost_update(t_ghost *ghost, t_entity *player, t_map *map, double dt)
 {
-	t_entity	*e;
-	double		speed;
-
-	if (!ghost || !ghost->ent || !player || dt <= 0.0)
-		return ;
 	(void)map;
-	e = ghost->ent;
-	if (e->gone)
-		return ;
-
-	/* --------------- IDLE ---------------- */
-	if (ghost->state == GHOST_STATE_IDLE)
-	{
-		e->vel.x = 0.0;
-		e->vel.y = 0.0;
-		/* Set neutral texture for idle enemies */
-		if (e->texture)
-		{
-			t_texture **enemy_textures = enemy_texture();
-			e->texture = &enemy_textures[e->tex_idx][0]; /* MED texture */
-		}
-		return ;
-	}
-
-	/* --------------- CHASING ---------------- */
-	if (ghost->state == GHOST_STATE_CHASING)
-	{
-		double dx = player->pos.x - e->pos.x;
-		double dy = player->pos.y - e->pos.y;
-		double dist = sqrt(dx * dx + dy * dy);
-		speed = (ghost->base_speed > 0.0) ? ghost->base_speed : GHOST_BASE_SPEED;
-
-		int need_replan = 0;
-		if (e->pathfinder.path_length == 0 || e->path_idx >= e->pathfinder.path_length)
-			need_replan = 1;
-		else
-		{
-			double pdx = player->pos.x - ghost->last_player_pos.x;
-			double pdy = player->pos.y - ghost->last_player_pos.y;
-			if (pdx*pdx + pdy*pdy > PATH_RECALC_DIST * PATH_RECALC_DIST)
-				need_replan = 1;
-		}
-
-		/* cooldown bookkeeping */
-		if (ghost->path_recalc_cooldown > 0.0)
-			ghost->path_recalc_cooldown -= dt;
-
-		/* request path only when necessary and cooldown expired */
-		if (need_replan && ghost->path_recalc_cooldown <= 0.0)
-		{
-			if (request_path(e, player->pos.x, player->pos.y))
-			{
-				/* success: remember player pos and short cooldown */
-				ghost->last_player_pos = player->pos;
-				ghost->path_recalc_cooldown = PATH_MIN_INTERVAL;
-			}
-			else
-			{
-				/* failure: back off longer to avoid thrash */
-				ghost->path_recalc_cooldown = PATH_FAIL_BACKOFF;
-			}
-		}
-
-		/* follow path if present; otherwise fallback to smooth direct-steer */
-		if (e->pathfinder.path_length > 0 && e->path_idx < e->pathfinder.path_length)
-		{
-			follow_path(e, dt, speed);
-		}
-		else
-		{
-			/* smooth direct steering fallback so ghost keeps moving while waiting */
-			if (dist > 1e-6)
-			{
-				double mvx = (dx / dist) * speed * dt;
-				double mvy = (dy / dist) * speed * dt;
-				entity_try_move_by(e, mvx, mvy);
-			}
-		}
-	}
-
-	/* --------------- Update facing dir ---------------- */
-	{
-		double mvx = e->pos.x - e->prev.x;
-		double mvy = e->pos.y - e->prev.y;
-		double mlen = sqrt(mvx * mvx + mvy * mvy);
-		if (mlen > 1e-6)
-		{
-			e->dir.x = mvx / mlen;
-			e->dir.y = mvy / mlen;
-			
-			/* Update texture based on movement direction */
-			update_enemy_texture(ghost);
-		}
-	}
+	(void)player;
+	ghost->ent->path_timer += dt;
+	update_enemy_texture(ghost);
+	// update_ghost_movement(ghost, player, map, dt);
 }
 
 

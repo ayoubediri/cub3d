@@ -218,6 +218,8 @@ void draw_floor(int x, int y)
 	info = &camera->floor;
 	while (y < HEIGHT)
 	{
+		if (y == HALF_HEIGHT && y++)
+			continue;
 		info->row_distance = info->player_z / (y - HALF_HEIGHT);
 		info->floor_step_x = info->row_distance * (info->dir_x1 - info->dir_x0) / WIDTH;
 		info->floor_step_y = info->row_distance * (info->dir_y1 - info->dir_y0) / WIDTH;
@@ -261,6 +263,7 @@ void draw_ceiling_and_floor(int x)
 	camera = get_camera();
 	draw_sky(x);
 	draw_floor(x, camera->ray.end);
+
 }
 
 int get_wall_color(t_ray *ray, double step, double *tex_pos)
@@ -287,14 +290,19 @@ void draw_wall(int x)
 	camera = get_camera();
 	ray = &camera->ray;
 	y = ray->start;
-
 	step = (double)ray->texture->height / ray->height;
-	tex_pos = (ray->start - HEIGHT / 2 + ray->height / 2) * step;
+	tex_pos = (ray->start - HALF_HEIGHT + ray->height / 2) * step;
 	while (y < ray->end)
 	{
 		pixel_put(x, y, get_wall_color(ray, step, &tex_pos));
 		y++;
 	}
+}
+
+void get_dist_for_sort(t_entity *player, t_entity *ent, double *dist)
+{
+	dist[0] = (player->pos.x - ent->pos.x) * (player->pos.x - ent->pos.x)
+		+ (player->pos.y - ent->pos.y) * (player->pos.y - ent->pos.y);
 }
 
 void	sort_sprites_by_distance(t_entity *player, t_rend_ents *ents)
@@ -312,10 +320,8 @@ void	sort_sprites_by_distance(t_entity *player, t_rend_ents *ents)
 		j = 0;
 		while (j < gameplay->rend_ent_count - i - 1)
 		{
-			dist[0] = (player->pos.x - ents[j].ent->pos.x) * (player->pos.x - ents[j].ent->pos.x)
-				+ (player->pos.y - ents[j].ent->pos.y) * (player->pos.y - ents[j].ent->pos.y);
-			dist[1] = (player->pos.x - ents[j + 1].ent->pos.x) * (player->pos.x - ents[j + 1].ent->pos.x)
-				+ (player->pos.y - ents[j + 1].ent->pos.y) * (player->pos.y - ents[j + 1].ent->pos.y);
+			get_dist_for_sort(player, ents[j].ent, dist);
+			get_dist_for_sort(player, ents[j + 1].ent, &dist[1]);
 			if (dist[0] < dist[1])
 			{
 				temp = ents[j];
@@ -327,9 +333,10 @@ void	sort_sprites_by_distance(t_entity *player, t_rend_ents *ents)
 		i++;
 	}
 }
-static void calculate_sprite_transform(t_entity *player, t_entity *sprite, t_sprite_info *s)
+
+void init_the_sprite_transform(t_entity *player, t_entity *sprite, t_sprite_info *s)
 {
-    double sprite_x;
+	double sprite_x;
     double sprite_y;
     double inv_det;
 	double plane_x;
@@ -337,26 +344,31 @@ static void calculate_sprite_transform(t_entity *player, t_entity *sprite, t_spr
 
     sprite_x = sprite->pos.x - player->pos.x;
     sprite_y = sprite->pos.y - player->pos.y;
-
 	plane_x = -player->dir.y * get_camera()->plane_scale;
 	plane_y = player->dir.x * get_camera()->plane_scale;
     inv_det = 1.0 / (plane_x * player->dir.y - player->dir.x * plane_y);
     s->transform_x = inv_det * (player->dir.y * sprite_x - player->dir.x * sprite_y);
     s->transform_y = inv_det * (-plane_y * sprite_x + plane_x * sprite_y);
-
-    s->screen_x = (int)((WIDTH / 2) * (1 + s->transform_x / s->transform_y));
+    s->screen_x = (int)(HALF_WIDTH) * (1 + s->transform_x / s->transform_y);
     s->height = abs((int)(HEIGHT / s->transform_y)) / s->v_div;
     s->width = abs((int)(HEIGHT / s->transform_y)) / s->u_div;
+}
 
-    s->draw_start_y = -s->height / 2 + HEIGHT / 2;
-    if (s->draw_start_y < 0) s->draw_start_y = 0;
-    s->draw_end_y = s->height / 2 + HEIGHT / 2;
-    if (s->draw_end_y >= HEIGHT) s->draw_end_y = HEIGHT - 1;
-
+void calculate_sprite_transform(t_entity *player, t_entity *sprite, t_sprite_info *s)
+{
+    init_the_sprite_transform(player, sprite, s);
+    s->draw_start_y = -s->height / 2 + HALF_HEIGHT;
+    if (s->draw_start_y < 0)
+		s->draw_start_y = 0;
+    s->draw_end_y = s->height / 2 + HALF_HEIGHT;
+    if (s->draw_end_y >= HEIGHT)
+		s->draw_end_y = HEIGHT - 1;
     s->draw_start_x = -s->width / 2 + s->screen_x;
-    if (s->draw_start_x < 0) s->draw_start_x = 0;
+    if (s->draw_start_x < 0)
+		s->draw_start_x = 0;
     s->draw_end_x = s->width / 2 + s->screen_x;
-    if (s->draw_end_x >= WIDTH) s->draw_end_x = WIDTH - 1;
+    if (s->draw_end_x >= WIDTH)
+		s->draw_end_x = WIDTH - 1;
 }
 
 void draw_sprite_stripe(t_sprite_info *s, int stripe, double *z_buffer, t_texture *texture)
@@ -398,13 +410,41 @@ void init_div(t_sprite_info *s)
 	}
 }
 
+void draw_the_sprite_transform(t_gameplay *gameplay, int ent_index, t_sprite_info *s_info, double *z_buffer)
+{
+	int			stripe;
+	t_rend_ents	*ent;
+
+	stripe = s_info->draw_start_x;
+	ent = gameplay->rend_ents;
+	while (stripe < s_info->draw_end_x)
+	{
+		if (s_info->type == ENTITY_GHOST)
+		{
+			if (ent[ent_index].ent->texture)
+			{
+				s_info->tex_x = (int)(512 * (stripe - (-s_info->width / 2 + s_info->screen_x)) *
+							  ent[ent_index].ent->texture->width / s_info->width) / 512;
+				draw_sprite_stripe(s_info, stripe, z_buffer, ent[ent_index].ent->texture);
+			}
+		}
+		else if (s_info->type == ENTITY_PELLET)
+		{
+			s_info->tex_x = (int)(512 * (stripe - (-s_info->width / 2 + s_info->screen_x)) *
+						  gameplay->pellet_texture.width / s_info->width) / 512;
+			draw_sprite_stripe(s_info, stripe, z_buffer, &gameplay->pellet_texture);
+		}
+		stripe++;
+	}
+}
+
+
 void render_sprites(double *z_buffer)
 {
 	t_gameplay  	*gameplay;
     t_rend_ents    	*ent;
     t_sprite_info   s_info;
     int             i;
-    int             stripe;
 
 	gameplay = get_gameplay();
 	ent = gameplay->rend_ents;
@@ -420,26 +460,7 @@ void render_sprites(double *z_buffer)
 		s_info.type = gameplay->rend_ents[i].ent->type;
 		init_div(&s_info);
 		calculate_sprite_transform(gameplay->player.ent, ent[i].ent, &s_info);
-		stripe = s_info.draw_start_x;
-		while (stripe < s_info.draw_end_x)
-		{
-			if (s_info.type == ENTITY_GHOST)
-			{
-				if (gameplay->rend_ents[i].ent->texture)
-				{
-					s_info.tex_x = (int)(512 * (stripe - (-s_info.width / 2 + s_info.screen_x)) *
-								  gameplay->rend_ents[i].ent->texture->width / s_info.width) / 512;
-					draw_sprite_stripe(&s_info, stripe, z_buffer, gameplay->rend_ents[i].ent->texture);
-				}
-			}
-			else if (s_info.type == ENTITY_PELLET)
-			{
-				s_info.tex_x = (int)(512 * (stripe - (-s_info.width / 2 + s_info.screen_x)) *
-							  gameplay->pellet_texture.width / s_info.width) / 512;
-				draw_sprite_stripe(&s_info, stripe, z_buffer, &gameplay->pellet_texture);
-			}
-			stripe++;
-		}
+		draw_the_sprite_transform(gameplay, i, &s_info, z_buffer);
         i++;
     }
 }
