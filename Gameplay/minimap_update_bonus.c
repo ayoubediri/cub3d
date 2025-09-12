@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 15:07:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/01 14:58:50 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/11 13:08:58 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,10 @@ void	minimap_update(double dt)
 	minimap = &gameplay->minimap;
 	update_mouth(&minimap->pacman, dt);
 	player = minimap->pacman.ent;
-	if (player && minimap->world_to_px > 0.0)
-	{
-		screen_cx = minimap->ox + (double)minimap->size_px * 0.5;
-		screen_cy = minimap->oy + (double)minimap->size_px * 0.5;
-		minimap->world_offset_x = player->pos.x - ((screen_cx
-					- minimap->content_x) / minimap->world_to_px);
-		minimap->world_offset_y = player->pos.y - ((screen_cy
-					- minimap->content_y) / minimap->world_to_px);
-	}
+	screen_cx = minimap->ox + (double)minimap->size_px * 0.5;
+	screen_cy = minimap->oy + (double)minimap->size_px * 0.5;
+	minimap->world_offset_x = player->pos.x - ((screen_cx - minimap->content_x)
+			/ minimap->world_to_px);
+	minimap->world_offset_y = player->pos.y - ((screen_cy - minimap->content_y)
+			/ minimap->world_to_px);
 }

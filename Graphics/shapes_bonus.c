@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/29 10:32:36 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/01 11:28:55 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/11 11:20:57 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,5 @@ void	draw_line(t_shape s)
 		s.max_x = s.clip_x + s.clip_w;
 	if (s.max_y > s.clip_y + s.clip_h)
 		s.max_y = s.clip_y + s.clip_h;
-	line_filler(s, 0);
+	line_filler(s);
 }

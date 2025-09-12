@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structures_bonus.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:51:59 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/12 10:48:24 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/12 11:14:17 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,17 @@ typedef struct s_call_check		t_call_check;
 
 // * =========== Structures =========== *
 
-
-
-struct s_call_check
+struct							s_call_check
 {
-	double margin;
-	double target_x;
-	double target_y;
-	double dx;
-	double dy;
-	int    i;
+	double						margin;
+	double						target_x;
+	double						target_y;
+	double						dx;
+	double						dy;
+	int							i;
 };
 
-struct s_bfs_info
+struct							s_bfs_info
 {
 	int							start_idx;
 	int							end_idx;
@@ -78,7 +76,7 @@ struct s_bfs_info
 	int							**neighbors;
 };
 
-struct s_bfs
+struct							s_bfs
 {
 	int							*queue;
 	int							*parent;

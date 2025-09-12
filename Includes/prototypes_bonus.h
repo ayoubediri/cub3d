@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prototypes_bonus.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:57:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/12 11:00:48 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/12 11:09:28 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ void			draw_rect(t_shape s);
 void			draw_line(t_shape s);
 void			rect_filler(t_shape s);
 void			draw_circle(t_shape s);
+void			line_filler(t_shape s);
 void			circle_filler(t_shape s);
-void			line_filler(t_shape s, int e2);
 void			arc_filler(t_shape s, double facing, double span);
 
 // * =========== Parsing =========== *
