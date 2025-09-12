@@ -15,13 +15,13 @@
 static int	tile_converter(char c)
 {
 	if (c == '1')
-		return (1);
+		return (CELL_WALL);
 	if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == 'X')
-		return (0);
+		return (CELL_EMPTY);
 	if (c == '.')
-		return (2);
+		return (CELL_PELLET);
 	if (c == 'D')
-		return (3);
+		return (CELL_DOOR);
 	return (-1);
 }
 
@@ -56,8 +56,7 @@ static void	fill_line(int y, int width, int len)
 		if (x < len && get_parse()->map[y])
 			key = get_parse()->map[y][x];
 		tile = tile_converter(key);
-		if (mark_entities(key, x, y) >= 0)
-			tile = 0;
+		mark_entities(key, x, y);
 		map->grid[y * width + x] = tile;
 		x++;
 	}

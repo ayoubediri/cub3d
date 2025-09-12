@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structures_bonus.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:51:59 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/03 09:38:09 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/12 10:48:24 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,55 @@ typedef struct s_texture		t_texture;
 typedef struct s_floor			t_floor;
 typedef struct s_sky			t_sky;
 typedef struct s_sprite_info	t_sprite_info;
+typedef struct s_bfs			t_bfs;
+typedef struct s_bfs_info		t_bfs_info;
+typedef struct s_call_check		t_call_check;
 
 // * =========== Structures =========== *
+
+
+
+struct s_call_check
+{
+	double margin;
+	double target_x;
+	double target_y;
+	double dx;
+	double dy;
+	int    i;
+};
+
+struct s_bfs_info
+{
+	int							start_idx;
+	int							end_idx;
+	int							front;
+	int							rear;
+	int							current;
+	int							x;
+	int							y;
+	int							nx;
+	int							ny;
+	int							n_idx;
+	int							**neighbors;
+};
+
+struct s_bfs
+{
+	int							*queue;
+	int							*parent;
+	int							*visited;
+	int							*num_of_moves;
+	int							width;
+	int							height;
+	int							capacity;
+};
 
 struct							s_vec2
 {
 	double						x;
 	double						y;
 };
-
 
 // textures
 struct							s_texture
@@ -274,6 +314,8 @@ struct							s_floor
 	double						dir_y1;
 	int							tex_x;
 	int							tex_y;
+	int							x;
+	int							y;
 	unsigned int				color;
 };
 
@@ -404,14 +446,12 @@ struct							s_parse
 	int							fd;
 	char						*line;
 	t_parse_state				state;
-
 	int							floor_col;
 	int							ceiling_col;
 	char						*ea_texture;
 	char						*we_texture;
 	char						*no_texture;
 	char						*so_texture;
-
 	char						dir;
 	char						**map;
 	int							width;
@@ -423,14 +463,11 @@ struct							s_parse
 struct							s_map
 {
 	int							*grid;
-	
 	int							width;
 	int							height;
-
 	int							player_x;
 	int							player_y;
 	char						player_dir;
-
 };
 
 // * General *

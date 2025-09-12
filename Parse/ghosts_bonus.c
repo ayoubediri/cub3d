@@ -54,7 +54,7 @@ int	create_ghost_entity(int x, int y)
 		curr->spawn_point = gameplay->entities[idx].pos;
 		curr->state = GHOST_STATE_IDLE;
 		curr->color = 0x00FF0000;
-		curr->base_speed = 2.0;
+		curr->base_speed = 1.25;
 		curr->frightened_speed = 1.6;
 		curr->eaten_speed = 4.0;
 		gameplay->ghost_count++;

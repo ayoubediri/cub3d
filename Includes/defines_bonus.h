@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:48:27 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/03 10:25:19 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/12 04:54:34 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 # define PELLET_V_DIV 3
 # define GHOST_U_DIV 1.0
 # define GHOST_V_DIV 1.0
+# define MAX_GHOST_MOVES 10
+# define NUM_COINS_FRAMES 34
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
@@ -110,6 +112,15 @@
 
 // * ======== Enums ========== *
 
+typedef enum e_map_cell
+{
+	CELL_EMPTY = 0,
+	CELL_WALL = 1,
+	CELL_PELLET = 2,
+	CELL_DOOR = 3,
+	CELL_TOTAL
+}	t_map_cell;
+
 typedef enum e_parse_state
 {
 	PARSE_ELEMENTS,
@@ -135,7 +146,7 @@ typedef enum e_ghost_state
 {
 	GHOST_STATE_IDLE,
 	GHOST_STATE_CHASING,
-	GHOST_STATE_FLEEING,
+	GHOST_STATE_ATTACKING,
 	GHOST_STATE_TOTAL
 }	t_ghost_state;
 

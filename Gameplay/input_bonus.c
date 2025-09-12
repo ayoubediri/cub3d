@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 18:38:05 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/03 10:29:19 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/12 05:55:29 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,24 @@ static int	map_keypress(int key)
 	return (-1);
 }
 
-void end_game_screen(void)
+int	mouse_handler(int x, int y, t_mlx *mlx)
+{
+	double		dx;
+	double		angle;
+	t_entity	*player;
+
+	(void)y;
+	dx = x - HALF_WIDTH;
+	if (fabs(dx) < 2 || mlx->blocked)
+		return (0);
+	angle = dx * MOUSE_SENSITIVITY;
+	player = get_gameplay()->player.ent;
+	rotate_player(player, angle);
+	mlx_mouse_move(mlx->mlx, mlx->win, HALF_WIDTH, HALF_HEIGHT);
+	return (0);
+}
+
+void	end_game_screen(void)
 {
 	t_mlx		*mlx;
 	t_texture	texture_escape;
