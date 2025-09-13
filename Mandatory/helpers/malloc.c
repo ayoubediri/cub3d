@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   malloc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 12:46:32 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/06/27 12:30:09 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/13 06:37:28 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*track(void *ptr, size_t size)
 	{
 		free(ptr);
 		report_error("malloc", strerror(errno));
-		clean_exit(1);
+		leave_game(1);
 	}
 	node->ptr = ptr;
 	node->size = size;
@@ -49,7 +49,7 @@ void	*ft_malloc(size_t size)
 	if (!ptr)
 	{
 		report_error("malloc", strerror(errno));
-		clean_exit(1);
+		leave_game(1);
 	}
 	return (track(ptr, size));
 }

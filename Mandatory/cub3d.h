@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 12:44:50 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/01 14:29:58 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/13 08:55:46 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 // * ======== DEFINES ======= * /
 # define BUFFER_SIZE 1024
+# define WIDTH 1920
+# define HEIGHT 1010
+# define HALF_WIDTH 960
+# define HALF_HEIGHT 505
 
 // * ======== INCLUDES ======= * /
 # include <X11/keysym.h>
@@ -29,13 +33,14 @@
 # include <unistd.h>
 
 // * ======== STRUCTURES ======= * /
-typedef struct s_malloc	t_malloc;
-typedef struct s_player	t_player;
-typedef struct s_parse	t_parse;
-typedef struct s_game	t_game;
-typedef struct s_map	t_map;
-typedef struct s_mlx	t_mlx;
-typedef struct s_ray	t_ray;
+typedef struct s_malloc		t_malloc;
+typedef struct s_player		t_player;
+typedef struct s_parse		t_parse;
+typedef struct s_game		t_game;
+typedef struct s_map		t_map;
+typedef struct s_mlx		t_mlx;
+typedef struct s_ray		t_ray;
+typedef struct s_texture	t_texture;
 
 typedef enum e_parse_state
 {
@@ -53,6 +58,27 @@ typedef enum e_key
 	KEY_RIGHT,
 	KEY_TOTAL
 }						t_key;
+
+typedef enum e_wall
+{
+	WALL_NORTH,
+	WALL_SOUTH,
+	WALL_EAST,
+	WALL_WEST,
+	WALL_TOTAL
+}	t_wall;
+
+struct					s_texture
+{
+	void				*img_ptr;
+	int					width;
+	int					height;
+	char				*addr;
+	int					bpp;
+	int					len_line;
+	int					endian;
+	char				*path;
+};
 
 struct					s_malloc
 {
@@ -94,6 +120,9 @@ struct					s_ray
 	double				delta_dist_x;
 	double				delta_dist_y;
 	double				perp_wall_dist;
+	double				wall_x;
+	int					tex_x;
+	t_texture			*wall;
 };
 
 struct					s_player
@@ -151,6 +180,7 @@ void					*ft_malloc(size_t size);
 int						report_error(char *msg1, char *msg2);
 void					parse_error(char *msg1);
 void					clean_exit(int status);
+int						leave_game(int exit_code);
 void					cleanup(void);
 // char;
 int						is_empty_line(char *line);
@@ -205,5 +235,11 @@ void					put_image(void);
 char					*ft_itoa(int n);
 // gnl:
 char					*get_next_line(int fd);
+
+// textures:
+t_texture				load_texture(char *path);
+void					setup_textures(void);
+void					destroy_wall_textures(t_mlx *mlx);
+t_texture				*get_wall_textures(void);
 
 #endif

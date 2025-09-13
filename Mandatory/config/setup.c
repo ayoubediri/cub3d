@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 12:41:14 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/07/12 20:58:26 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/13 10:04:10 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	config_mlx(void)
 
 	mlx = &get_game()->mlx;
 	ft_bzero(mlx, sizeof(*mlx));
-	mlx->width = 1920;
-	mlx->height = 1080;
+	mlx->width = WIDTH;
+	mlx->height = HEIGHT;
 }
 
 void	fill_player(double dx, double dy, double px, double py)
@@ -40,9 +40,9 @@ void	config_player(void)
 	game = get_game();
 	game->player.pos_x = game->map.player_x + 0.5f;
 	game->player.pos_y = game->map.player_y + 0.5f;
-	if (game->map.player_dir == 'N')
+	if (game->map.player_dir == 'S')
 		fill_player(0, -1, 0.66, 0);
-	else if (game->map.player_dir == 'S')
+	else if (game->map.player_dir == 'N')
 		fill_player(0, 1, -0.66, 0);
 	else if (game->map.player_dir == 'E')
 		fill_player(1, 0, 0, 0.66);

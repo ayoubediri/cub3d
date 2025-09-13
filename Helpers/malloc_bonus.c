@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   malloc_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli@student.1337.ma <yjazouli>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:24:10 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/08/23 11:21:29 by yjazouli@st      ###   ########.fr       */
+/*   Updated: 2025/09/13 06:38:38 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*track(void *ptr, size_t size)
 	{
 		free(ptr);
 		report_error("malloc", strerror(errno));
-		clean_exit(1);
+		leave_game(1);
 	}
 	node->ptr = ptr;
 	node->size = size;
@@ -49,7 +49,7 @@ void	*ft_malloc(size_t size)
 	if (!ptr)
 	{
 		report_error("malloc", strerror(errno));
-		clean_exit(1);
+		leave_game(1);
 	}
 	return (track(ptr, size));
 }
@@ -62,7 +62,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	if (nmemb && size > SIZE_MAX / nmemb)
 	{
 		report_error("calloc", "size overflow");
-		clean_exit(1);
+		leave_game(1);
 	}
 	total = nmemb * size;
 	ptr = ft_malloc(total);
@@ -86,7 +86,7 @@ void	*ft_realloc(void *ptr, size_t size)
 	if (!newptr)
 	{
 		report_error("realloc", strerror(errno));
-		clean_exit(1);
+		leave_game(1);
 	}
 	curr->ptr = newptr;
 	curr->size = size;

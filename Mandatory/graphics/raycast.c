@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 22:59:38 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/07/28 17:02:46 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/13 09:08:43 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	perform_dda(t_ray *ray, t_map *map)
 		if (ray->map_x < 0 || ray->map_y < 0 || ray->map_x >= map->width
 			|| ray->map_y >= map->height)
 			break ;
-		if (map->grid[ray->map_y][ray->map_x] > 0)
+		if (map->grid[ray->map_y][ray->map_x] == 1)
 			hit = 1;
 	}
 }
@@ -82,31 +82,100 @@ static void	calc_wall_height(t_ray *ray, t_player *player, t_mlx *mlx)
 		ray->draw_end = mlx->height - 1;
 }
 
-static void	draw_wall_slice(int x, t_ray *ray)
+static void	calc_wall_x(t_ray *ray)
 {
-	int	y;
-	int	color;
+	t_game	*game;
+	t_texture	*texture;
 
+	texture = get_wall_textures();
+	game = get_game();
 	if (ray->side == 0)
 	{
-		if (ray->step_x > 0)
-			color = 0xFF0000;
+		ray->wall_x = game->player.pos_y + ray->perp_wall_dist * \
+		ray->dir_y;
+		if (ray->delta_dist_x < 0)
+			ray->wall = &texture[WALL_WEST];
 		else
-			color = 0x00FF00;
+			ray->wall = &texture[WALL_EAST];
 	}
 	else
 	{
-		if (ray->step_y > 0)
-			color = 0x0000FF;
+		ray->wall_x = game->player.pos_x + ray->perp_wall_dist * \
+		ray->dir_x;
+		if (ray->delta_dist_y < 0)
+			ray->wall = &texture[WALL_NORTH];
 		else
-			color = 0xFFFF00;
+			ray->wall = &texture[WALL_SOUTH];
 	}
-	y = ray->draw_start;
+	ray->wall_x -= floor(ray->wall_x);
+}
+
+t_texture *wall_side_texture(t_ray *ray)
+{
+	t_texture	*wall_textures;
+
+	wall_textures = get_wall_textures();
+	if (ray->side == 0 && ray->dir_x > 0)
+		return (&wall_textures[WALL_WEST]);
+	if (ray->side == 0 && ray->dir_x < 0)
+		return (&wall_textures[WALL_EAST]);
+	if (ray->side == 1 && ray->dir_y > 0)
+		return (&wall_textures[WALL_NORTH]);
+	return (&wall_textures[WALL_SOUTH]);
+}
+
+unsigned int	get_texture_color(t_texture *texture, int x, int y)
+{
+	char	*dst;
+
+	if (x < 0 || x >= texture->width || y < 0 || y >= texture->height)
+		return (0);
+	dst = texture->addr + (y * texture->len_line + x * (texture->bpp / 8));
+	return (*(unsigned int *)dst);
+}
+
+unsigned int	get_wall_color(int tex_x, double *tex_pos, double step, t_texture *texture)
+{
+	int				tex_y;
+	unsigned int	color;
+
+	tex_y = (int)(*tex_pos) & (texture->height - 1);
+	*tex_pos += step;
+	color = get_texture_color(texture, tex_x, tex_y);
+	return (color);
+}
+
+void draw_wall(int x, int y, t_ray *ray)
+{
+	t_game		*game;
+	t_texture	*texture;
+	int			color;
+	double		step;
+	double		pos_y;
+
+	texture = wall_side_texture(ray);
+	game = get_game();
+	step = 1.0 * texture->height / ray->line_height;
+	pos_y = (y - HALF_HEIGHT + ray->line_height / 2) * step;
 	while (y < ray->draw_end)
 	{
+		color = get_wall_color(ray->tex_x, &pos_y, step, texture);
 		pixel_put(x, y, color);
 		y++;
 	}
+}
+
+void calc_tex_x(t_ray *ray)
+{
+	ray->tex_x = (int)(ray->wall_x * (double)ray->wall->width);
+	if (ray->side == 0 && ray->dir_x < 0)
+		ray->tex_x = ray->wall->width - ray->tex_x - 1;
+	if (ray->side == 1 && ray->dir_y > 0)
+		ray->tex_x = ray->wall->width - ray->tex_x - 1;
+	if (ray->tex_x >= ray->wall->width)
+		ray->tex_x = ray->wall->width - 1;
+	else if (ray->tex_x < 0)
+		ray->tex_x = 0;
 }
 
 void	raycasting(void)
@@ -132,6 +201,8 @@ void	raycasting(void)
 		prepare(&ray, player);
 		perform_dda(&ray, &game->map);
 		calc_wall_height(&ray, player, &game->mlx);
-		draw_wall_slice(x, &ray);
+		calc_wall_x(&ray);
+		calc_tex_x(&ray);
+		draw_wall(x, ray.draw_start, &ray);
 	}
 }

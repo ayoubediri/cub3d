@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:13:18 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/06/27 12:30:58 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/13 06:37:14 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	extract_fd(char *path)
 	if (fd == -1)
 	{
 		report_error("open", strerror(errno));
-		clean_exit(1);
+		leave_game(1);
 	}
 	return (fd);
 }

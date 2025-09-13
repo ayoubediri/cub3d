@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:27:41 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/07/17 13:09:51 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/13 08:46:09 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,22 +48,20 @@ void	render_background(void)
 {
 	int		x;
 	int		y;
-	int		half;
 	t_mlx	*mlx;
 	t_game	*game;
 
 	y = 0;
 	game = get_game();
 	mlx = &game->mlx;
-	half = mlx->height / 2;
-	while (y < half)
+	while (y < HALF_HEIGHT)
 	{
 		x = -1;
 		while (++x < mlx->width)
 			pixel_put(x, y, game->scene.ceiling_col);
 		y++;
 	}
-	while (++y < mlx->height)
+	while (y < mlx->height)
 	{
 		x = -1;
 		while (x++ < mlx->width)
@@ -84,6 +82,6 @@ void	clear_image(void)
 
 void	put_image(void)
 {
-	mlx_put_image_to_window(get_game()->mlx.mlx, get_game()->mlx.win,
-		get_game()->mlx.img, 0, 0);
+	mlx_put_image_to_window(get_game()->mlx.mlx, get_game()->mlx.win, \
+	get_game()->mlx.img, 0, 0);
 }

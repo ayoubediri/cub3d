@@ -10,6 +10,7 @@
         "fcntl.h": "c",
         "stdbool.h": "c",
         "ctype.h": "c",
-        "cmath": "c"
+        "cmath": "c",
+        "cub3d.h": "c"
     }
 }
