@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 05:48:46 by adiri             #+#    #+#             */
-/*   Updated: 2025/09/14 11:10:08 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/14 13:30:10 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	destroy_enemy_textures(t_mlx *mlx)
 {
 	t_texture	**enemy;
-	int i;
+	int			i;
 
 	i = 0;
 	enemy = enemy_texture();

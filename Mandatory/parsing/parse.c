@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:13:18 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/14 09:46:49 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/14 13:28:46 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	is_element(char *line)
 	if (!line[i] || !line[i + 1])
 		return (0);
 	if ((line[i] == 'N' && line[i + 1] == 'O') || (line[i] == 'S' && line[i
-			+ 1] == 'O') || (line[i] == 'W' && line[i + 1] == 'E')
+				+ 1] == 'O') || (line[i] == 'W' && line[i + 1] == 'E')
 		|| (line[i] == 'E' && line[i + 1] == 'A'))
 		return (line[i + 2] == '\0' || is_space(line[i + 2]));
 	return (0);

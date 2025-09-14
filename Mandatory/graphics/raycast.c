@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 22:59:38 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/14 10:07:23 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/14 13:28:20 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,15 +83,14 @@ static void	calc_wall_height(t_ray *ray, t_player *player, t_mlx *mlx)
 
 static void	calc_wall_x(t_ray *ray)
 {
-	t_game	*game;
+	t_game		*game;
 	t_texture	*texture;
 
 	texture = get_wall_textures();
 	game = get_game();
 	if (ray->side == 0)
 	{
-		ray->wall_x = game->player.pos_y + ray->perp_wall_dist * \
-		ray->dir_y;
+		ray->wall_x = game->player.pos_y + ray->perp_wall_dist * ray->dir_y;
 		if (ray->delta_dist_x < 0)
 			ray->wall = &texture[WALL_WEST];
 		else
@@ -99,8 +98,7 @@ static void	calc_wall_x(t_ray *ray)
 	}
 	else
 	{
-		ray->wall_x = game->player.pos_x + ray->perp_wall_dist * \
-		ray->dir_x;
+		ray->wall_x = game->player.pos_x + ray->perp_wall_dist * ray->dir_x;
 		if (ray->delta_dist_y < 0)
 			ray->wall = &texture[WALL_NORTH];
 		else
@@ -109,7 +107,7 @@ static void	calc_wall_x(t_ray *ray)
 	ray->wall_x -= floor(ray->wall_x);
 }
 
-t_texture *wall_side_texture(t_ray *ray)
+t_texture	*wall_side_texture(t_ray *ray)
 {
 	t_texture	*wall_textures;
 
@@ -133,7 +131,8 @@ unsigned int	get_texture_color(t_texture *texture, int x, int y)
 	return (*(unsigned int *)dst);
 }
 
-unsigned int	get_wall_color(int tex_x, double *tex_pos, double step, t_texture *texture)
+unsigned int	get_wall_color(int tex_x, double *tex_pos, double step,
+		t_texture *texture)
 {
 	int				tex_y;
 	unsigned int	color;
@@ -144,7 +143,7 @@ unsigned int	get_wall_color(int tex_x, double *tex_pos, double step, t_texture *
 	return (color);
 }
 
-void draw_ceiling_and_floor(int x, int start, int end)
+void	draw_ceiling_and_floor(int x, int start, int end)
 {
 	t_game	*game;
 	int		y;
@@ -169,7 +168,7 @@ void draw_ceiling_and_floor(int x, int start, int end)
 	}
 }
 
-void draw_wall(int x, int y, t_ray *ray)
+void	draw_wall(int x, int y, t_ray *ray)
 {
 	t_game		*game;
 	t_texture	*texture;
@@ -190,7 +189,7 @@ void draw_wall(int x, int y, t_ray *ray)
 	}
 }
 
-void calc_tex_x(t_ray *ray)
+void	calc_tex_x(t_ray *ray)
 {
 	ray->tex_x = (int)(ray->wall_x * (double)ray->wall->width);
 	if (ray->side == 0 && ray->dir_x < 0)

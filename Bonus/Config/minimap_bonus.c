@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 13:51:24 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/14 10:56:54 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/14 13:30:39 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,10 @@ void	setup_defaults(t_minimap *minimap, t_mlx *mlx, t_map *map)
 	minimap->col_pacman = 0xFFFFFF00;
 	minimap->col_pellet = 0xFFFFFF00;
 	minimap->col_border = 0xFFB0B0B0;
-	// ???????????? Define
 	minimap->size_px = (int)floor(mlx->height * 0.25);
-	
 	minimap->ox = mlx->width - minimap->size_px - 8;
 	minimap->oy = 8;
-	
 	setup_cell_size(minimap, map);
-	
 	minimap->content_w = minimap->cell_px * map->width;
 	minimap->content_h = minimap->cell_px * map->height;
 	minimap->content_x = minimap->ox + (minimap->size_px - minimap->content_w)
@@ -85,7 +81,6 @@ void	setup_defaults(t_minimap *minimap, t_mlx *mlx, t_map *map)
 		minimap->content_x = minimap->ox;
 	if (minimap->content_y < minimap->oy)
 		minimap->content_y = minimap->oy;
-
 	minimap->world_to_px = (double)minimap->cell_px;
 	minimap->world_offset_x = 0.0;
 	minimap->world_offset_y = 0.0;
