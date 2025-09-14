@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:27:41 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/13 08:46:09 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/13 10:48:11 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ void	render_background(void)
 	{
 		x = -1;
 		while (++x < mlx->width)
-			pixel_put(x, y, game->scene.ceiling_col);
+			pixel_put(x, y, game->parse.ceiling_col);
 		y++;
 	}
 	while (y < mlx->height)
 	{
 		x = -1;
 		while (x++ < mlx->width)
-			pixel_put(x, y, game->scene.floor_col);
+			pixel_put(x, y, game->parse.floor_col);
 		y++;
 	}
 }

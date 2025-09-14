@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 10:48:27 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/12 04:54:34 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/14 11:06:08 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,77 +38,77 @@
 
 // * ======== Textures ========== *
 
-# define FLOOR_TEXTURE_PATH "assets/ground0.xpm"
-# define CEILING_TEXTURE_PATH "textures/wall_1.xpm"
-# define SKY_TEXTURE_PATH "assets/panoramic-sea.xpm"
-# define GHOST_TEXTURE_PATH "textures/ghost_packman_red_128.xpm"
-# define PELLET_TEXTURE_PATH "textures/frame_8.xpm"
-# define DOOR_TEXTURE_CLOSE_PATH "assets/door_background (1)/colse_door.xpm"
-# define DOOR_TEXTURE_OPEN_PATH "assets/door_background (1)/open_door.xpm"
+# define FLOOR_TEXTURE_PATH "Bonus/assets/ground0.xpm"
+# define CEILING_TEXTURE_PATH "Bonus/textures/wall_1.xpm"
+# define SKY_TEXTURE_PATH "Bonus/assets/panoramic-sea.xpm"
+# define GHOST_TEXTURE_PATH "Bonus/textures/ghost_packman_red_128.xpm"
+# define PELLET_TEXTURE_PATH "Bonus/textures/frame_8.xpm"
+# define DOOR_TEXTURE_CLOSE_PATH "Bonus/assets/door_background (1)/colse_door.xpm"
+# define DOOR_TEXTURE_OPEN_PATH "Bonus/assets/door_background (1)/open_door.xpm"
 
-# define START_SCREEN_TEXTURE_PATH "assets/start_game/17.xpm"
+# define START_SCREEN_TEXTURE_PATH "Bonus/assets/start_game/17.xpm"
 
 // enemy textures number 1
-# define ENEMY1_TEXTURE_MED "assets/enemy1/1.xpm"
-# define ENEMY1_TEXTURE_DOWN "assets/enemy1/2.xpm"
-# define ENEMY1_TEXTURE_UP "assets/enemy1/3.xpm"
+# define ENEMY1_TEXTURE_MED "Bonus/assets/enemy1/1.xpm"
+# define ENEMY1_TEXTURE_DOWN "Bonus/assets/enemy1/2.xpm"
+# define ENEMY1_TEXTURE_UP "Bonus/assets/enemy1/3.xpm"
 
 // enemy textures number 2
-# define ENEMY2_TEXTURE_MED "assets/enemy2/1.xpm"
-# define ENEMY2_TEXTURE_DOWN "assets/enemy2/2.xpm"
-# define ENEMY2_TEXTURE_UP "assets/enemy2/3.xpm"
+# define ENEMY2_TEXTURE_MED "Bonus/assets/enemy2/1.xpm"
+# define ENEMY2_TEXTURE_DOWN "Bonus/assets/enemy2/2.xpm"
+# define ENEMY2_TEXTURE_UP "Bonus/assets/enemy2/3.xpm"
 
 // enemy textures number 3
-# define ENEMY3_TEXTURE_MED "assets/enemy3/1.xpm"
-# define ENEMY3_TEXTURE_DOWN "assets/enemy3/2.xpm"
-# define ENEMY3_TEXTURE_UP "assets/enemy3/3.xpm"
+# define ENEMY3_TEXTURE_MED "Bonus/assets/enemy3/1.xpm"
+# define ENEMY3_TEXTURE_DOWN "Bonus/assets/enemy3/2.xpm"
+# define ENEMY3_TEXTURE_UP "Bonus/assets/enemy3/3.xpm"
 
 // enemy textures number 4
-# define ENEMY4_TEXTURE_MED "assets/enemy4/1.xpm"
-# define ENEMY4_TEXTURE_DOWN "assets/enemy4/2.xpm"
-# define ENEMY4_TEXTURE_UP "assets/enemy4/3.xpm"
+# define ENEMY4_TEXTURE_MED "Bonus/assets/enemy4/1.xpm"
+# define ENEMY4_TEXTURE_DOWN "Bonus/assets/enemy4/2.xpm"
+# define ENEMY4_TEXTURE_UP "Bonus/assets/enemy4/3.xpm"
 
 // coin texture path
-# define COIN_TEXTURE_PATH "assets/coin/coin_"
+# define COIN_TEXTURE_PATH "Bonus/assets/coin/coin_"
 
 // coin animation time
 # define FLIB_COINS_ANIM_TIME 0.11764705882
 # define TOTAL_FRAMES_SECONDS 4.0
 
 // win texture
-# define WIN_TEXTURE_PATH "assets/WIN_GAME.xpm"
+# define WIN_TEXTURE_PATH "Bonus/assets/WIN_GAME.xpm"
 
 // win sound
-# define WIN_SOUND_PATH "assets/win_game_sound.wav"
+# define WIN_SOUND_PATH "Bonus/assets/win_game_sound.wav"
 
 // lose texture
-# define LOSE_TEXTURE_PATH "assets/15.xpm"
+# define LOSE_TEXTURE_PATH "Bonus/assets/15.xpm"
 
 // lose sound
-# define LOSE_SOUND_PATH "assets/lose_sound.wav"
+# define LOSE_SOUND_PATH "Bonus/assets/lose_sound.wav"
 
 // coin sound
-# define COIN_SOUND_PATH "assets/coin-sound.wav"
+# define COIN_SOUND_PATH "Bonus/assets/coin-sound.wav"
 
 // back ground music
-# define BACKGROUND_MUSIC_PATH "assets/sounds/back_music_pac_man.wav"
+# define BACKGROUND_MUSIC_PATH "Bonus/assets/sounds/back_music_pac_man.wav"
 
 // start screen sound
-# define START_SCREEN_SOUND_PATH "assets/start_music.wav"
+# define START_SCREEN_SOUND_PATH "Bonus/assets/start_music.wav"
 
 // escepe screen sound
-# define ESCAPE_SCREEN_SOUND_PATH "assets/sad_music.wav"
+# define ESCAPE_SCREEN_SOUND_PATH "Bonus/assets/sad_music.wav"
 
 // ecape screen texture
-# define ESCAPE_SCREEN_TEXTURE_PATH "assets/esc.xpm"
+# define ESCAPE_SCREEN_TEXTURE_PATH "Bonus/assets/esc.xpm"
 
 // hurt player sound
-# define PLAYER_HIT_SOUND_PATH "assets/hurt_sound.wav"
+# define PLAYER_HIT_SOUND_PATH "Bonus/assets/hurt_sound.wav"
 
 // sky textures
-# define SKY_TEXTURE_1 "assets/sky/1.xpm"
-# define SKY_TEXTURE_2 "assets/sky/2.xpm"
-# define SKY_TEXTURE_3 "assets/sky/3.xpm"
+# define SKY_TEXTURE_1 "Bonus/assets/sky/1.xpm"
+# define SKY_TEXTURE_2 "Bonus/assets/sky/2.xpm"
+# define SKY_TEXTURE_3 "Bonus/assets/sky/3.xpm"
 
 // * ======== Enums ========== *
 

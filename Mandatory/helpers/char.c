@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:10 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/06/14 18:06:45 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/13 10:40:57 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int	is_digit(int c)
 
 int	is_space(int c)
 {
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
-		|| c == '\r');
+	return (c == ' ');
 }
 
 int	is_alpha(int c)

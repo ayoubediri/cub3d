@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 13:05:53 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/06/14 16:36:45 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/14 09:47:15 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ void	cleanup(void)
 
 void	clean_exit(int status)
 {
+	t_game *game;
+
+	game = get_game();
+	if (game->fd)
+		close(game->fd);
 	cleanup();
 	exit(status);
 }

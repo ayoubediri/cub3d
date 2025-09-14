@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 14:25:23 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/05 17:18:43 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/14 13:24:22 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	create_map(void)
 {
-	t_parse	*scene;
+	t_parse	*parse;
 	t_game	*game;
 	t_map	*map;
 	int		y;
@@ -22,9 +22,9 @@ static void	create_map(void)
 	y = 0;
 	game = get_game();
 	map = &game->map;
-	scene = &game->scene;
-	map->width = scene->width;
-	map->height = scene->height;
+	parse = &game->parse;
+	map->width = parse->width;
+	map->height = parse->height;
 	map->grid = ft_malloc(sizeof(int *) * map->height);
 	while (y < map->height)
 	{
@@ -35,13 +35,13 @@ static void	create_map(void)
 
 static void	fill_map(t_map *map, char key, int y, int x)
 {
-	t_parse	*scene;
+	t_parse	*parse;
 	t_game	*game;
 	int		c;
 
 	game = get_game();
-	scene = &game->scene;
-	if (key == '1' || key == ' ' || x >= ft_strlen(scene->map[y]))
+	parse = &game->parse;
+	if (x >= ft_strlen(parse->map[y]) || key == '1' || key == ' ')
 		c = 1;
 	else
 		c = 0;
@@ -56,7 +56,7 @@ static void	fill_map(t_map *map, char key, int y, int x)
 
 void	build_map(void)
 {
-	t_parse	*scene;
+	t_parse	*parse;
 	t_game	*game;
 	t_map	*map;
 	int		y;
@@ -64,15 +64,18 @@ void	build_map(void)
 
 	y = 0;
 	game = get_game();
-	scene = &game->scene;
+	parse = &game->parse;
 	map = &game->map;
 	create_map();
-	while (y < scene->height)
+	while (y < parse->height)
 	{
 		x = 0;
 		while (x < map->width)
 		{
-			fill_map(map, scene->map[y][x], y, x);
+			if (x < ft_strlen(parse->map[y]))
+				fill_map(map, parse->map[y][x], y, x);
+			else
+				fill_map(map, ' ', y, x);
 			x++;
 		}
 		y++;

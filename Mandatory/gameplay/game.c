@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 12:02:34 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/13 08:26:24 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/13 11:02:04 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 static int	game_loop(void)
 {
-	clear_image();
 	process_movement();
-	render_background();
 	raycasting();
 	put_image();
 	return (0);
@@ -33,7 +31,10 @@ int	leave_game(int exit_code)
 	if (mlx->img)
 		mlx_destroy_image(mlx->mlx, mlx->img);
 	if (mlx->mlx)
+	{
+		mlx_destroy_display(mlx->mlx);
 		free(mlx->mlx);
+	}
 	clean_exit(exit_code);
 	return (1);
 }

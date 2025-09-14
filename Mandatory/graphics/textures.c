@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 06:26:24 by adiri             #+#    #+#             */
-/*   Updated: 2025/09/13 10:05:26 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/13 10:48:11 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ void	setup_textures(void)
 
 	game = get_game();
 	wall_textures = get_wall_textures();
-	wall_textures[WALL_NORTH] = load_texture(game->scene.no_texture);
-	wall_textures[WALL_SOUTH] = load_texture(game->scene.so_texture);
-	wall_textures[WALL_EAST] = load_texture(game->scene.ea_texture);
-	wall_textures[WALL_WEST] = load_texture(game->scene.we_texture);
+	wall_textures[WALL_NORTH] = load_texture(game->parse.no_texture);
+	wall_textures[WALL_SOUTH] = load_texture(game->parse.so_texture);
+	wall_textures[WALL_EAST] = load_texture(game->parse.ea_texture);
+	wall_textures[WALL_WEST] = load_texture(game->parse.we_texture);
 }
 
 void	destroy_wall_textures(t_mlx *mlx)

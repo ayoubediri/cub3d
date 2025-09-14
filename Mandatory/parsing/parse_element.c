@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:57:28 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/06/27 11:40:44 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/14 09:43:01 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,42 +79,42 @@ static char	*parse_texture(char **line, char *name)
 
 void	check_elements(void)
 {
-	t_parse	scene;
+	t_parse	parse;
 
-	scene = get_game()->scene;
-	if (!scene.no_texture)
+	parse = get_game()->parse;
+	if (!parse.no_texture)
 		parse_error("Missing NO texture");
-	if (!scene.so_texture)
+	if (!parse.so_texture)
 		parse_error("Missing SO texture");
-	if (!scene.we_texture)
+	if (!parse.we_texture)
 		parse_error("Missing WE texture");
-	if (!scene.ea_texture)
+	if (!parse.ea_texture)
 		parse_error("Missing EA texture");
-	if (scene.floor_col == -1)
+	if (parse.floor_col == -1)
 		parse_error("Missing Floor col");
-	if (scene.ceiling_col == -1)
+	if (parse.ceiling_col == -1)
 		parse_error("Missing Ceiling col");
 }
 
 void	parse_element(char *line)
 {
-	t_parse	*scene;
+	t_parse	*parse;
 
-	scene = &get_game()->scene;
-	while (is_space(*line))
+	parse = &get_game()->parse;
+	while (*line && is_space(*line))
 		line++;
-	if (!ft_strncmp(line, "NO", 2))
-		scene->no_texture = parse_texture(&line, "NO");
-	else if (!ft_strncmp(line, "SO", 2))
-		scene->so_texture = parse_texture(&line, "SO");
-	else if (!ft_strncmp(line, "WE", 2))
-		scene->we_texture = parse_texture(&line, "WE");
-	else if (!ft_strncmp(line, "EA", 2))
-		scene->ea_texture = parse_texture(&line, "EA");
-	else if (*line == 'F')
-		scene->floor_col = parse_xor(line + 1);
-	else if (*line == 'C')
-		scene->ceiling_col = parse_xor(line + 1);
+	if (!strncmp(line, "NO", 2) && !parse->no_texture)
+		parse->no_texture = parse_texture(&line, "NO");
+	else if (!strncmp(line, "SO", 2) && !parse->so_texture)
+		parse->so_texture = parse_texture(&line, "SO");
+	else if (!strncmp(line, "WE", 2) && !parse->we_texture)
+		parse->we_texture = parse_texture(&line, "WE");
+	else if (!strncmp(line, "EA", 2) && !parse->ea_texture)
+		parse->ea_texture = parse_texture(&line, "EA");
+	else if (*line == 'F' && parse->floor_col == -1)
+		parse->floor_col = parse_xor(line + 1);
+	else if (*line == 'C' && parse->ceiling_col == -1)
+		parse->ceiling_col = parse_xor(line + 1);
 	else
-		parse_error("Invalid element line");
+		parse_error("Duplicate element");
 }

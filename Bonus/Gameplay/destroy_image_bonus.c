@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   destroy_image_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 05:48:46 by adiri             #+#    #+#             */
-/*   Updated: 2025/09/12 05:52:03 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/14 11:10:08 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,25 @@
 void	destroy_enemy_textures(t_mlx *mlx)
 {
 	t_texture	**enemy;
+	int i;
 
+	i = 0;
 	enemy = enemy_texture();
 	if (!enemy)
 		return ;
-	mlx_destroy_image(mlx->mlx, enemy[0][0].img_ptr);
-	mlx_destroy_image(mlx->mlx, enemy[0][1].img_ptr);
-	mlx_destroy_image(mlx->mlx, enemy[0][3].img_ptr);
-	mlx_destroy_image(mlx->mlx, enemy[1][0].img_ptr);
-	mlx_destroy_image(mlx->mlx, enemy[1][1].img_ptr);
-	mlx_destroy_image(mlx->mlx, enemy[1][3].img_ptr);
-	mlx_destroy_image(mlx->mlx, enemy[2][0].img_ptr);
-	mlx_destroy_image(mlx->mlx, enemy[2][1].img_ptr);
-	mlx_destroy_image(mlx->mlx, enemy[2][3].img_ptr);
-	mlx_destroy_image(mlx->mlx, enemy[3][0].img_ptr);
-	mlx_destroy_image(mlx->mlx, enemy[3][1].img_ptr);
-	mlx_destroy_image(mlx->mlx, enemy[3][3].img_ptr);
+	while (i < 4)
+	{
+		if (enemy[i])
+		{
+			if (enemy[i][0].img_ptr)
+				mlx_destroy_image(mlx->mlx, enemy[i][0].img_ptr);
+			if (enemy[i][1].img_ptr)
+				mlx_destroy_image(mlx->mlx, enemy[i][1].img_ptr);
+			if (enemy[i][3].img_ptr)
+				mlx_destroy_image(mlx->mlx, enemy[i][3].img_ptr);
+		}
+		i++;
+	}
 }
 
 void	destroy_wall(t_mlx *mlx, t_game *game)

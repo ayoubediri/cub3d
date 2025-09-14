@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 22:59:38 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/13 09:08:43 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/14 10:07:23 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,11 @@ static void	perform_dda(t_ray *ray, t_map *map)
 
 static void	calc_wall_height(t_ray *ray, t_player *player, t_mlx *mlx)
 {
+	(void)player;
 	if (ray->side == 0)
-		ray->perp_wall_dist = (ray->map_x - player->pos_x + (1 - ray->step_x)
-				/ 2) / ray->dir_x;
+		ray->perp_wall_dist = ray->side_dist_x - ray->delta_dist_x;
 	else
-		ray->perp_wall_dist = (ray->map_y - player->pos_y + (1 - ray->step_y)
-				/ 2) / ray->dir_y;
+		ray->perp_wall_dist = ray->side_dist_y - ray->delta_dist_y;
 	ray->line_height = (int)(mlx->height / ray->perp_wall_dist);
 	ray->draw_start = -ray->line_height / 2 + mlx->height / 2;
 	if (ray->draw_start < 0)
@@ -145,6 +144,31 @@ unsigned int	get_wall_color(int tex_x, double *tex_pos, double step, t_texture *
 	return (color);
 }
 
+void draw_ceiling_and_floor(int x, int start, int end)
+{
+	t_game	*game;
+	int		y;
+	int		color;
+	t_mlx	*mlx;
+
+	game = get_game();
+	mlx = &game->mlx;
+	y = 0;
+	color = game->parse.ceiling_col;
+	while (y < start)
+	{
+		pixel_put(x, y, color);
+		y++;
+	}
+	color = game->parse.floor_col;
+	y = end;
+	while (y < mlx->height)
+	{
+		pixel_put(x, y, color);
+		y++;
+	}
+}
+
 void draw_wall(int x, int y, t_ray *ray)
 {
 	t_game		*game;
@@ -157,6 +181,7 @@ void draw_wall(int x, int y, t_ray *ray)
 	game = get_game();
 	step = 1.0 * texture->height / ray->line_height;
 	pos_y = (y - HALF_HEIGHT + ray->line_height / 2) * step;
+	draw_ceiling_and_floor(x, y, ray->draw_end);
 	while (y < ray->draw_end)
 	{
 		color = get_wall_color(ray->tex_x, &pos_y, step, texture);

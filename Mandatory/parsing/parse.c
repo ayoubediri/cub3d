@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:13:18 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/13 06:37:14 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/14 09:46:49 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,14 @@ static int	is_element(char *line)
 	i = 0;
 	while (is_space(line[i]))
 		i++;
-	if (!ft_strncmp(&line[i], "NO", 2) && is_space(line[i + 2]))
-		return (1);
-	if (!ft_strncmp(&line[i], "SO", 2) && is_space(line[i + 2]))
-		return (1);
-	if (!ft_strncmp(&line[i], "WE", 2) && is_space(line[i + 2]))
-		return (1);
-	if (!ft_strncmp(&line[i], "EA", 2) && is_space(line[i + 2]))
-		return (1);
-	if (line[i] == 'F' && is_space(line[i + 1]))
-		return (1);
-	if (line[i] == 'C' && is_space(line[i + 1]))
-		return (1);
+	if (line[i] == 'F' || line[i] == 'C')
+		return (is_space(line[i + 1]));
+	if (!line[i] || !line[i + 1])
+		return (0);
+	if ((line[i] == 'N' && line[i + 1] == 'O') || (line[i] == 'S' && line[i
+			+ 1] == 'O') || (line[i] == 'W' && line[i + 1] == 'E')
+		|| (line[i] == 'E' && line[i + 1] == 'A'))
+		return (line[i + 2] == '\0' || is_space(line[i + 2]));
 	return (0);
 }
 
@@ -78,15 +74,16 @@ static void	determine_section(char *line, t_parse_state *state)
 
 void	parse_map(char *path)
 {
-	int				fd;
+	t_game			*game;
 	char			*line;
 	t_parse_state	state;
 
+	game = get_game();
 	state = ELEMENTS;
-	fd = extract_fd(path);
+	game->fd = extract_fd(path);
 	while (1)
 	{
-		line = get_next_line(fd);
+		line = get_next_line(game->fd);
 		if (!line)
 			break ;
 		else if (is_empty_line(line))

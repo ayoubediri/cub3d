@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_textures_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 06:54:09 by adiri             #+#    #+#             */
-/*   Updated: 2025/09/12 06:59:17 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/14 10:59:26 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 t_texture	**enemy_texture(void)
 {
-	static t_texture	enemy1[4];
-	static t_texture	enemy2[4];
-	static t_texture	enemy3[4];
-	static t_texture	enemy4[4];
+	static t_texture	enemy1[4] = {0};
+	static t_texture	enemy2[4] = {0};
+	static t_texture	enemy3[4] = {0};
+	static t_texture	enemy4[4] = {0};
 	static t_texture	*enemy[4] = {enemy1, enemy2, enemy3, enemy4};
 
 	return (enemy);

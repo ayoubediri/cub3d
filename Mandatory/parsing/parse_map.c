@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:50:23 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/07/15 23:11:49 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/13 10:48:11 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,36 +21,36 @@ static int	valid_char(char c)
 static void	check_player(char c, int y, int x)
 {
 	static int	player_found = 0;
-	t_parse		*scene;
+	t_parse		*parse;
 
-	scene = &get_game()->scene;
+	parse = &get_game()->parse;
 	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 	{
 		if (player_found)
 			parse_error("Multiple player positions found in map");
-		scene->dir = c;
+		parse->dir = c;
 		player_found = 1;
-		scene->player_x = x;
-		scene->player_y = y;
+		parse->player_x = x;
+		parse->player_y = y;
 	}
 }
 
 void	parse_map_line(char *line)
 {
 	static int	y = 0;
-	t_parse		*scene;
+	t_parse		*parse;
 	int			x;
 
 	x = 0;
-	scene = &get_game()->scene;
-	if (!scene->map)
+	parse = &get_game()->parse;
+	if (!parse->map)
 	{
-		scene->map = ft_malloc(sizeof(char *));
-		scene->map[0] = NULL;
+		parse->map = ft_malloc(sizeof(char *));
+		parse->map[0] = NULL;
 	}
-	scene->map = ft_realloc(scene->map, sizeof(char *) * (y + 2));
-	scene->map[y] = ft_strdup(line);
-	scene->map[y + 1] = NULL;
+	parse->map = ft_realloc(parse->map, sizeof(char *) * (y + 2));
+	parse->map[y] = ft_strdup(line);
+	parse->map[y + 1] = NULL;
 	while (line[x])
 	{
 		if (!valid_char(line[x]))
@@ -58,7 +58,7 @@ void	parse_map_line(char *line)
 		check_player(line[x], y, x);
 		x++;
 	}
-	if (x > scene->width)
-		scene->width = x;
-	scene->height = ++y;
+	if (x > parse->width)
+		parse->width = x;
+	parse->height = ++y;
 }

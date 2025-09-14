@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 12:41:14 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/13 10:04:10 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/13 10:53:13 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void	config_player(void)
 		fill_player(1, 0, 0, 0.66);
 	else if (game->map.player_dir == 'W')
 		fill_player(-1, 0, 0, -0.66);
-	game->player.move_speed = 0.05f;
-	game->player.rot_speed = 0.03f;
+	game->player.move_speed = PLAYER_SPEED;
+	game->player.rot_speed = PLAYER_ROT_SPEED;
 }
 
 void	setup_config(void)

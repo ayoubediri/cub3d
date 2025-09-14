@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 12:45:15 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/13 06:38:06 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/14 09:40:52 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	init_struct(void)
 	t_game	*game;
 
 	game = get_game();
-	game->scene.floor_col = -1;
-	game->scene.ceiling_col = -1;
+	game->parse.floor_col = -1;
+	game->parse.ceiling_col = -1;
 }
 
 int	main(int ac, char **av)
@@ -35,6 +35,7 @@ int	main(int ac, char **av)
 		report_error("Invalid arguments", "Need only path to map");
 		clean_exit(1);
 	}
+	init_struct();
 	parse_map(av[1]);
 	setup_config();
 	start_game();

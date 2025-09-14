@@ -1,13 +1,13 @@
-NO       ./assets/wall/13.xpm
-SO   ./assets/wall/13.xpm
+NO       Bonus/assets/enemy3/1.xpm
+SO   Bonus/assets/enemy3/1.xpm
 
 
 
-WE ./assets/wall/13.xpm
+WE Bonus/assets/enemy3/1.xpm
 
 
 
-EA ./assets/wall/13.xpm
+EA Bonus/assets/enemy3/1.xpm
 
 
 F 139,69,19

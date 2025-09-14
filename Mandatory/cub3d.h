@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 12:44:50 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/13 08:55:46 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/14 13:25:21 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # define HEIGHT 1010
 # define HALF_WIDTH 960
 # define HALF_HEIGHT 505
+# define PLAYER_SPEED 0.05f
+# define PLAYER_ROT_SPEED 0.03f
 
 // * ======== INCLUDES ======= * /
 # include <X11/keysym.h>
@@ -46,7 +48,7 @@ typedef enum e_parse_state
 {
 	MAP,
 	ELEMENTS
-}						t_parse_state;
+}							t_parse_state;
 
 typedef enum e_key
 {
@@ -57,7 +59,7 @@ typedef enum e_key
 	KEY_LEFT,
 	KEY_RIGHT,
 	KEY_TOTAL
-}						t_key;
+}							t_key;
 
 typedef enum e_wall
 {
@@ -66,180 +68,181 @@ typedef enum e_wall
 	WALL_EAST,
 	WALL_WEST,
 	WALL_TOTAL
-}	t_wall;
+}							t_wall;
 
-struct					s_texture
+struct						s_texture
 {
-	void				*img_ptr;
-	int					width;
-	int					height;
-	char				*addr;
-	int					bpp;
-	int					len_line;
-	int					endian;
-	char				*path;
+	void					*img_ptr;
+	int						width;
+	int						height;
+	char					*addr;
+	int						bpp;
+	int						len_line;
+	int						endian;
+	char					*path;
 };
 
-struct					s_malloc
+struct						s_malloc
 {
-	void				*ptr;
-	size_t				size;
-	t_malloc			*next;
+	void					*ptr;
+	size_t					size;
+	t_malloc				*next;
 };
 
-struct					s_parse
+struct						s_parse
 {
-	char				dir;
-	char				**map;
-	int					width;
-	int					height;
-	int					player_x;
-	int					player_y;
-	int					floor_col;
-	int					ceiling_col;
-	char				*no_texture;
-	char				*so_texture;
-	char				*we_texture;
-	char				*ea_texture;
+	char					dir;
+	char					**map;
+	int						width;
+	int						height;
+	int						player_x;
+	int						player_y;
+	int						floor_col;
+	int						ceiling_col;
+	char					*no_texture;
+	char					*so_texture;
+	char					*we_texture;
+	char					*ea_texture;
 };
 
-struct					s_ray
+struct						s_ray
 {
-	int					side;
-	int					map_x;
-	int					map_y;
-	double				dir_y;
-	double				dir_x;
-	int					step_y;
-	int					step_x;
-	int					draw_end;
-	int					draw_start;
-	double				side_dist_x;
-	int					line_height;
-	double				side_dist_y;
-	double				delta_dist_x;
-	double				delta_dist_y;
-	double				perp_wall_dist;
-	double				wall_x;
-	int					tex_x;
-	t_texture			*wall;
+	int						side;
+	int						map_x;
+	int						map_y;
+	double					dir_y;
+	double					dir_x;
+	int						step_y;
+	int						step_x;
+	int						draw_end;
+	int						draw_start;
+	double					side_dist_x;
+	int						line_height;
+	double					side_dist_y;
+	double					delta_dist_x;
+	double					delta_dist_y;
+	double					perp_wall_dist;
+	double					wall_x;
+	int						tex_x;
+	t_texture				*wall;
 };
 
-struct					s_player
+struct						s_player
 {
-	double				pos_x;
-	double				pos_y;
-	double				dir_x;
-	double				dir_y;
-	double				plane_x;
-	double				plane_y;
-	double				rot_speed;
-	double				move_speed;
+	double					pos_x;
+	double					pos_y;
+	double					dir_x;
+	double					dir_y;
+	double					plane_x;
+	double					plane_y;
+	double					rot_speed;
+	double					move_speed;
 };
 
-struct					s_mlx
+struct						s_mlx
 {
-	int					bpp;
-	int					line;
-	void				*mlx;
-	void				*win;
-	void				*img;
-	char				*addr;
-	int					width;
-	int					endian;
-	int					height;
+	int						bpp;
+	int						line;
+	void					*mlx;
+	void					*win;
+	void					*img;
+	char					*addr;
+	int						width;
+	int						endian;
+	int						height;
 };
 
-struct					s_map
+struct						s_map
 {
-	int					**grid;
-	int					width;
-	int					height;
-	int					player_x;
-	int					player_y;
-	char				player_dir;
+	int						**grid;
+	int						width;
+	int						height;
+	int						player_x;
+	int						player_y;
+	char					player_dir;
 };
 
-struct					s_game
+struct						s_game
 {
-	bool				keys[KEY_TOTAL];
-	t_malloc			*tracker;
-	t_player			player;
-	t_parse				scene;
-	t_malloc			*tail;
-	t_mlx				mlx;
-	t_map				map;
+	bool					keys[KEY_TOTAL];
+	t_malloc				*tracker;
+	t_player				player;
+	t_parse					parse;
+	t_malloc				*tail;
+	t_mlx					mlx;
+	t_map					map;
+	int						fd;
 };
 
 // * ======== PROTOTYPES ======= * /
 // malloc:
-void					*ft_realloc(void *ptr, size_t size);
-void					*track(void *ptr, size_t size);
-void					*ft_malloc(size_t size);
+void						*ft_realloc(void *ptr, size_t size);
+void						*track(void *ptr, size_t size);
+void						*ft_malloc(size_t size);
 // cleanup:
-int						report_error(char *msg1, char *msg2);
-void					parse_error(char *msg1);
-void					clean_exit(int status);
-int						leave_game(int exit_code);
-void					cleanup(void);
+int							report_error(char *msg1, char *msg2);
+void						parse_error(char *msg1);
+void						clean_exit(int status);
+int							leave_game(int exit_code);
+void						cleanup(void);
 // char;
-int						is_empty_line(char *line);
-int						is_space(int c);
-int						is_alpha(int c);
-int						is_alnum(int c);
-int						is_digit(int c);
+int							is_empty_line(char *line);
+int							is_space(int c);
+int							is_alpha(int c);
+int							is_alnum(int c);
+int							is_digit(int c);
 // game:
-void					process_movement(void);
-void					start_game(void);
+void						process_movement(void);
+void						start_game(void);
 // input:
-int						on_keyrelease(int key);
-int						on_keypress(int key);
+int							on_keyrelease(int key);
+int							on_keypress(int key);
 // print:
-void					ft_putendl(char *str, int fd);
-void					ft_putstr(char *str, int fd);
-void					ft_putchar(char c, int fd);
-void					ft_putnbr(int n, int fd);
-int						ft_strlen(char *s);
+void						ft_putendl(char *str, int fd);
+void						ft_putstr(char *str, int fd);
+void						ft_putchar(char c, int fd);
+void						ft_putnbr(int n, int fd);
+int							ft_strlen(char *s);
 // memory:
-void					*ft_memcpy(void *dst, void *src, size_t n);
-void					*ft_memset(void *b, int c, size_t len);
-void					ft_bzero(void *s, size_t len);
+void						*ft_memcpy(void *dst, void *src, size_t n);
+void						*ft_memset(void *b, int c, size_t len);
+void						ft_bzero(void *s, size_t len);
 // string:
-char					*ft_strrstr(char *haystack, char *needle);
-int						ft_strncmp(char *s1, char *s2, int n);
-int						ft_strcmp(char *s1, char *s2);
+char						*ft_strrstr(char *haystack, char *needle);
+int							ft_strncmp(char *s1, char *s2, int n);
+int							ft_strcmp(char *s1, char *s2);
 // parse:
-void					parse_map_line(char *line);
-void					parse_element(char *line);
-void					parse_map(char *path);
-void					check_elements(void);
-void					validate_map(void);
-void					build_map(void);
+void						parse_map_line(char *line);
+void						parse_element(char *line);
+void						parse_map(char *path);
+void						check_elements(void);
+void						validate_map(void);
+void						build_map(void);
 // strjoin:
-char					*ft_strjoin3(char *s1, char *s2, char *s3);
-char					*ft_strjoin2(char *s1, char *s2);
-t_game					*get_game(void);
+char						*ft_strjoin3(char *s1, char *s2, char *s3);
+char						*ft_strjoin2(char *s1, char *s2);
+t_game						*get_game(void);
 // strdup:
-char					*ft_strndup(char *str, size_t n);
-char					*ft_strsdup(char *str);
-char					*ft_strdup(char *str);
+char						*ft_strndup(char *str, size_t n);
+char						*ft_strsdup(char *str);
+char						*ft_strdup(char *str);
 // config:
-void					setup_config(void);
+void						setup_config(void);
 // render:
-void					pixel_put(int x, int y, int color);
-void					render_background(void);
-void					clear_image(void);
-void					raycasting(void);
-void					put_image(void);
+void						pixel_put(int x, int y, int color);
+void						render_background(void);
+void						clear_image(void);
+void						raycasting(void);
+void						put_image(void);
 // numbers:
-char					*ft_itoa(int n);
+char						*ft_itoa(int n);
 // gnl:
-char					*get_next_line(int fd);
+char						*get_next_line(int fd);
 
 // textures:
-t_texture				load_texture(char *path);
-void					setup_textures(void);
-void					destroy_wall_textures(t_mlx *mlx);
-t_texture				*get_wall_textures(void);
+t_texture					load_texture(char *path);
+void						setup_textures(void);
+void						destroy_wall_textures(t_mlx *mlx);
+t_texture					*get_wall_textures(void);
 
 #endif

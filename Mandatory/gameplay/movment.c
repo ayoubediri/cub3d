@@ -6,7 +6,7 @@
 /*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 22:42:33 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/07/15 23:11:24 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/13 11:22:06 by yjazouli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ static void	rotate_camera(t_player *player, bool *keys)
 	double	rotation;
 	double	old_dir_x;
 	double	old_plane_x;
+	double	cos_rotation;
+	double	sin_rotation;
 
 	if (keys[KEY_RIGHT] || keys[KEY_LEFT])
 	{
@@ -81,16 +83,17 @@ static void	rotate_camera(t_player *player, bool *keys)
 			rotation = player->rot_speed;
 		else
 			rotation = -player->rot_speed;
+		cos_rotation = cos(rotation);
+		sin_rotation = sin(rotation);
 		old_dir_x = player->dir_x;
 		old_plane_x = player->plane_x;
-		player->dir_x = player->dir_x * cos(rotation) - player->dir_y
-			* sin(rotation);
-		player->dir_y = old_dir_x * sin(rotation) + player->dir_y
-			* cos(rotation);
-		player->plane_x = player->plane_x * cos(rotation) - player->plane_y
-			* sin(rotation);
-		player->plane_y = old_plane_x * sin(rotation) + player->plane_y
-			* cos(rotation);
+		player->dir_x = player->dir_x * cos_rotation - player->dir_y
+			* sin_rotation;
+		player->dir_y = old_dir_x * sin_rotation + player->dir_y * cos_rotation;
+		player->plane_x = player->plane_x * cos_rotation - player->plane_y
+			* sin_rotation;
+		player->plane_y = old_plane_x * sin_rotation + player->plane_y
+			* cos_rotation;
 	}
 }
 
