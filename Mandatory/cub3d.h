@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 12:44:50 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/14 13:25:21 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/15 17:26:30 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,6 +238,18 @@ void						put_image(void);
 char						*ft_itoa(int n);
 // gnl:
 char						*get_next_line(int fd);
+
+//wall
+void						calc_wall_height(t_ray *ray, t_player *player, \
+							t_mlx *mlx);
+void						calc_wall_x(t_ray *ray);
+t_texture					*wall_side_texture(t_ray *ray);
+unsigned int				get_texture_color(t_texture *texture, int x, int y);
+void						draw_wall(int x, int y, t_ray *ray);
+void						draw_ceiling_and_floor(int x, int start, int end);
+unsigned int				get_wall_color(int tex_x, double *pos_y, \
+							double step, t_texture *texture);
+void						calc_tex_x(t_ray *ray);
 
 // textures:
 t_texture					load_texture(char *path);

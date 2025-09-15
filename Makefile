@@ -1,6 +1,6 @@
 NAME         := cub3d
 NAME_BONUS    := cub3d_bonus
-CC      := cc
+CC      := gcc
 M_CFLAGS  = -g -Wall -Wextra -Werror
 M_INCLUDES = -Iminilibx-linux -I/usr/include/minilibx-linux -I. -IMandatory
 M_LIBS    = -Lminilibx-linux -L/usr/include/minilibx-linux -lmlx -lXext -lX11 -lm
@@ -12,6 +12,7 @@ M_SRCS = Mandatory/cub3d.c \
        Mandatory/gameplay/movment.c \
        Mandatory/graphics/raycast.c \
        Mandatory/graphics/render.c \
+	   Mandatory/graphics/wall.c \
        Mandatory/graphics/textures.c \
        Mandatory/helpers/char.c \
        Mandatory/helpers/cleanup.c \

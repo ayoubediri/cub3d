@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 18:23:31 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/14 11:24:31 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/15 08:33:56 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	init_hooks(void)
 	t_mlx	*mlx;
 
 	mlx = get_mlx();
+	mlx_mouse_move(mlx->mlx, mlx->win, HALF_WIDTH, HALF_HEIGHT);
 	mlx_hook(mlx->win, 6, 1L << 6, mouse_handler, mlx);
 	mlx_hook(mlx->win, 17, 1L << 17, leave_game, NULL);
 	mlx_hook(mlx->win, 2, 1L << 0, on_keypress, NULL);

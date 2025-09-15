@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   destroy_image_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 05:48:46 by adiri             #+#    #+#             */
-/*   Updated: 2025/09/14 13:30:10 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/15 16:46:56 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ void	destroy_other_textures(t_mlx *mlx, t_game *game)
 {
 	if (game->gameplay.door_texture_close.img_ptr)
 		mlx_destroy_image(mlx->mlx, game->gameplay.door_texture_close.img_ptr);
-	if (game->floor_texture.img_ptr)
-		mlx_destroy_image(mlx->mlx, game->floor_texture.img_ptr);
+	if (game->ground_texture.img_ptr)
+		mlx_destroy_image(mlx->mlx, game->ground_texture.img_ptr);
 	if (game->ceiling_texture.img_ptr)
 		mlx_destroy_image(mlx->mlx, game->ceiling_texture.img_ptr);
 	if (game->sky_texture.img_ptr)

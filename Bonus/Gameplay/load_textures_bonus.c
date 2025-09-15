@@ -6,7 +6,7 @@
 /*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 06:47:35 by adiri             #+#    #+#             */
-/*   Updated: 2025/09/12 06:51:43 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/15 16:46:56 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	load_wall_textures(t_game *game)
 
 void	load_other_textures(t_game *game)
 {
-	game->floor_texture = load_texture(FLOOR_TEXTURE_PATH);
+	game->ground_texture = load_texture(GROUND_TEXTURE_PATH);
 	game->sky_texture = load_texture(SKY_TEXTURE_PATH);
 	game->gameplay.ghost_texture = (t_texture){0};
 	game->gameplay.pellet_texture = (t_texture){0};

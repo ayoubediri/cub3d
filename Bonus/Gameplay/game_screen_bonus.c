@@ -6,11 +6,34 @@
 /*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 06:55:39 by adiri             #+#    #+#             */
-/*   Updated: 2025/09/12 06:57:37 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/15 17:21:03 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
+
+void	show_fps(t_game *game)
+{
+	static int		frames = 0;
+	static long		last_ms = 0;
+	static int		current_fps = 0;
+	struct timeval	tv;
+	long			now_ms;
+
+	gettimeofday(&tv, NULL);
+	now_ms = tv.tv_sec * 1000L + tv.tv_usec / 1000L;
+	frames++;
+	if (last_ms == 0)
+		last_ms = now_ms;
+	if (now_ms - last_ms >= 250)
+	{
+		current_fps = frames * 1000 / (now_ms - last_ms);
+		frames = 0;
+		last_ms = now_ms;
+	}
+	mlx_string_put(game->mlx.mlx, game->mlx.win, \
+		10, 10, 0xFFFFFF, ft_itoa((int)current_fps));
+}
 
 void	game_render(double alpha)
 {
@@ -19,6 +42,7 @@ void	game_render(double alpha)
 	minimap_render();
 	render_health_ui();
 	put_image();
+	show_fps(get_game());
 }
 
 int	leave_game(int exit_code)
@@ -34,6 +58,7 @@ int	leave_game(int exit_code)
 	destroy_other_textures(mlx, game);
 	destroy_mlx(mlx);
 	stop_background_music();
+	pthread_join(game->music_thread, NULL);
 	clean_exit(exit_code);
 	return (1);
 }

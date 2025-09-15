@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 06:26:24 by adiri             #+#    #+#             */
-/*   Updated: 2025/09/14 13:29:26 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/15 17:24:27 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,17 @@ void	destroy_wall_textures(t_mlx *mlx)
 			mlx_destroy_image(mlx->mlx, wall_textures[i].img_ptr);
 		i++;
 	}
+}
+
+void	calc_tex_x(t_ray *ray)
+{
+	ray->tex_x = (int)(ray->wall_x * (double)ray->wall->width);
+	if (ray->side == 0 && ray->dir_x < 0)
+		ray->tex_x = ray->wall->width - ray->tex_x - 1;
+	if (ray->side == 1 && ray->dir_y > 0)
+		ray->tex_x = ray->wall->width - ray->tex_x - 1;
+	if (ray->tex_x >= ray->wall->width)
+		ray->tex_x = ray->wall->width - 1;
+	else if (ray->tex_x < 0)
+		ray->tex_x = 0;
 }

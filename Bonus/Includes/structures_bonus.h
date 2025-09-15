@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structures_bonus.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:51:59 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/12 11:14:17 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/15 16:46:22 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -432,8 +432,9 @@ struct							s_gameplay
 	int							rend_ent_count;
 	int							rend_ent_capacity;
 	t_texture					end_screen_texture;
-	int							start_game_sound;
+	_Atomic int					start_game_sound;
 	_Atomic pid_t				pid_sound;
+	_Atomic int					error_music;
 	t_texture					door_texture_close;
 };
 
@@ -482,7 +483,8 @@ struct							s_game
 	bool						keys[KEY_TOTAL];
 	t_gameplay					gameplay;
 	t_texture					wall_textures[WALL_TOTAL];
-	t_texture					floor_texture;
+	pthread_t					music_thread;
+	t_texture					ground_texture;
 	t_texture					ceiling_texture;
 	t_texture					sky_texture;
 	t_malloc					*tracker;

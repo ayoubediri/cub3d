@@ -6,7 +6,7 @@
 /*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 09:44:24 by adiri             #+#    #+#             */
-/*   Updated: 2025/09/13 09:58:01 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/15 13:18:06 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@ void	calc_perp_wall_dist(void)
 	camera = get_camera();
 	ray = &camera->ray;
 	if (ray->hit_side == 0)
-		ray->perp_wall_dist = (ray->map_x - camera->pos.x + \
-			(1 - ray->step.x) / 2) / ray->dir.x;
+		ray->perp_wall_dist = ray->side_dist.x - ray->delta_dist.x;
 	else
-		ray->perp_wall_dist = (ray->map_y - camera->pos.y + \
-			(1 - ray->step.y) / 2) / ray->dir.y;
+		ray->perp_wall_dist = ray->side_dist.y - ray->delta_dist.y;
 	ray->height = (int)(HEIGHT / ray->perp_wall_dist);
 	ray->start = -ray->height / 2 + HALF_HEIGHT;
 	if (ray->start < 0)

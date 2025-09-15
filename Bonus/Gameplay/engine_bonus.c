@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   engine_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 20:08:37 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/02 21:49:02 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/15 09:19:44 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	game_tick(t_engine *engine)
 	double	start;
 	double	elapsed;
 
+	if (get_gameplay()->error_music)
+		leave_game(1);
 	start = now_seconds();
 	now = start;
 	elapsed = now - engine->last;

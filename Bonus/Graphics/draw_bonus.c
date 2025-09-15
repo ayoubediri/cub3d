@@ -6,7 +6,7 @@
 /*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 09:45:28 by adiri             #+#    #+#             */
-/*   Updated: 2025/09/13 08:44:35 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/15 16:46:56 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	draw_floor(int x, int y)
 	t_floor		*info;
 
 	camera = get_camera();
-	floor_txt = &get_game()->floor_texture;
+	floor_txt = &get_game()->ground_texture;
 	info = &camera->floor;
 	info->x = x;
 	info->y = y;

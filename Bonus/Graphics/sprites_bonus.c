@@ -6,7 +6,7 @@
 /*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 10:36:25 by adiri             #+#    #+#             */
-/*   Updated: 2025/09/12 10:45:23 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/15 17:17:21 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ void	draw_sprite_stripe(t_sprite_info *s, int stripe, double *z_buffer, \
 	double	step;
 	double	tex_pos;
 
-	if (s->transform_y > 0 && stripe > 0 && stripe < WIDTH && \
-		s->transform_y < z_buffer[stripe])
+	if (stripe > 0 && stripe < WIDTH && s->transform_y < z_buffer[stripe])
 	{
 		step = 1.0 * texture->height / s->height;
 		tex_pos = (s->draw_start_y - HALF_HEIGHT + s->height / 2) * step;
@@ -87,20 +86,18 @@ void	render_sprites(double *z_buffer)
 	gameplay = get_gameplay();
 	ent = gameplay->rend_ents;
 	sort_sprites_by_distance(gameplay->player.ent, ent);
-	i = 0;
-	while (i < gameplay->rend_ent_count)
+	i = -1;
+	while (++i < gameplay->rend_ent_count)
 	{
 		if (gameplay->rend_ents[i].ent->type == ENTITY_PLAYER || \
 			gameplay->rend_ents[i].ent->gone)
-		{
-			i++;
 			continue ;
-		}
 		s_info.type = gameplay->rend_ents[i].ent->type;
 		init_div(&s_info);
-		calculate_sprite_transform(gameplay->player.ent, ent[i].ent, &s_info);
+		if (calculate_sprite_transform(gameplay->player.ent, \
+			ent[i].ent, &s_info))
+			continue ;
 		draw_the_sprite_transform(gameplay, i, &s_info, z_buffer);
-		i++;
 	}
 }
 

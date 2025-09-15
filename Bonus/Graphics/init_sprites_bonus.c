@@ -6,7 +6,7 @@
 /*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 10:29:52 by adiri             #+#    #+#             */
-/*   Updated: 2025/09/12 10:55:15 by adiri            ###   ########.fr       */
+/*   Updated: 2025/09/15 17:18:30 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,32 +55,33 @@ void	sort_sprites_by_distance(t_entity *player, t_rend_ents *ents)
 	}
 }
 
-void	init_the_sprite_transform(t_entity *player, t_entity *sprite, \
+int	init_the_sprite_transform(t_entity *player, t_entity *sprite, \
 	t_sprite_info *s)
 {
-	double	sprite_x;
-	double	sprite_y;
-	double	inv_det;
-	double	plane_x;
-	double	plane_y;
+	double		sprite_x;
+	double		sprite_y;
+	t_camera	*camera;
 
+	camera = get_camera();
 	sprite_x = sprite->pos.x - player->pos.x;
 	sprite_y = sprite->pos.y - player->pos.y;
-	plane_x = -player->dir.y * get_camera()->plane_scale;
-	plane_y = player->dir.x * get_camera()->plane_scale;
-	inv_det = 1.0 / (plane_x * player->dir.y - player->dir.x * plane_y);
-	s->transform_x = inv_det * (player->dir.y * sprite_x - \
-		player->dir.x * sprite_y);
-	s->transform_y = inv_det * (-plane_y * sprite_x + plane_x * sprite_y);
+	s->transform_x = INV_DET * \
+	(player->dir.y * sprite_x - player->dir.x * sprite_y);
+	s->transform_y = INV_DET * \
+	(-camera->plane.y * sprite_x + camera->plane.x * sprite_y);
+	if (s->transform_y <= 0)
+		return (1);
 	s->screen_x = (int)(HALF_WIDTH)*(1 + s->transform_x / s->transform_y);
 	s->height = abs((int)(HEIGHT / s->transform_y)) / s->v_div;
 	s->width = abs((int)(HEIGHT / s->transform_y)) / s->u_div;
+	return (0);
 }
 
-void	calculate_sprite_transform(t_entity *player, t_entity *sprite, \
+int	calculate_sprite_transform(t_entity *player, t_entity *sprite, \
 	t_sprite_info *s)
 {
-	init_the_sprite_transform(player, sprite, s);
+	if (init_the_sprite_transform(player, sprite, s))
+		return (1);
 	s->draw_start_y = -s->height / 2 + HALF_HEIGHT;
 	if (s->draw_start_y < 0)
 		s->draw_start_y = 0;
@@ -93,4 +94,5 @@ void	calculate_sprite_transform(t_entity *player, t_entity *sprite, \
 	s->draw_end_x = s->width / 2 + s->screen_x;
 	if (s->draw_end_x >= WIDTH)
 		s->draw_end_x = WIDTH - 1;
+	return (0);
 }

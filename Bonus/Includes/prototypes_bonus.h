@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prototypes_bonus.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjazouli <yjazouli@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: adiri <adiri@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 09:57:13 by yjazouli          #+#    #+#             */
-/*   Updated: 2025/09/12 11:09:28 by yjazouli         ###   ########.fr       */
+/*   Updated: 2025/09/15 16:34:17 by adiri            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ void			load_other_textures(t_game *game);
 char			*get_coin_texture_path(int index);
 void			start_music(void);
 void			sort_sprites_by_distance(t_entity *player, t_rend_ents *ents);
-void			calculate_sprite_transform(t_entity *player, \
+int				calculate_sprite_transform(t_entity *player, \
 	t_entity *sprite, t_sprite_info *s);
 void			draw_the_sprite_transform(t_gameplay *gameplay, int ent_index, \
 				t_sprite_info *s_info, double *z_buffer);
@@ -215,11 +215,9 @@ void			draw_floor(int x, int y);
 void			draw_sky(int x);
 void			draw_sprite_type(t_sprite_info *s, int stripe, t_texture *text, \
 	double *z_buffer);
-void			init_the_sprite_transform(t_entity *player, t_entity *sprite, \
+int				init_the_sprite_transform(t_entity *player, t_entity *sprite, \
 	t_sprite_info *s);
 void			sort_sprites_by_distance(t_entity *player, t_rend_ents *ents);
-void			init_the_sprite_transform(t_entity *player, t_entity *sprite, \
-	t_sprite_info *s);
 void			draw_sprite_stripe(t_sprite_info *s, int stripe, \
 	double *z_buffer, t_texture *texture);
 void			calc_floor(t_floor *info, t_camera *camera, \
