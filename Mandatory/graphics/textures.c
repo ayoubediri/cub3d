@@ -19,13 +19,15 @@ t_texture	*get_wall_textures(void)
 	return (wall_textures);
 }
 
+
+
 t_texture	load_texture(char *path)
 {
 	t_mlx		*mlx;
 	t_texture	texture;
 
 	mlx = &get_game()->mlx;
-	memset(&texture, 0, sizeof(t_texture));
+	ft_memset(&texture, 0, sizeof(t_texture));
 	texture.img_ptr = mlx_xpm_file_to_image(mlx->mlx, path, &texture.width,
 			&texture.height);
 	if (!texture.img_ptr)
@@ -45,6 +47,8 @@ t_texture	load_texture(char *path)
 	return (texture);
 }
 
+
+
 void	setup_textures(void)
 {
 	t_game		*game;
@@ -57,6 +61,7 @@ void	setup_textures(void)
 	wall_textures[WALL_EAST] = load_texture(game->parse.ea_texture);
 	wall_textures[WALL_WEST] = load_texture(game->parse.we_texture);
 }
+
 
 void	destroy_wall_textures(t_mlx *mlx)
 {
@@ -72,6 +77,8 @@ void	destroy_wall_textures(t_mlx *mlx)
 		i++;
 	}
 }
+
+
 
 void	calc_tex_x(t_ray *ray)
 {
